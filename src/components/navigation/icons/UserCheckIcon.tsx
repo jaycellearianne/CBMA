@@ -6,9 +6,9 @@ const UserCheckIcon = ({ className = "w-6 h-6" }: { className?: string }) => (
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
-    stroke-width="2"
-    stroke-linecap="round"
-    stroke-linejoin="round"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
     className={`lucide lucide-user-check-icon lucide-user-check ${className}`}
   >
     <path d="m16 11 2 2 4-4" />

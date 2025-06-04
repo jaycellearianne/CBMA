@@ -6,9 +6,9 @@ const BellIcon = ({ className = "w-6 h-6" }: { className?: string }) => (
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
-    stroke-width="2"
-    stroke-linecap="round"
-    stroke-linejoin="round"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
     className={`lucide lucide-bell-icon lucide-bell ${className}`}
   >
     <path d="M10.268 21a2 2 0 0 0 3.464 0" />
