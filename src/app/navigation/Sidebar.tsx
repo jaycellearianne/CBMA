@@ -1,12 +1,12 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import UserIcon from "./icons/UserIcon";
-import UsersIcon from "./icons/UsersIcon";
-import UserPenIcon from "./icons/UserPenIcon";
-import SettingIcon from "./icons/SettingIcon";
-import CircleHelpIcon from "./icons/CircleHelpIcon";
-import LogoutIcon from "./icons/LogoutIcon";
+import UserIcon from "../../components/icons/UserIcon";
+import UsersIcon from "../../components/icons/UsersIcon";
+import UserPenIcon from "../../components/icons/UserPenIcon";
+import SettingIcon from "../../components/icons/SettingIcon";
+import CircleHelpIcon from "../../components/icons/CircleHelpIcon";
+import LogoutIcon from "../../components/icons/LogoutIcon";
 
 // TODO: Change the Image SRC to the actual profile image
 // TODO: Change the Name to the actual name of the user
