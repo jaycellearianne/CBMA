@@ -1,6 +1,6 @@
 "use client";
-import BellIcon from "./icons/BellIcon";
-import HamburgerIcon from "./icons/HamburgerIcon";
+import BellIcon from "../../components/icons/BellIcon";
+import HamburgerIcon from "../../components/icons/HamburgerIcon";
 import { useState } from "react";
 import Sidebar from "./Sidebar";
 
