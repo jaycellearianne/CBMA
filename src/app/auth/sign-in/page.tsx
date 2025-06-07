@@ -1,12 +1,11 @@
 "use client";
-
 import type React from "react";
-
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { EyeOff, Eye } from "lucide-react";
 
 export default function SignInPage() {
   const [email, setEmail] = useState("");
@@ -23,6 +22,7 @@ export default function SignInPage() {
     success?: boolean;
     message?: string;
   } | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -206,28 +206,42 @@ export default function SignInPage() {
                 Forgot Password?
               </Link>
             </div>
-            <Input
-              type="password"
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => {
-                setPassword(e.target.value);
-                if (touched.password) {
-                  const passwordError = validatePassword(e.target.value);
-                  setErrors((prev) => ({ ...prev, password: passwordError }));
-                }
-              }}
-              onBlur={() => handleBlur("password")}
-              className={`w-full h-12 px-4 border rounded-lg text-base placeholder:text-gray-400 focus:outline-none transition-all ${
-                errors.password && touched.password
-                  ? "border-red-500 focus:ring-2 focus:ring-red-500 focus:border-transparent bg-red-50"
-                  : password && !errors.password
-                  ? "border-green-500 focus:ring-2 focus:ring-green-500 focus:border-transparent bg-green-50"
-                  : "border-gray-300 focus:ring-2 focus:ring-amber-500 focus:border-transparent"
-              }`}
-              autoComplete="current-password"
-              disabled={isLoading}
-            />
+            <div className="relative">
+              <Input
+                type={showPassword ? "text" : "password"}
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  if (touched.password) {
+                    const passwordError = validatePassword(e.target.value);
+                    setErrors((prev) => ({ ...prev, password: passwordError }));
+                  }
+                }}
+                onBlur={() => handleBlur("password")}
+                className={`w-full h-12 px-4 border rounded-lg text-base placeholder:text-gray-400 focus:outline-none transition-all ${
+                  errors.password && touched.password
+                    ? "border-red-500 focus:ring-2 focus:ring-red-500 focus:border-transparent bg-red-50"
+                    : password && !errors.password
+                    ? "border-green-500 focus:ring-2 focus:ring-green-500 focus:border-transparent bg-green-50"
+                    : "border-gray-300 focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                }`}
+                autoComplete="current-password"
+                disabled={isLoading}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
+                disabled={isLoading}
+              >
+                {!showPassword ? (
+                  <EyeOff className="w-5 h-5" />
+                ) : (
+                  <Eye className="w-5 h-5" />
+                )}
+              </button>
+            </div>
             {errors.password && touched.password && (
               <p className="text-red-500 text-xs mt-1 flex items-center">
                 <svg
