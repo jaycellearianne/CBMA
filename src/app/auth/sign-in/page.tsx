@@ -19,7 +19,7 @@ export default function SignInPage() {
     password?: boolean;
   }>({});
   const [isLoading, setIsLoading] = useState(false);
-  const [signInStatus, setSignInStatus] = useState<{
+  const [signInStatus] = useState<{
     success?: boolean;
     message?: string;
   } | null>(null);
@@ -85,9 +85,9 @@ export default function SignInPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Main content - optimized for mobile */}
+      {/* Main content */}
       <div className="px-4 py-6 max-w-sm mx-auto">
-        {/* Logo - mobile optimized size */}
+        {/* Logo */}
         <div className="flex justify-center mb-6">
           <div className="w-50 h-50 relative">
             <Image
@@ -147,7 +147,7 @@ export default function SignInPage() {
           </div>
         )}
 
-        {/* Form - mobile optimized */}
+        {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Email field */}
           <div>
@@ -246,7 +246,7 @@ export default function SignInPage() {
             )}
           </div>
 
-          {/* Sign In button - mobile optimized */}
+          {/* Sign In button */}
           <div className="pt-2">
             <Button
               type="submit"
@@ -288,7 +288,7 @@ export default function SignInPage() {
           </div>
         </form>
 
-        {/* Sign up link - mobile optimized touch target */}
+        {/* Sign up link */}
         <div className="text-center mt-6">
           <p className="text-sm text-gray-600">
             Don't have an account?{" "}
