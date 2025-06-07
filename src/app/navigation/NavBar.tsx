@@ -5,18 +5,18 @@ import { useState } from "react";
 import Sidebar from "./Sidebar";
 
 // TODO: Implement themes, instead of manually adding bg-white + text-black.
-// TODO: Make the <div>Section<div> adapt
+// TODO: Make the < Dashboard > adapt
 
 function NavBar() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   return (
     <>
-      <div className="flex flex-row justify-between items-center p-4 h-16 bg-white text-black z-20 relative">
+      <div className="flex flex-row justify-between items-center p-5 h-20 bg-white text-black relative">
         <button onClick={() => setIsOpen(true)}>
           <HamburgerIcon />
         </button>
-        <div>Section</div>
+        <h1 className="text-2xl font-medium">Dashboard</h1>
         <BellIcon />
       </div>
 
@@ -25,7 +25,7 @@ function NavBar() {
       {isOpen && (
         <div
           onClick={() => setIsOpen(false)}
-          className="fixed inset-0 bg-black bg-opacity-30 z-0"
+          className="fixed inset-0 bg-ghost bg-opacity-30"
         />
       )}
     </>
