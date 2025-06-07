@@ -4,8 +4,10 @@ import NavBar from "../navigation/NavBar";
 import ChapterCard from "@/components/card/ChapterCard";
 import PlusIcon from "@/components/icons/PlusIcon";
 import SearchIcon from "@/components/icons/SearchIcon";
+import { useState } from "react";
 
 export default function Dashboard() {
+  const [search, setSearch] = useState("");
 
   // sample data
   const chapterList = [
@@ -21,7 +23,10 @@ export default function Dashboard() {
     },
   ];
 
-  
+  const searchChapter = chapterList.filter((chapterList) =>
+    chapterList.title.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
     <div className="min-h-screen">
       <div>
@@ -44,9 +49,11 @@ export default function Dashboard() {
               <input
                 type="search"
                 id="default-search"
+                value={search}
                 className="w-full h-[44px] p-4 ps-10 text-sm text-gray-900 rounded-4xl bg-gray-100 border"
                 placeholder="Search"
                 required
+                onChange={(e) => setSearch(e.target.value)}
               />
             </div>
           </form>
@@ -75,13 +82,19 @@ export default function Dashboard() {
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-            {chapterList.map((chapter) => (
-              <ChapterCard
-                key={chapter.id}
-                title={chapter.title}
-                image={chapter.image}
-              />
-            ))}
+            {searchChapter.length > 0 ? (
+              searchChapter.map((chapter) => (
+                <ChapterCard
+                  key={chapter.id}
+                  title={chapter.title}
+                  image={chapter.image}
+                />
+              ))
+            ) : (
+              <p className="text-gray-500 col-span-2 text-center">
+                No chapters found.
+              </p>
+            )}
           </div>
         </div>
       </div>
