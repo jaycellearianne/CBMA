@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Filter, X } from "lucide-react";
 import Image from "next/image";
 import { useRouter, useParams } from "next/navigation";
 import { useState, useEffect } from "react";
@@ -12,6 +12,11 @@ export default function ChurchesPage() {
   const [churches, setChurches] = useState<any[]>([]);
   const [chapterName, setChapterName] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+  const [dropdownVisible, setDropdownVisible] = useState(false);
+  const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
+  const [activeFilterCategory, setActiveFilterCategory] = useState<
+    FilterCategory | undefined
+  >(undefined);
 
   const chapterChurchesData = {
     "iloilo-chapter": {
@@ -88,11 +93,80 @@ export default function ChurchesPage() {
 
   const handleBack = () => router.back();
 
-  const filteredChurches = churches.filter((church) =>
-    `${church.name} ${church.location}`
-      .toLowerCase()
-      .includes(searchQuery.toLowerCase())
-  );
+  // const filteredChurches = churches.filter((church) =>
+  //   `${church.name} ${church.location}`
+  //     .toLowerCase()
+  //     .includes(searchQuery.toLowerCase())
+  // );
+  type FilterCategory = "name" | "location" | "serviceTime";
+
+  const filterOptions = () => {
+    const options = {
+      name: new Set<string>(),
+      location: new Set<string>(),
+      serviceTime: new Set<string>(),
+    };
+
+    churches.forEach((church) => {
+      options.name.add(church.name);
+      options.location.add(church.location);
+      options.serviceTime.add(church.serviceTime);
+    });
+
+    return options;
+  };
+
+  const itemFilterOptions = filterOptions();
+
+  const toggleFilter = (filter: string) => {
+    setSelectedFilters((prev) =>
+      prev.includes(filter)
+        ? prev.filter((f) => f !== filter)
+        : [...prev, filter]
+    );
+  };
+
+  const filteredChurches = churches.filter((church) => {
+    if (!activeFilterCategory) {
+      if (searchQuery.trim() === "") {
+        return true;
+      }
+      return (
+        church.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        church.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        church.serviceTime.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+
+    let matchesFilter = true;
+    let matchesSearch = true;
+
+    if (selectedFilters.length > 0) {
+      let value = "";
+      if (activeFilterCategory === "name") {
+        value = church.name;
+      } else if (activeFilterCategory === "location") {
+        value = church.location;
+      } else if (activeFilterCategory === "serviceTime") {
+        value = church.serviceTime;
+      }
+      matchesFilter = selectedFilters.includes(value);
+    }
+
+    if (searchQuery.trim() !== "") {
+      let value = "";
+      if (activeFilterCategory === "name") {
+        value = church.name;
+      } else if (activeFilterCategory === "location") {
+        value = church.location;
+      } else if (activeFilterCategory === "serviceTime") {
+        value = church.serviceTime;
+      }
+      matchesSearch = value.toLowerCase().includes(searchQuery.toLowerCase());
+    }
+
+    return matchesFilter && matchesSearch;
+  });
 
   return (
     <div className="min-h-screen bg-white">
@@ -112,7 +186,7 @@ export default function ChurchesPage() {
       </div>
 
       {/* Search */}
-      <div className="px-4 pb-4">
+      <div className="px-4 pb-4 flex items-center gap-2">
         <Input
           type="text"
           placeholder="Search churches"
@@ -120,6 +194,105 @@ export default function ChurchesPage() {
           onChange={(e) => setSearchQuery(e.target.value)}
           className="w-full h-10 px-4 bg-gray-100 border-0 rounded-md text-sm placeholder:text-gray-500 focus:ring-2 focus:ring-amber-500 focus:bg-white"
         />
+
+        <button
+          onClick={() => setDropdownVisible(!dropdownVisible)}
+          className="flex flex-col items-center justify-center px-2"
+        >
+          <Filter color="#6F4E37" size={20} className="inline-block" />
+          <span className="text-xs font-medium">Filter</span>
+        </button>
+
+        {dropdownVisible && (
+          <div
+            className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/20"
+            onClick={() => setDropdownVisible(false)}
+          >
+            <div
+              className="bg-white w-full max-w-[480px] min-h-[100px] rounded-t-2xl shadow-[0_-2px_24px_rgba(0,0,0,0.10)] relative p-4 pb-8 mx-0
+                sm:rounded-2xl sm:max-w-[400px] sm:min-h-[120px] sm:mx-auto"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="w-10 h-1 bg-gray-200 rounded mx-auto mb-4" />
+              <div className="mb-4">
+                <span className="mr-2 font-medium">Filter by:</span>
+                {(["name", "location", "serviceTime"] as FilterCategory[]).map(
+                  (category) => {
+                    const isActive = activeFilterCategory === category;
+                    return (
+                      <button
+                        key={category}
+                        onClick={() => {
+                          if (isActive) {
+                            setActiveFilterCategory(undefined);
+                            setSelectedFilters([]);
+                          } else {
+                            setActiveFilterCategory(category);
+                            setSelectedFilters([]);
+                          }
+                        }}
+                        className={`mr-2 mb-2 px-3 py-1.5 rounded-lg border text-sm transition
+                          ${
+                            isActive
+                              ? "border-[#6F4E37] bg-[#E2DCD7] font-bold text-amber-900"
+                              : "border-gray-300 bg-gray-100 text-gray-700 hover:bg-gray-200"
+                          }
+                        `}
+                        type="button"
+                      >
+                        {category === "serviceTime"
+                          ? "Service Time"
+                          : category.charAt(0).toUpperCase() +
+                            category.slice(1)}
+                      </button>
+                    );
+                  }
+                )}
+              </div>
+
+              {activeFilterCategory && (
+                <div className="mb-2 text-center">
+                  <strong className="block mb-2">
+                    {activeFilterCategory === "serviceTime"
+                      ? "Service Time"
+                      : activeFilterCategory.charAt(0).toUpperCase() +
+                        activeFilterCategory.slice(1)}
+                  </strong>
+                  <div className="flex flex-wrap gap-2 justify-center">
+                    {[...itemFilterOptions[activeFilterCategory]].map(
+                      (option) => {
+                        const isSelected = selectedFilters.includes(option);
+                        return (
+                          <button
+                            key={option}
+                            onClick={() => toggleFilter(option)}
+                            aria-pressed={isSelected}
+                            className={`px-3 py-1.5 rounded-full text-sm border transition
+                            ${
+                              isSelected
+                                ? "border-[#6F4E37] bg-[#E2DCD7] text-amber-900 font-bold"
+                                : "border-gray-300 bg-gray-100 text-gray-700 hover:bg-gray-200"
+                            }
+                          `}
+                            type="button"
+                          >
+                            {option}
+                          </button>
+                        );
+                      }
+                    )}
+                  </div>
+                </div>
+              )}
+              <button
+                onClick={() => setDropdownVisible(false)}
+                className="absolute top-3 right-4 bg-transparent border-0 text-2xl cursor-pointer text-gray-400 hover:text-gray-600"
+              >
+                <X size={14} color="gray"/>
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Churches Grid */}
