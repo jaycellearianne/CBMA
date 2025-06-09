@@ -13,7 +13,7 @@ export default function ChapterPage() {
   const chaptersData = {
     "iloilo-chapter": {
       name: "Iloilo Chapter",
-      image: "/images/chapter/RETROWAVE-OASIS-33331.png",
+      image: "/images/chapter/ilochapter.webp",
       description:
         "The Iloilo Chapter is a united fellowship of church leaders and ministers across Iloilo dedicated to spiritual growth, community service, and pastoral support. Committed to the mission of advancing the Gospel, this chapter fosters collaboration, leadership development, and outreach initiatives to uplift both churches and communities in the region. Through regular gatherings, training sessions, and shared ministry efforts, the Iloilo Chapter stands as a strong network of faith, encouragement, and unity.",
     },
@@ -36,6 +36,10 @@ export default function ChapterPage() {
 
   const handleViewChurches = () => {
     router.push(`/chapter/${params.slug}/churches`);
+  };
+
+    const handleViewCircuits = () => {
+    router.push(`/chapter/${params.slug}/circuits`);
   };
 
   if (!chapterData) {
@@ -108,6 +112,14 @@ export default function ChapterPage() {
           >
             <Church className="w-5 h-5" />
             View Churches
+          </Button>
+
+          <Button
+            onClick={handleViewCircuits}
+            className="h-12 bg-amber-800 hover:bg-amber-900 text-white text-sm font-medium rounded-lg flex items-center justify-center gap-2"
+          >
+            <Church className="w-5 h-5" />
+            View Circuits
           </Button>
         </div>
       </div>

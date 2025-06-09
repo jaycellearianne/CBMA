@@ -21,7 +21,7 @@ export default function PastorsPage() {
           church: "Malublub Baptist Church",
           phone: "+63 912 345 6789",
           email: "mbc@gmail.com",
-          image: "/images/pastors/gem-notionalist.png",
+          image: "/images/pastors/avatar.webp",
         },
         {
           id: 2,
@@ -37,7 +37,7 @@ export default function PastorsPage() {
           church: "Baptist Center Church",
           phone: "+63 934 567 8901",
           email: "bcc@gmail.com",
-          image: "",
+          image: "/images/pastors/avatar.webp",
         },
         {
           id: 4,
@@ -45,7 +45,7 @@ export default function PastorsPage() {
           church: "CPU University Church",
           phone: "+63 945 678 9012",
           email: "cpuUC@gmail.com",
-          image: "/images/pastors/IMG_20240106_152451.png",
+          image: "/images/pastors/avatar.webp",
         },
       ],
     },
