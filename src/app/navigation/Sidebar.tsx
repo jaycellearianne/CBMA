@@ -60,7 +60,7 @@ export default function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
           <h2 className="text-sm">Change Profiles</h2>
         </Link>
 
-        <Link href={"#"} className="flex items-center gap-4">
+        <Link href={"../admin-access-control"} className="flex items-center gap-4">
           <UserPenIcon />
           <h2 className="text-sm">Access Control</h2>
         </Link>
