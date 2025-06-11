@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Image from "next/image";
+import AddUserButton from "./AddUserButton";
 
 export default function AdminAccessControl() {
   const router = useRouter();
@@ -75,19 +76,26 @@ export default function AdminAccessControl() {
         </div>
       </div>
 
-      {/* Search */}
-      <div className="pb-4">
-        <div className="relative w-full max-w-3xl mx-auto px-4">
-          <Input
-            type="text"
-            placeholder="Search churches"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full h-10 pl-10 bg-gray-100 border-0 rounded-md text-sm placeholder:text-gray-500 focus:ring-2 focus:ring-amber-500 focus:bg-white"
-          />
-          <span className="absolute inset-y-0 left-0 flex items-center pl-8 pointer-events-none text-gray-400">
-            <Search className="w-4 h-4" color="#6F4E37" />
-          </span>
+      <div className="flex mx-auto max-w-3xl items-center gap-2">
+        {/* Search */}
+        <div className="w-full pb-4">
+          <div className="relative w-full px-4">
+            <Input
+              type="text"
+              placeholder="Search churches"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full h-10 pl-10 bg-gray-100 border-0 rounded-md text-sm placeholder:text-gray-500 focus:ring-2 focus:ring-amber-500 focus:bg-white"
+            />
+            <span className="absolute inset-y-0 left-0 flex items-center pl-8 pointer-events-none text-gray-400">
+              <Search className="w-4 h-4" color="#6F4E37" />
+            </span>
+          </div>
+        </div>
+
+        {/* Add User Button */}
+        <div className="pb-4 pr-4">
+          <AddUserButton />
         </div>
       </div>
 
@@ -117,8 +125,14 @@ export default function AdminAccessControl() {
                 {/* Role */}
                 <div className="flex-1 flex justify-center">
                   <button
-                  className={`flex items-center rounded-xl px-2 sm:px-3 py-1 h-8 sm:h-10 text-xs sm:text-sm ${roleConfig[admin.role]?.color || "bg-gray-400"}`}
-                    style={{ minWidth: "64px", maxWidth: "100px", width: "100%" }}
+                    className={`flex items-center rounded-xl px-2 sm:px-3 py-1 h-8 sm:h-10 text-xs sm:text-sm ${
+                      roleConfig[admin.role]?.color || "bg-gray-400"
+                    }`}
+                    style={{
+                      minWidth: "64px",
+                      maxWidth: "100px",
+                      width: "100%",
+                    }}
                   >
                     {roleConfig[admin.role]?.icon}
                     <p className="text-amber-50 mx-auto">{admin.role}</p>
