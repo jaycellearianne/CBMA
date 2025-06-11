@@ -310,6 +310,7 @@ export default function ChurchesPage() {
                     alt={church.name}
                     fill
                     className="object-cover"
+                    priority
                   />
                 </div>
                 <div className="p-4 space-y-1">

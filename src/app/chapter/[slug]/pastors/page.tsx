@@ -98,6 +98,7 @@ export default function PastorsPage() {
                     alt={pastor.name}
                     fill
                     className="object-cover"
+                    priority
                   />
                 </div>
                 <div className="flex-1 text-center sm:text-left space-y-1">
