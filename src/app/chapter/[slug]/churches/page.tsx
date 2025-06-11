@@ -168,6 +168,8 @@ export default function ChurchesPage() {
     return matchesFilter && matchesSearch;
   });
 
+ 
+
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
@@ -288,7 +290,7 @@ export default function ChurchesPage() {
                 onClick={() => setDropdownVisible(false)}
                 className="absolute top-3 right-4 bg-transparent border-0 text-2xl cursor-pointer text-gray-400 hover:text-gray-600"
               >
-                <X size={14} color="gray"/>
+                <X size={14} color="gray" />
               </button>
             </div>
           </div>
@@ -298,11 +300,18 @@ export default function ChurchesPage() {
       {/* Churches Grid */}
       <div className="px-4 pb-8">
         {filteredChurches.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div
+            className="grid grid-cols-1 sm:grid-cols-2 gap-4"
+          >
             {filteredChurches.map((church) => (
               <div
                 key={church.id}
                 className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm"
+                  onClick={() =>
+                  router.push(
+                    `/church-profile?id=${church.id}&name=${encodeURIComponent(church.name)}&location=${encodeURIComponent(church.location)}&image=${encodeURIComponent(church.image)}`
+                  )
+                }
               >
                 <div className="relative w-full h-48">
                   <Image

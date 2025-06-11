@@ -7,6 +7,8 @@ import { Bell, Menu, Plus } from "lucide-react";
 import NavBar from "../navigation/NavBar";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import ChapterPage from "../chapter/[slug]/page";
+import ChurchProfile from "../church-profile/page";
 
 export default function DashboardPage() {
   const [searchQuery, setSearchQuery] = useState("");
