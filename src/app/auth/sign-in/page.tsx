@@ -74,6 +74,7 @@ export default function SignInPage() {
         await new Promise((resolve) => setTimeout(resolve, 1500));
 
         // TODO: Implement authentication logic
+        window.location.href = "/dashboard";
         console.log("Sign in:", { email, password });
       } catch (error) {
         console.error("Sign in error:", error);

@@ -119,7 +119,7 @@ export default function DashboardPage() {
 
           {/* Search Results */}
           {searchQuery && (
-            <div className="bg-gray-50 border rounded-lg p-4 space-y-2">
+            <div className="bg-gray-50 border rounded-lg p-4 space-y-2 absolute z-1">
               {filteredResults.length === 0 ? (
                 <p className="text-gray-500 text-sm">No results found.</p>
               ) : (

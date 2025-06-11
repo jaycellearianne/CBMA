@@ -75,7 +75,7 @@ export default function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
           <h2 className="text-sm">Help</h2>
         </Link>
 
-        <Link href={"#"} className="flex items-center gap-4">
+        <Link href={"/auth/sign-in"} className="flex items-center gap-4">
           <LogoutIcon />
           <h2 className="text-sm">Logout</h2>
         </Link>

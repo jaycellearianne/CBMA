@@ -141,6 +141,7 @@ export default function SignUpPage() {
         await new Promise((resolve) => setTimeout(resolve, 1500));
 
         // TODO: Implement account creation logic
+        window.location.href = "/dashboard";
         console.log("Create account:", { fullName, email, password });
       } catch (error) {
         console.error("Account creation error:", error);
