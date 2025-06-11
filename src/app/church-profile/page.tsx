@@ -9,7 +9,6 @@ import Image from "next/image";
 
 export default function ChurchProfile() {
   const router = useRouter();
-  // const [readMore, setReadMore] = useState(false);
   const searchParams = useSearchParams();
   const churchId = searchParams.get("id");
   const churchName = searchParams.get("name");
