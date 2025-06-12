@@ -32,7 +32,7 @@ export default function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
       </button>
       <div className="relative w-20 h-20 rounded-full overflow-hidden">
         <Image
-          src="/UserProfile.jpg"
+          src="/images/users/UserProfile.jpg"
           alt={"User Profile"}
           fill
           style={{ objectFit: "cover" }}

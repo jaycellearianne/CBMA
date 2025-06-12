@@ -33,7 +33,7 @@ export default function AdminAccessControl() {
       id: 1,
       name: "Carlos Garcia",
       email: "carlosGarcia@gmail.com",
-      image: "/images/img.jpg",
+      image: "/images/users/img.jpg",
       role: "Admin",
     },
     {
