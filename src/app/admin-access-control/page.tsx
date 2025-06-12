@@ -8,18 +8,27 @@ import {
   UserPen,
   Eye,
   Ellipsis,
+  SquarePen,
+  Trash2,
+  ChevronDown
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Image from "next/image";
 import AddUserButton from "./AddUserButton";
+import { Combobox, useCombobox } from "@mantine/core";
 
 export default function AdminAccessControl() {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
-
-  const admins = [
+  const [optionOverlay, setOptionOverlay] = useState<number | null>(null);
+  const [editRole, setEditRole] = useState<number | null>(null);
+  const combobox = useCombobox({
+    onDropdownClose: () => combobox.resetSelectedOption(),
+  });
+  
+  const [admins, setAdmins] = useState([
     {
       id: 1,
       name: "Carlos Garcia",
@@ -41,9 +50,10 @@ export default function AdminAccessControl() {
       image: "",
       role: "Editor",
     },
-  ];
-
+  ]);
   const handleBack = () => router.back();
+
+  const roles = ["Admin", "Editor", "Viewer"];
 
   const roleConfig: Record<string, { color: string; icon: React.ReactNode }> = {
     Admin: {
@@ -60,6 +70,13 @@ export default function AdminAccessControl() {
     },
   };
 
+  const handleDelete = () => {
+    return console.log("delete");
+  };
+
+  const handleEdit = (id: number) => {
+    setEditRole(id);
+  };
   return (
     <div className="min-h-screen mx-auto">
       <div className="px-4 py-3 flex items-center justify-between">
@@ -122,27 +139,118 @@ export default function AdminAccessControl() {
                     {admin.email}
                   </p>
                 </div>
+
                 {/* Role */}
                 <div className="flex-1 flex justify-center">
-                  <button
-                    className={`flex items-center rounded-xl px-2 sm:px-3 py-1 h-8 sm:h-10 text-xs sm:text-sm ${
-                      roleConfig[admin.role]?.color || "bg-gray-400"
-                    }`}
-                    style={{
-                      minWidth: "64px",
-                      maxWidth: "100px",
-                      width: "100%",
-                    }}
-                  >
-                    {roleConfig[admin.role]?.icon}
-                    <p className="text-amber-50 mx-auto">{admin.role}</p>
-                  </button>
+                  {editRole === admin.id ? (
+                    <Combobox
+                      store={combobox}
+                      withinPortal={false}
+                      onOptionSubmit={(newRole) => {
+                        setAdmins((prev) =>
+                          prev.map((a) =>
+                            a.id === admin.id ? { ...a, role: newRole } : a
+                          )
+                        );
+                        setEditRole(null);
+                      }}
+                    >
+                      <Combobox.Target>
+                        <button
+                          type="button"
+                          className={` flex items-center rounded-xl px-2 sm:px-3 py-1 h-8 sm:h-10 text-xs sm:text-sm min-w-[80px] max-w-[140px] w-full border border-amber-950 ${
+                            roleConfig[admin.role]?.color || "bg-gray-400"
+                          } text-white`}
+                          onClick={() => combobox.toggleDropdown()}
+                        >
+                          {roleConfig[admin.role]?.icon}
+                          <span className="mx-auto">{admin.role}</span>
+                          <ChevronDown  className="h-4 w-4 ml-2" color="white"/>
+                        </button>
+                      </Combobox.Target>
+                      <Combobox.Dropdown className="rounded-xl shadow-lg border border-amber-950 w-full min-w-[120px] max-w-[180px] mt-1">
+                        <Combobox.Options>
+                          {roles.map((role) => (
+                            <Combobox.Option
+                              value={role}
+                              key={role}
+                              className={`flex items-center px-2 py-1 cursor-pointer text-xs sm:text-sm rounded-xl ${
+                                role === admin.role
+                                  ? roleConfig[role]?.color + " text-white"
+                                  : "text-black"
+                              }`}
+                            >
+                              
+                              <span className="ml-1">{role}</span>
+                            </Combobox.Option>
+                          ))}
+                        </Combobox.Options>
+                      </Combobox.Dropdown>
+                    </Combobox>
+                  ) : (
+                    <button
+                      className={`flex items-center rounded-xl px-2 sm:px-3 py-1 h-8 sm:h-10 text-xs sm:text-sm min-w-[64px] max-w-[100px] w-full ${
+                        roleConfig[admin.role]?.color || "bg-gray-400"
+                      }`}
+                    >
+                      {roleConfig[admin.role]?.icon}
+                      <p className="text-amber-50 mx-auto">{admin.role}</p>
+                    </button>
+                  )}
                 </div>
+
                 {/* Options */}
-                <div className="flex-1 flex justify-center">
-                  <button className="flex">
+                <div className="flex-1 flex justify-center relative">
+                  <button
+                    className="flex"
+                    onClick={() =>
+                      setOptionOverlay(
+                        optionOverlay === admin.id ? null : admin.id
+                      )
+                    }
+                  >
                     <Ellipsis color="#6F4E37" className="h-5 w-5" />
                   </button>
+                  {optionOverlay === admin.id && (
+                    <div>
+                      <div
+                        className="fixed inset-0 z-10"
+                        onClick={() => setOptionOverlay(null)}
+                      />
+                      <div
+                        className="
+                          absolute z-20 bg-white border rounded-2xl shadow-md
+                          left-1/2 -translate-x-1/2 w-24 mt-2
+                          sm:w-28 sm:right-0 sm:left-auto sm:translate-x-0 sm:top-4
+                        "
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <button
+                          className="w-full rounded-t-xl text-left font-normal text-[#6F4E37] px-4 py-2 flex flex-row gap-2 items-center hover:bg-[#E2DCD7]"
+                          onClick={() => {
+                            setOptionOverlay(null);
+                            handleEdit(admin.id);
+                          }}
+                        >
+                          <SquarePen size={16} color="#6F4E37" />
+                          Edit
+                        </button>
+                        <button
+                          className="w-full rounded-b-xl text-left font-normal px-4 py-2 flex flex-row gap-2 items-center hover:bg-red-100 text-red-600"
+                          onClick={() => {
+                            handleDelete();
+                          }}
+                        >
+                          <Trash2
+                            color="red"
+                            size={18}
+                            className="min-w-[18px] min-h-[18px]"
+                          />
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
