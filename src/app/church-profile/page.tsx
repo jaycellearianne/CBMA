@@ -14,7 +14,7 @@ export default function ChurchProfile() {
   const churchName = searchParams.get("name");
   const churchLocation = searchParams.get("location");
   const churchImage = searchParams.get("image");
-  const characterLimit = 120;
+  const characterLimit = 500;
 
   const churchDetails: Record<
     string,
@@ -26,7 +26,7 @@ export default function ChurchProfile() {
   > = {
     "1": {
       description:
-        "A Baptist church is a Christian community rooted in the teachings of the Bible, emphasizing salvation through faith in Jesus Christ, believer’s baptism by immersion, and the autonomy of the local congregation. Worship services typically include prayer, music, preaching, and fellowship, focused on glorifying God and nurturing spiritual growth. Baptist churches often engage in missions, community outreach, and discipleship, seeking to live out the Gospel in daily life. They uphold religious liberty, scriptural authority, and the priesthood of all believers.",
+        "Malublub Baptist Church traces its roots back to March 10, 1905, when five early converts—Simeon Mirasol, Paulina Asma, Eulalio Maravilla, Domingo Saloma, and Tranquilino Saloma—gathered under a simple nipa‐hat shelter to worship, following the evangelistic efforts of Dr. Eric Lund and Ebenezer Briggs in Jaro. As their faith and numbers grew, they moved briefly into the home of Calixto Ardiente before local leaders rallied the community to build a larger structure. Under the guidance of their first elected presidents—Calixto Ardiente and later Iladio Mirasol—the congregation began inviting resident and visiting pastors to shepherd the flock. Despite a temporary stall in pastoral leadership and the interruption of World War II under President Manuel Labatorio, Malublub’s ministries emerged stronger in the post‐war era. By 1978, the church was selected to host the Iloilo Kasapulanan, drawing delegates from across the province. In 1980, a more permanent building—skillfully crafted by Solomon Labatorio and local volunteers—was erected, forming the sanctuary that still stands today. Throughout the 1980s and early ’90s, youth outreach flourished: MBC not only hosted the National Youth Camp under the Convention of Philippine Baptist Churches but also called two pastors simultaneously in 1992. By 1991, the church had dedicated a newly constructed parsonage, and six months later installed electric lighting, enabling evening gatherings and special events. In 1994, even challenging weather and muddy roads could not deter MBC from successfully hosting a Janiuay‐Badiangan Circuit Youth Camp. As the new millennium approached, modernization brought fresh challenges: aging facilities prompted a groundbreaking on September 9, 2002, and construction of a new worship center began the following day. Through every season—founding hardship, wartime silence, post‐war expansion, and structural renewal—Malublub Baptist Church has remained steadfast in its mission to proclaim Christ and serve its community.",
       currentPastor: "Generoso C. Arroz Jr.",
       yearEstablished: "1995",
     },
@@ -147,7 +147,7 @@ export default function ChurchProfile() {
         </div>
 
         {/* Description */}
-        <div className="flex relative text-black">
+        <div className="flex relative text-black mb-5">
           {churchId && churchDetails[churchId] ? (
             <HandleCharacterLimit
               description={churchDetails[churchId].description}

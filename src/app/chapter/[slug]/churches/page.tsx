@@ -24,15 +24,15 @@ export default function ChurchesPage() {
       churches: [
         {
           id: 1,
-          name: "Baptist Center Church",
-          location: "La Paz, Iloilo City",
+          name: "Malublub Baptist Church",
+          location: "Zone 1, Malublub, Badiangan, Iloilo",
           serviceTime: "Sunday 9:00 AM",
           image: "/images/church/church_mock.webp",
         },
         {
           id: 2,
-          name: "Malubub Baptist Church",
-          location: "Maalubo, Badiangan, Iloilo",
+          name: "Baptist Center Church",
+          location: "La Paz, Iloilo City",
           serviceTime: "Sunday 10:30 AM",
           image: "/images/church/church_mock.webp",
         },
@@ -71,8 +71,8 @@ export default function ChurchesPage() {
       churches: [
         {
           id: 7,
-          name: "Calvary Chapel Negros",
-          location: "Bacolod City, Negros Occidental",
+          name: "Hillside Evangelical Church",
+          location: "Mansilingan, Bacolod City, Negros Occidental",
           serviceTime: "Sunday 9:30 AM",
           image: "/images/church/church_mock.webp",
         },

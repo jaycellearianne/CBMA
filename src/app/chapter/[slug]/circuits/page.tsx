@@ -20,7 +20,7 @@ export default function CircuitsPage() {
         {
           id: 1,
           name: "Janiuay-Badiangan Circuit",
-          location: "Janiuiay-Badiangan, Iloilo",
+          location: "Janiuay-Badiangan, Iloilo",
           image: "/images/circuit/circuit_mock.jpg",
         },
         {
@@ -88,6 +88,15 @@ export default function CircuitsPage() {
               <div
                 key={circuit.id}
                 className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm"
+                onClick={() =>
+                  router.push(
+                    `/circuit-profile?id=${circuit.id}&name=${encodeURIComponent(
+                      circuit.name
+                    )}&location=${encodeURIComponent(
+                      circuit.location
+                    )}&image=${encodeURIComponent(circuit.image)}`
+                  )
+                }
               >
                 <div className="relative w-full h-48">
                   <Image
