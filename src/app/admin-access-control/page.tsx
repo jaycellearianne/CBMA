@@ -10,7 +10,8 @@ import {
   Ellipsis,
   SquarePen,
   Trash2,
-  ChevronDown
+  ChevronDown,
+  TriangleAlert,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
@@ -24,10 +25,12 @@ export default function AdminAccessControl() {
   const [searchQuery, setSearchQuery] = useState("");
   const [optionOverlay, setOptionOverlay] = useState<number | null>(null);
   const [editRole, setEditRole] = useState<number | null>(null);
+  const [deleteUserId, setDeleteUserId] = useState<number | null>(null);
   const combobox = useCombobox({
     onDropdownClose: () => combobox.resetSelectedOption(),
   });
-  
+  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
+
   const [admins, setAdmins] = useState([
     {
       id: 1,
@@ -51,6 +54,7 @@ export default function AdminAccessControl() {
       role: "Editor",
     },
   ]);
+
   const handleBack = () => router.back();
 
   const roles = ["Admin", "Editor", "Viewer"];
@@ -70,13 +74,26 @@ export default function AdminAccessControl() {
     },
   };
 
-  const handleDelete = () => {
-    return console.log("delete");
+  const handleSearchQuery = () => {
+    if (!searchQuery.trim()) {
+      return admins;
+    }
+    return admins.filter(
+      (admin) =>
+        admin.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        admin.email.toLowerCase().includes(searchQuery.toLowerCase())
+    );
   };
-
   const handleEdit = (id: number) => {
     setEditRole(id);
   };
+
+  const handleOpenOverlay = (id: number) => {
+    if (!isDeleteModalOpen) {
+      setOptionOverlay(optionOverlay === id ? null : id);
+    }
+  };
+
   return (
     <div className="min-h-screen mx-auto">
       <div className="px-4 py-3 flex items-center justify-between">
@@ -119,7 +136,7 @@ export default function AdminAccessControl() {
       {/* admin data */}
       <div className="relative w-full max-w-3xl mx-auto px-4">
         <div className="space-y-2">
-          {admins.map((admin) => (
+          {handleSearchQuery().map((admin) => (
             <div key={admin.id}>
               <div className="flex flex-row gap-4 items-center border border-amber-950 p-4 rounded-lg">
                 {/* Image */}
@@ -165,7 +182,7 @@ export default function AdminAccessControl() {
                         >
                           {roleConfig[admin.role]?.icon}
                           <span className="mx-auto">{admin.role}</span>
-                          <ChevronDown  className="h-4 w-4 ml-2" color="white"/>
+                          <ChevronDown className="h-4 w-4 ml-2" color="white" />
                         </button>
                       </Combobox.Target>
                       <Combobox.Dropdown className="rounded-xl shadow-lg border border-amber-950 w-full min-w-[120px] max-w-[180px] mt-1">
@@ -180,7 +197,6 @@ export default function AdminAccessControl() {
                                   : "text-black"
                               }`}
                             >
-                              
                               <span className="ml-1">{role}</span>
                             </Combobox.Option>
                           ))}
@@ -203,11 +219,7 @@ export default function AdminAccessControl() {
                 <div className="flex-1 flex justify-center relative">
                   <button
                     className="flex"
-                    onClick={() =>
-                      setOptionOverlay(
-                        optionOverlay === admin.id ? null : admin.id
-                      )
-                    }
+                    onClick={() => handleOpenOverlay(admin.id)}
                   >
                     <Ellipsis color="#6F4E37" className="h-5 w-5" />
                   </button>
@@ -238,7 +250,9 @@ export default function AdminAccessControl() {
                         <button
                           className="w-full rounded-b-xl text-left font-normal px-4 py-2 flex flex-row gap-2 items-center hover:bg-red-100 text-red-600"
                           onClick={() => {
-                            handleDelete();
+                            setDeleteUserId(admin.id);
+                            setDeleteModalOpen(true);
+                            setOptionOverlay(null);
                           }}
                         >
                           <Trash2
@@ -248,6 +262,53 @@ export default function AdminAccessControl() {
                           />
                           Delete
                         </button>
+                      </div>
+                    </div>
+                  )}
+                  {/* Delete Modal */}
+                  {isDeleteModalOpen && (
+                    <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+                      <div className="fixed inset-0 z-50 bg-black/35">
+                        <div className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-xl shadow-lg p-6 w-[90vw] max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg flex flex-col items-center">
+                          <div className="flex items-center w-full mb-4">
+                            <div className="flex items-center justify-center rounded-full bg-red-100 mr-3 p-2">
+                              <TriangleAlert size={24} color="red" />
+                            </div>
+                            <h3 className="text-lg font-semibold text-gray-900 mb-0">
+                              Delete User
+                            </h3>
+                          </div>
+                          <div className="mb-4">
+                            <p className="text-sm text-gray-500 text-center">
+                              Are you sure you want to delete this user? This
+                              action cannot be undone.
+                            </p>
+                          </div>
+                          <div className="flex justify-center gap-3 w-full">
+                            <button
+                              type="button"
+                              className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-red-500 sm:ml-3 sm:w-auto"
+                              onClick={() => {
+                                if (deleteUserId !== null) {
+                                  setAdmins((prev) =>
+                                    prev.filter((a) => a.id !== deleteUserId)
+                                  );
+                                }
+                                setDeleteUserId(admin.id);
+                                setDeleteModalOpen(false);
+                              }}
+                            >
+                              Delete
+                            </button>
+                            <button
+                              type="button"
+                              className="inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs ring-1 ring-gray-300 ring-inset hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                              onClick={() => setDeleteModalOpen(false)}
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   )}

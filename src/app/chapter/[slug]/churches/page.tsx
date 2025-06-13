@@ -168,8 +168,6 @@ export default function ChurchesPage() {
     return matchesFilter && matchesSearch;
   });
 
- 
-
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
@@ -300,16 +298,18 @@ export default function ChurchesPage() {
       {/* Churches Grid */}
       <div className="px-4 pb-8">
         {filteredChurches.length > 0 ? (
-          <div
-            className="grid grid-cols-1 sm:grid-cols-2 gap-4"
-          >
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {filteredChurches.map((church) => (
               <div
                 key={church.id}
                 className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm"
-                  onClick={() =>
+                onClick={() =>
                   router.push(
-                    `/church-profile?id=${church.id}&name=${encodeURIComponent(church.name)}&location=${encodeURIComponent(church.location)}&image=${encodeURIComponent(church.image)}`
+                    `/church-profile?id=${church.id}&name=${encodeURIComponent(
+                      church.name
+                    )}&location=${encodeURIComponent(
+                      church.location
+                    )}&image=${encodeURIComponent(church.image)}`
                   )
                 }
               >
