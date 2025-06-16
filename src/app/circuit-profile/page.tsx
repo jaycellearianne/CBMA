@@ -161,7 +161,16 @@ export default function CircuitProfile() {
           <p className="text-[#6F4E37] font-semibold text-lg mb-1">Pastors:</p>
           <div className="bg-[#f9f9f9] rounded-lg p-3 text-sm space-y-1">
             {circuit?.pastors?.map((pastor, idx) => (
-              <p key={idx}>{pastor}</p>
+              <p
+                key={idx}
+                onClick={() =>
+                  router.push(
+                    `/pastors-profile?name=${encodeURIComponent(pastor)}`
+                  )
+                }
+              >
+                {pastor}
+              </p>
             )) || <p>No pastors available</p>}
           </div>
         </div>
@@ -174,6 +183,11 @@ export default function CircuitProfile() {
               <button
                 key={idx}
                 className="w-full text-left hover:underline hover:text-blue-700"
+                 onClick={() =>
+                  router.push(
+                    `/church-profile?name=${encodeURIComponent(church)}`
+                  )
+                }
               >
                 {church}
               </button>
