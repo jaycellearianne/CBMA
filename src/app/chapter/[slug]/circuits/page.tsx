@@ -98,7 +98,7 @@ export default function CircuitsPage() {
                   )
                 }
               >
-                <div className="relative w-full h-48">
+                <div className="relative w-full aspect-[16/9]">
                   <Image
                     src={circuit.image || "/placeholder.svg"}
                     alt={circuit.name}

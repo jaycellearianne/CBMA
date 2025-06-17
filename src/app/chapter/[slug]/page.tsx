@@ -80,7 +80,7 @@ export default function ChapterPage() {
       {/* Main Content */}
       <div className="px-4 py-4 space-y-5">
         {/* Image */}
-        <div className="relative w-full h-48 rounded-md overflow-hidden shadow-sm">
+        <div className="relative w-full aspect-[16/9] rounded-md overflow-hidden shadow-sm">
           <Image
             src={chapterData.image || "/placeholder.svg"}
             alt={`${chapterData.name} image`}

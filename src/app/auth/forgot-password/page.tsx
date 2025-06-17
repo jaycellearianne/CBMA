@@ -24,6 +24,7 @@ export default function ForgotPasswordPage() {
 
   const handleBlur = () => {
     setTouched({ email: true });
+    if (isLoading) return; 
     const emailError = validateEmail(email);
     setErrors({ email: emailError });
   };
@@ -85,7 +86,7 @@ export default function ForgotPasswordPage() {
             {/* Form - mobile optimized */}
             <form onSubmit={handleSubmit} className="space-y-4">
               {/* Email field */}
-              <div>
+              <div aria-live="polite">
                 <label className="block text-md text-black mb-2 font-medium">
                   Email Address
                 </label>
@@ -191,7 +192,7 @@ export default function ForgotPasswordPage() {
             <div className="bg-green-50 rounded-lg shadow-md p-10 w-full max-w-md text-center relative">
               {/* Close button */}
               <button
-                onClick={() => setIsSubmitted(false)}
+                onClick={() => { setIsSubmitted(false); setEmail(""); setErrors({}); setTouched({})}}
                 className="absolute top-2 right-2 text-gray-400 hover:text-gray-600"
                 aria-label="Close"
               >

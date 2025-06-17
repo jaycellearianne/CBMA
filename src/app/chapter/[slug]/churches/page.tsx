@@ -313,7 +313,7 @@ export default function ChurchesPage() {
                   )
                 }
               >
-                <div className="relative w-full h-48">
+                <div className="relative w-full aspect-[16/9]">
                   <Image
                     src={church.image || "/placeholder.svg"}
                     alt={church.name}

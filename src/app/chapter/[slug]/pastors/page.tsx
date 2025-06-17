@@ -122,7 +122,7 @@ export default function PastorsPage() {
           handleSearchQuery().map((pastor: any) => (
             <div
               key={pastor.id}
-              className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm"
+              className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow cursor-pointer"
                onClick={() =>
                   router.push(
                     `/pastors-profile?id=${pastor.id}&name=${encodeURIComponent(pastor.name)}&church=${encodeURIComponent(pastor.church)}&image=${encodeURIComponent(pastor.image)}`
@@ -130,7 +130,7 @@ export default function PastorsPage() {
                 }
             >
               <div className="flex flex-col sm:flex-row gap-4">
-                <div className="relative w-20 h-20 rounded-full overflow-hidden mx-auto sm:mx-0">
+                <div className="relative w-20 aspect-square rounded-full overflow-hidden mx-auto sm:mx-0">
                   <Image
                     src={pastor.image || "/placeholder.svg"}
                     alt={pastor.name}

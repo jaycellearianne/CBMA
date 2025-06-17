@@ -50,7 +50,9 @@ export default function DashboardPage() {
     { id: 2, name: "Mije, Rosendo", chapter: "iloilo-chapter" },
   ];
 
-   {/* Mock data */}
+  {
+    /* Mock data */
+  }
   const circuits = [
     {
       id: 1,
@@ -177,12 +179,12 @@ export default function DashboardPage() {
                   onClick={() => handleChapterClick(chapter.slug)}
                   className="rounded-2xl overflow-hidden shadow-xl border border-gray-300 cursor-pointer hover:shadow-md transition-shadow"
                 >
-                  <div className="relative h-50 w-full">
+                  <div className="w-full aspect-[16/9] relative">
                     <Image
                       src={chapter.image || "/placeholder.svg"}
                       alt={`${chapter.name} thumbnail`}
                       fill
-                      className="object-cover"
+                      className="object-cover rounded-t-2xl"
                     />
                   </div>
                   <div className="bg-white p-4">
