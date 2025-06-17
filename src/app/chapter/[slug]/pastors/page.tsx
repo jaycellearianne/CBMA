@@ -1,15 +1,20 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Phone, Mail } from "lucide-react";
 import Image from "next/image";
 import { useRouter, useParams } from "next/navigation";
 import { useState, useEffect } from "react";
+import { Input } from "@/components/ui/input";
+import { Search } from "lucide-react";
 
 export default function PastorsPage() {
   const router = useRouter();
   const params = useParams();
   const [pastors, setPastors] = useState<any[]>([]);
   const [chapterName, setChapterName] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const chapterPastorsData = {
     "iloilo-chapter": {
@@ -66,6 +71,17 @@ export default function PastorsPage() {
     router.back();
   };
 
+  const handleSearchQuery = () => {
+    if (!searchQuery.trim()) {
+      return pastors;
+    }
+    return pastors.filter(
+      (pastor) =>
+        pastor.name.toLowerCase().startsWith(searchQuery.toLowerCase()) ||
+        pastor.email.toLowerCase().startsWith(searchQuery.toLowerCase())
+    );
+  };
+
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
@@ -83,13 +99,35 @@ export default function PastorsPage() {
         </h1>
       </div>
 
+      <div className="px-4 pb-4 flex items-center gap-2">
+          <div className="w-full pb-4">
+          <div className="relative w-full px-4">
+            <Input
+              type="text"
+              placeholder="Search pastor"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full h-10 pl-10 bg-gray-100 border-0 rounded-md text-sm placeholder:text-gray-500 focus:ring-2 focus:ring-amber-500 focus:bg-white"
+            />
+            <span className="absolute inset-y-0 left-0 flex items-center pl-8 pointer-events-none text-gray-400">
+              <Search className="w-4 h-4" color="#6F4E37" />
+            </span>
+          </div>
+        </div>
+      </div>
+
       {/* Main Content */}
       <div className="px-4 py-4 space-y-4">
-        {pastors.length > 0 ? (
-          pastors.map((pastor) => (
+        {handleSearchQuery().length > 0 ? (
+          handleSearchQuery().map((pastor: any) => (
             <div
               key={pastor.id}
               className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm"
+               onClick={() =>
+                  router.push(
+                    `/pastors-profile?id=${pastor.id}&name=${encodeURIComponent(pastor.name)}&church=${encodeURIComponent(pastor.church)}&image=${encodeURIComponent(pastor.image)}`
+                  )
+                }
             >
               <div className="flex flex-col sm:flex-row gap-4">
                 <div className="relative w-20 h-20 rounded-full overflow-hidden mx-auto sm:mx-0">
