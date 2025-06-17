@@ -5,6 +5,7 @@ import { ArrowLeft, Filter, X } from "lucide-react";
 import Image from "next/image";
 import { useRouter, useParams } from "next/navigation";
 import { useState, useEffect } from "react";
+import AddChurchButton from "./AddChurchButton";
 
 export default function ChurchesPage() {
   const router = useRouter();
@@ -17,6 +18,7 @@ export default function ChurchesPage() {
   const [activeFilterCategory, setActiveFilterCategory] = useState<
     FilterCategory | undefined
   >(undefined);
+  // const [isOpen, setIsOpen] = useState(false);
 
   const chapterChurchesData = {
     "iloilo-chapter": {
@@ -180,9 +182,9 @@ export default function ChurchesPage() {
         >
           <ArrowLeft className="w-5 h-5" />
         </Button>
-        <h1 className="text-lg font-semibold text-black">
+        {/* <h1 className="text-lg font-semibold text-black">
           {chapterName} Churches
-        </h1>
+        </h1> */}
       </div>
 
       {/* Search */}
@@ -293,6 +295,17 @@ export default function ChurchesPage() {
             </div>
           </div>
         )}
+      </div>
+
+      {/* Add Button */}
+      <div className=" flex flex-row px-4 pb-4 items-center gap-10">
+        <h1 className="text-lg font-semibold text-black">
+          {chapterName} Churches
+        </h1>
+        <div>
+        <AddChurchButton />
+        </div>
+      
       </div>
 
       {/* Churches Grid */}
