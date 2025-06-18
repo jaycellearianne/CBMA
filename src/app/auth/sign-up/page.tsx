@@ -383,7 +383,7 @@ export default function SignUpPage() {
               disabled={!isFormValid() || isLoading}
               className={`w-full h-12 text-base font-medium rounded-lg transition-all touch-manipulation ${
                 isFormValid() && !isLoading
-                  ? "bg-amber-800 hover:bg-amber-900 active:bg-amber-950 text-white"
+                  ? "bg-[#6F4E37] hover:bg-[#A67B5B] active:bg-[#6F4E37] text-white"
                   : "bg-gray-300 text-gray-500 cursor-not-allowed"
               }`}
             >
