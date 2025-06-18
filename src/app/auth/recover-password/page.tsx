@@ -113,7 +113,7 @@ export default function RecoverPasswordPage() {
             </p>
             <Button
               onClick={() => router.push("/auth/sign-in")}
-              className="w-full h-12 text-base font-medium rounded-lg bg-amber-800 hover:bg-amber-900 text-white"
+              className="w-full h-12 text-base font-medium rounded-lg bg-[#6F4E37] hover:bg-[#A67B5B] text-white"
             >
               Go to Sign In
             </Button>
@@ -196,7 +196,7 @@ export default function RecoverPasswordPage() {
               disabled={!isFormValid() || isLoading}
               className={`w-full h-12 text-base font-medium rounded-lg transition-all ${
                 isFormValid() && !isLoading
-                  ? "bg-amber-800 hover:bg-amber-900 text-white"
+                  ? "bg-[#6F4E37] hover:bg-amber-900 text-white"
                   : "bg-gray-300 text-gray-500 cursor-not-allowed"
               }`}
             >

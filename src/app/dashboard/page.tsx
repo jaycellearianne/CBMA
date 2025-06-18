@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -7,8 +7,7 @@ import { Bell, Menu, Plus } from "lucide-react";
 import NavBar from "../navigation/NavBar";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import ChapterPage from "../chapter/[slug]/page";
-import ChurchProfile from "../church-profile/page";
+import AddChapterButton from "../chapter/addChapterButton";
 
 export default function DashboardPage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -91,6 +90,8 @@ export default function DashboardPage() {
     })),
   ];
 
+  const [isAddChapterOpen, setIsAddChapterOpen] = useState(false);
+
   const filteredResults = searchQuery
     ? searchableItems.filter((item) =>
         item.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -131,7 +132,7 @@ export default function DashboardPage() {
                   <div
                     key={index}
                     onClick={() => handleResultClick(item.slug)}
-                    className="cursor-pointer px-2 py-1 hover:bg-amber-100 rounded-md"
+                    className="cursor-pointer px-2 py-1 hover:bg-[#A67B5B] rounded-md"
                   >
                     <p className="text-sm font-medium text-black">
                       {item.name}
@@ -165,12 +166,21 @@ export default function DashboardPage() {
               <h2 className="text-2xl font-medium text-black">CHAPTERS</h2>
               <Button
                 size="sm"
-                className="bg-amber-800 hover:bg-amber-900 text-white text-xs px-3 py-1 h-8 rounded"
+                className="bg-[#6F4E37] hover:bg-[#A67B5B] text-white text-xs px-3 py-1 h-10 rounded-lg"
+                onClick={() => setIsAddChapterOpen(true)}
               >
                 <Plus className="w-3 h-3 mr-1" />
                 Add Chapter
               </Button>
             </div>
+
+            {isAddChapterOpen && (
+              <AddChapterButton
+                pastors={pastors}
+                churches={churches}
+                onCancelAction={() => setIsAddChapterOpen(false)}
+              />
+            )}
 
             <div className="grid grid-cols-2 gap-7.5">
               {chapters.map((chapter) => (
