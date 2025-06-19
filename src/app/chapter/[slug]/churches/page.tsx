@@ -5,7 +5,7 @@ import { ArrowLeft, Filter, X } from "lucide-react";
 import Image from "next/image";
 import { useRouter, useParams } from "next/navigation";
 import { useState, useEffect } from "react";
-import AddChurchButton from "./AddChurchButton";
+import AddChurchButton from "./AddChurchModal";
 
 export default function ChurchesPage() {
   const router = useRouter();
@@ -298,7 +298,7 @@ export default function ChurchesPage() {
       </div>
 
       {/* Add Button */}
-      <div className=" flex flex-row px-4 pb-4 items-center gap-10">
+      <div className="flex flex-row px-4 pb-4 items-center justify-between">
         <h1 className="text-lg font-semibold text-black">
           {chapterName} Churches
         </h1>
