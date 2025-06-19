@@ -236,7 +236,7 @@ export default function ChurchesPage() {
                         className={`mr-2 mb-2 px-3 py-1.5 rounded-lg border text-sm transition
                           ${
                             isActive
-                              ? "border-[#6F4E37] bg-[#E2DCD7] font-bold text-amber-900"
+                              ? "border-[#6F4E37] bg-[#E2DCD7] font-bold text-[#6F4E37]"
                               : "border-gray-300 bg-gray-100 text-gray-700 hover:bg-gray-200"
                           }
                         `}
@@ -272,7 +272,7 @@ export default function ChurchesPage() {
                             className={`px-3 py-1.5 rounded-full text-sm border transition
                             ${
                               isSelected
-                                ? "border-[#6F4E37] bg-[#E2DCD7] text-amber-900 font-bold"
+                                ? "border-[#6F4E37] bg-[#E2DCD7] text-[#6F4E37] font-bold"
                                 : "border-gray-300 bg-gray-100 text-gray-700 hover:bg-gray-200"
                             }
                           `}
@@ -340,7 +340,7 @@ export default function ChurchesPage() {
                     {church.name}
                   </h3>
                   <p className="text-xs text-gray-600">{church.location}</p>
-                  <p className="text-sm text-amber-700 font-medium">
+                  <p className="text-sm text-[#6F4E37] font-medium">
                     {church.serviceTime}
                   </p>
                 </div>

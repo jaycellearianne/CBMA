@@ -21,7 +21,18 @@ export default function ChapterPage() {
 
   useEffect(() => {
     if (params.slug && typeof params.slug === "string") {
-      const data = chaptersData[params.slug as keyof typeof chaptersData];
+      // Try static data first
+      let data = chaptersData[params.slug as keyof typeof chaptersData];
+
+      // If not found, check localStorage
+      if (!data && typeof window !== "undefined") {
+        const stored = localStorage.getItem("chapters");
+        if (stored) {
+          const localChapters = JSON.parse(stored);
+          data = localChapters[params.slug];
+        }
+      }
+
       setChapterData(data || null);
     }
   }, [params.slug]);
@@ -38,7 +49,7 @@ export default function ChapterPage() {
     router.push(`/chapter/${params.slug}/churches`);
   };
 
-    const handleViewCircuits = () => {
+  const handleViewCircuits = () => {
     router.push(`/chapter/${params.slug}/circuits`);
   };
 
@@ -100,7 +111,7 @@ export default function ChapterPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
           <Button
             onClick={handleViewPastors}
-            className="h-12 bg-amber-800 hover:bg-amber-900 text-white text-sm font-medium rounded-lg flex items-center justify-center gap-2"
+            className="h-12 bg-[#6F4E37] hover:bg-[#A67B5B] text-white text-sm font-medium rounded-lg flex items-center justify-center gap-2"
           >
             <Users className="w-5 h-5" />
             View Pastors
@@ -108,7 +119,7 @@ export default function ChapterPage() {
 
           <Button
             onClick={handleViewChurches}
-            className="h-12 bg-amber-800 hover:bg-amber-900 text-white text-sm font-medium rounded-lg flex items-center justify-center gap-2"
+            className="h-12 bg-[#6F4E37] hover:bg-[#A67B5B] text-white text-sm font-medium rounded-lg flex items-center justify-center gap-2"
           >
             <Church className="w-5 h-5" />
             View Churches
@@ -116,7 +127,7 @@ export default function ChapterPage() {
 
           <Button
             onClick={handleViewCircuits}
-            className="h-12 bg-amber-800 hover:bg-amber-900 text-white text-sm font-medium rounded-lg flex items-center justify-center gap-2"
+            className="h-12 bg-[#6F4E37] hover:bg-[#A67B5B] text-white text-sm font-medium rounded-lg flex items-center justify-center gap-2"
           >
             <Church className="w-5 h-5" />
             View Circuits
