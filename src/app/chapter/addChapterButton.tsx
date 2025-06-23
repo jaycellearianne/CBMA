@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Plus, CloudUpload } from "lucide-react";
 import { useRouter } from "next/navigation";
-import AddChurchButton from "./[slug]/churches/AddChurchButton";
+import AddChurchButton from "./[slug]/churches/AddChurchModal";
 
 type AddChapterButtonProps = {
   pastors: { id: number; name: string }[];
