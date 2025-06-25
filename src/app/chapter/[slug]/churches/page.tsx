@@ -1,11 +1,12 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ArrowLeft, Filter, X } from "lucide-react";
+import { ArrowLeft, Filter, X, ChevronDown } from "lucide-react";
 import Image from "next/image";
 import { useRouter, useParams } from "next/navigation";
 import { useState, useEffect } from "react";
-import AddChurchButton from "./AddChurchModal";
+import AddChurchModal from "./AddChurchModal";
+import { Combobox, useCombobox } from "@mantine/core";
 
 export default function ChurchesPage() {
   const router = useRouter();
@@ -18,7 +19,14 @@ export default function ChurchesPage() {
   const [activeFilterCategory, setActiveFilterCategory] = useState<
     FilterCategory | undefined
   >(undefined);
+  const [value, setValue] = useState<string | null>(null);
+  const [selectedCircuit, setSelectedCircuit] = useState<string | null>(null);
+
   // const [isOpen, setIsOpen] = useState(false);
+
+  const combobox = useCombobox({
+    onDropdownClose: () => combobox.resetSelectedOption(),
+  });
 
   const chapterChurchesData = {
     "iloilo-chapter": {
@@ -30,6 +38,7 @@ export default function ChurchesPage() {
           location: "Zone 1, Malublub, Badiangan, Iloilo",
           serviceTime: "Sunday 9:00 AM",
           image: "/images/church/church_mock.webp",
+          circuit: "Badiangan Circuit",
         },
         {
           id: 2,
@@ -37,6 +46,7 @@ export default function ChurchesPage() {
           location: "La Paz, Iloilo City",
           serviceTime: "Sunday 10:30 AM",
           image: "/images/church/church_mock.webp",
+          circuit: "Iloilo City Circuit",
         },
         {
           id: 3,
@@ -44,6 +54,7 @@ export default function ChurchesPage() {
           location: "Jaro, Iloilo City",
           serviceTime: "Sunday 8:00 AM",
           image: "/images/church/church_mock.webp",
+          circuit: "Iloilo City Circuit",
         },
         {
           id: 4,
@@ -51,6 +62,7 @@ export default function ChurchesPage() {
           location: "Antique, Badiangan, Iloilo",
           serviceTime: "Sunday 11:00 AM",
           image: "/images/church/church_mock.webp",
+          circuit: "Badiangan Circuit",
         },
         {
           id: 5,
@@ -58,6 +70,7 @@ export default function ChurchesPage() {
           location: "Odiongan, Badiangan, Iloilo",
           serviceTime: "Sunday 9:30 AM",
           image: "/images/church/church_mock.webp",
+          circuit: "Badiangan Circuit",
         },
         {
           id: 6,
@@ -65,6 +78,7 @@ export default function ChurchesPage() {
           location: "Badiangan, Iloilo",
           serviceTime: "Sunday 10:00 AM",
           image: "/images/church/church_mock.webp",
+          circuit: "Badiangan Circuit",
         },
       ],
     },
@@ -129,6 +143,10 @@ export default function ChurchesPage() {
   };
 
   const filteredChurches = churches.filter((church) => {
+    if (selectedCircuit && church.circuit !== selectedCircuit) {
+      return false;
+    }
+
     if (!activeFilterCategory) {
       if (searchQuery.trim() === "") {
         return true;
@@ -169,6 +187,16 @@ export default function ChurchesPage() {
 
     return matchesFilter && matchesSearch;
   });
+
+  const uniqueCircuits = Array.from(
+    new Set(churches.map((item) => item.circuit).filter(Boolean))
+  );
+
+  const options = uniqueCircuits.map((circuit, idx) => (
+    <Combobox.Option value={circuit} key={circuit || idx}>
+      {circuit}
+    </Combobox.Option>
+  ));
 
   return (
     <div className="min-h-screen bg-white">
@@ -302,10 +330,47 @@ export default function ChurchesPage() {
         <h1 className="text-lg font-semibold text-black">
           {chapterName} Churches
         </h1>
-        <div>
-        <AddChurchButton />
+        <div className="flex flex-row items-center gap-2">
+          <div>
+            <Combobox
+              store={combobox}
+              onOptionSubmit={(value) => {
+                setValue(value);
+                setSelectedCircuit(value);
+                combobox.closeDropdown();
+              }}
+            >
+              <Combobox.Target>
+                <Button
+                  variant="outline"
+                  className="bg-[#6F4E37] justify-between gap-3 h-10 px-4 text-white hover:bg-[#A67B5B] flex flex-row items-center"
+                  onClick={() => {
+                    if (selectedCircuit) {
+                      setSelectedCircuit(null);
+                      setValue(null);
+                    } else {
+                      combobox.openDropdown();
+                    }
+                  }}
+                >
+                  {selectedCircuit ? selectedCircuit : "Select Circuit"}{" "}
+                  {selectedCircuit ? (
+                    <X color="white" className="w-4 h-4 mr-2 justify-end" />
+                  ) : (
+                    <ChevronDown
+                      color="white"
+                      className="w-4 h-4 mr-2 justify-end"
+                    />
+                  )}
+                </Button>
+              </Combobox.Target>
+              <Combobox.Dropdown>
+                <Combobox.Options>{options}</Combobox.Options>
+              </Combobox.Dropdown>
+            </Combobox>
+          </div>
+          <AddChurchModal />
         </div>
-      
       </div>
 
       {/* Churches Grid */}
