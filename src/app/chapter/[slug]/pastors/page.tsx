@@ -100,7 +100,7 @@ export default function PastorsPage() {
       </div>
 
       <div className="px-4 pb-4 flex items-center gap-2">
-          <div className="w-full pb-4">
+        <div className="w-full pb-4">
           <div className="relative w-full px-4">
             <Input
               type="text"
@@ -123,11 +123,17 @@ export default function PastorsPage() {
             <div
               key={pastor.id}
               className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow cursor-pointer"
-               onClick={() =>
-                  router.push(
-                    `/pastors-profile?id=${pastor.id}&name=${encodeURIComponent(pastor.name)}&church=${encodeURIComponent(pastor.church)}&image=${encodeURIComponent(pastor.image)}`
-                  )
-                }
+              onClick={() =>
+                router.push(
+                  `/pastors-profile?id=${pastor.id}&name=${encodeURIComponent(
+                    pastor.name
+                  )}&church=${encodeURIComponent(
+                    pastor.church
+                  )}&image=${encodeURIComponent(
+                    pastor.image
+                  )}&email=${encodeURIComponent(pastor.email)}`
+                )
+              }
             >
               <div className="flex flex-col sm:flex-row gap-4">
                 <div className="relative w-20 aspect-square rounded-full overflow-hidden mx-auto sm:mx-0">
