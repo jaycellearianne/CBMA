@@ -391,7 +391,7 @@ export default function ChurchesPage() {
                   )
                 }
               >
-                <div className="relative w-full aspect-[16/9]">
+                <div className="relative w-full aspect-video">
                   <Image
                     src={church.image || "/placeholder.svg"}
                     alt={church.name}
