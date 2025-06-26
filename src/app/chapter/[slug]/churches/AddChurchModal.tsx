@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Plus, CloudUpload, X } from "lucide-react";
-import { useDropzone } from "react-dropzone";
 import Image from "next/image";
 
 export default function AddChurchButton() {
@@ -30,7 +29,7 @@ export default function AddChurchButton() {
     });
   }, []);
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+  // const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
   const selectedFile = acceptedFiles[0];
 
   const handleDescriptionChange = (

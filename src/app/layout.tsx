@@ -3,6 +3,7 @@ import { Merriweather } from "next/font/google";
 import "@mantine/core/styles.css";
 import { MantineProvider } from "@mantine/core";
 import "./globals.css";
+import {Toaster} from "sonner"
 
 const merriweather = Merriweather({
   variable: "--font-merriweather",
@@ -23,7 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${merriweather.variable} antialiased`}>
-        <MantineProvider>{children}</MantineProvider>
+        <MantineProvider>{children} <Toaster /> </MantineProvider>
       </body>
     </html>
   );
