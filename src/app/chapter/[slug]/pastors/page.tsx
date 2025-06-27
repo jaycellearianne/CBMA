@@ -8,6 +8,7 @@ import { useRouter, useParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
+import AddPastorModal from "./AddPastorModal";
 
 export default function PastorsPage() {
   const router = useRouter();
@@ -100,7 +101,7 @@ export default function PastorsPage() {
       </div>
 
       <div className="px-4 pb-4 flex items-center gap-2">
-          <div className="w-full pb-4">
+        <div className="flex w-full  items-center gap-2">
           <div className="relative w-full px-4">
             <Input
               type="text"
@@ -113,7 +114,14 @@ export default function PastorsPage() {
               <Search className="w-4 h-4" color="#6F4E37" />
             </span>
           </div>
+          <div>
+             <AddPastorModal />
+          </div>
+         
         </div>
+      </div>
+      <div className="w-full flex mx-auto px-auto">
+        
       </div>
 
       {/* Main Content */}
@@ -123,11 +131,15 @@ export default function PastorsPage() {
             <div
               key={pastor.id}
               className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow cursor-pointer"
-               onClick={() =>
-                  router.push(
-                    `/pastors-profile?id=${pastor.id}&name=${encodeURIComponent(pastor.name)}&church=${encodeURIComponent(pastor.church)}&image=${encodeURIComponent(pastor.image)}`
-                  )
-                }
+              onClick={() =>
+                router.push(
+                  `/pastors-profile?id=${pastor.id}&name=${encodeURIComponent(
+                    pastor.name
+                  )}&church=${encodeURIComponent(
+                    pastor.church
+                  )}&image=${encodeURIComponent(pastor.image)}`
+                )
+              }
             >
               <div className="flex flex-col sm:flex-row gap-4">
                 <div className="relative w-20 aspect-square rounded-full overflow-hidden mx-auto sm:mx-0">

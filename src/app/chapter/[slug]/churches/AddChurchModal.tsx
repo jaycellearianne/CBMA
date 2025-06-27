@@ -29,7 +29,7 @@ export default function AddChurchButton() {
     });
   }, []);
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+  // const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
   const selectedFile = acceptedFiles[0];
 
   const handleDescriptionChange = (
