@@ -98,7 +98,7 @@ export default function CircuitsPage() {
                   )
                 }
               >
-                <div className="relative w-full aspect-[16/9]">
+                <div className="relative w-full aspect-video">
                   <Image
                     src={circuit.image || "/placeholder.svg"}
                     alt={circuit.name}

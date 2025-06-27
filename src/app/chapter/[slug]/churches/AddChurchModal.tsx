@@ -131,7 +131,7 @@ export default function AddChurchButton() {
                     >
                       <input {...getInputProps()} />
                       {!dataURL ? (
-                        <div className=" h-20 max-h-40 flex flex-col items-center justify-center w-full min-h-[6.25rem] sm:h-40 md:h-48 px-2 sm:px-5 mx-auto relative">
+                        <div className=" h-20 max-h-40 flex flex-col items-center justify-center w-full min-h-25 sm:h-40 md:h-48 px-2 sm:px-5 mx-auto relative">
                           <CloudUpload className="w-8 h-8 text-gray-500 justify-items-center" />
                           <span className="text-gray-500 text-sm text-center">
                             Drag and Drop here

@@ -73,7 +73,7 @@ export default function ChurchProfile() {
       {/* Church Image */}
       <div className="w-full overflow-x-auto md:overflow-x-visible">
         {churchId && churchImage ? (
-          <div className="w-full relative aspect-[16/9]">
+          <div className="w-full relative aspect-video">
             <Image
               src={churchImage}
               alt={`${churchName ? churchName : "Church"} image`}

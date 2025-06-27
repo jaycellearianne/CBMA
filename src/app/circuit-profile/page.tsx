@@ -100,7 +100,7 @@ export default function CircuitProfile() {
       {/* Circuit Image */}
       <div className="w-full overflow-x-auto md:overflow-x-visible">
         {circuitId && circuit && circuit.image ? (
-          <div className="w-full relative aspect-[16/9]">
+          <div className="w-full relative aspect-video">
             <Image
               src={circuit.image}
               alt={`${circuit.name ? circuit.name : "Circuit"} image`}
