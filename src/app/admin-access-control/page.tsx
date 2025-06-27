@@ -140,7 +140,7 @@ export default function AdminAccessControl() {
             <div key={admin.id}>
               <div className="flex flex-row gap-4 items-center border border-amber-950 p-4 rounded-lg">
                 {/* Image */}
-                <div className="relative w-16 h-16 rounded-full flex-shrink-0 flex items-center justify-center overflow-hidden mx-auto sm:mx-0">
+                <div className="relative w-16 h-16 rounded-full shrink-0 flex items-center justify-center overflow-hidden mx-auto sm:mx-0">
                   <Image
                     src={admin.image || "/placeholder.svg"}
                     alt={admin.name}

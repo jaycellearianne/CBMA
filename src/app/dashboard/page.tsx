@@ -189,7 +189,7 @@ export default function DashboardPage() {
                   onClick={() => handleChapterClick(chapter.slug)}
                   className="rounded-2xl overflow-hidden shadow-xl border border-gray-300 cursor-pointer hover:shadow-md transition-shadow"
                 >
-                  <div className="w-full aspect-[16/9] relative">
+                  <div className="w-full aspect-video relative">
                     <Image
                       src={chapter.image || "/placeholder.svg"}
                       alt={`${chapter.name} thumbnail`}
