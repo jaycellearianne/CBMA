@@ -5,6 +5,7 @@ import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import { useRouter, useParams } from "next/navigation";
 import { useState, useEffect } from "react";
+import AddCircuitModal from "./AddCircuitModal";
 
 export default function CircuitsPage() {
   const router = useRouter();
@@ -78,6 +79,9 @@ export default function CircuitsPage() {
           onChange={(e) => setSearchQuery(e.target.value)}
           className="w-full h-10 px-4 bg-gray-100 border-0 rounded-md text-sm placeholder:text-gray-500 focus:ring-2 focus:ring-amber-500 focus:bg-white"
         />
+        <div>
+          <AddCircuitModal />
+        </div>
       </div>
 
       {/* Circuits Grid */}
@@ -90,7 +94,9 @@ export default function CircuitsPage() {
                 className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm"
                 onClick={() =>
                   router.push(
-                    `/circuit-profile?id=${circuit.id}&name=${encodeURIComponent(
+                    `/circuit-profile?id=${
+                      circuit.id
+                    }&name=${encodeURIComponent(
                       circuit.name
                     )}&location=${encodeURIComponent(
                       circuit.location

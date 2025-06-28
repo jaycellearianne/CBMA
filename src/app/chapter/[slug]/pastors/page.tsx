@@ -115,13 +115,9 @@ export default function PastorsPage() {
             </span>
           </div>
           <div>
-             <AddPastorModal />
+            <AddPastorModal />
           </div>
-         
         </div>
-      </div>
-      <div className="w-full flex mx-auto px-auto">
-        
       </div>
 
       {/* Main Content */}
