@@ -78,17 +78,6 @@ export default function AddPastorModal() {
                 </DialogTitle>
               </DialogHeader>
               <AddPastorForm onSuccess={() => setOpen(false)} />
-              {/* <DialogFooter>
-                <DialogClose asChild className="w-full">
-                  <Button
-                    className="bg-[#A67B5B]/25 w-full text-black hover:bg-red-500"
-                    variant="default"
-                    type="button"
-                  >
-                    Cancel
-                  </Button>
-                </DialogClose>
-              </DialogFooter> */}
             </DialogContent>
           </Dialog>
         )}
