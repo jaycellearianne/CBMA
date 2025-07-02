@@ -1,11 +1,14 @@
 "use client";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Plus, CloudUpload } from "lucide-react";
+import { X, Plus, CloudUpload } from "lucide-react";
 import { useRouter } from "next/navigation";
-import AddChurchButton from "./[slug]/churches/AddChurchModal";
+import { useDropzone } from "react-dropzone";
+import Image from "next/image";
+import AddChurchModal from "./[slug]/churches/AddChurchModal";
+import AddPastorModal from "./[slug]/pastors/AddPastorModal";
 
 type AddChapterButtonProps = {
   pastors: { id: number; name: string }[];
@@ -27,6 +30,25 @@ export default function AddChapterButton({
     description: false,
   });
   const characterLimit = 500;
+  const [dataURL, setDataURL] = useState<string | null>(null);
+  const [acceptedFiles, setAcceptedFiles] = useState<File[]>([]);
+
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    setAcceptedFiles(acceptedFiles);
+    acceptedFiles.forEach((file) => {
+      const reader = new FileReader();
+      reader.onabort = () => console.log("file reading was aborted");
+      reader.onerror = () => console.log("file reading has failed");
+      reader.onload = () => {
+        const binaryStr = reader.result;
+        setDataURL(binaryStr as string);
+      };
+      reader.readAsDataURL(file);
+    });
+  }, []);
+
+  const { getRootProps, getInputProps } = useDropzone({ onDrop });
+  const selectedFile = acceptedFiles[0];
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -125,13 +147,7 @@ export default function AddChapterButton({
                   <option key={pastor.id}>{pastor.name}</option>
                 ))}
               </select>
-              <Button
-                size="sm"
-                variant="ghost"
-                className="text-xs text-[#6F4E37] px-1"
-              >
-                + Add Pastor
-              </Button>
+              <AddPastorModal />
             </div>
           </div>
 
@@ -149,44 +165,58 @@ export default function AddChapterButton({
                 ))}
               </select>
               <div>
-                <AddChurchButton />
+                <AddChurchModal />
               </div>
             </div>
           </div>
 
           {/* Image Upload */}
-          <div>
+          <div className="flex flex-col w-full">
             <label className="text-sm font-medium text-gray-700">
               Attach Image
             </label>
-            <div className="flex flex-col items-center justify-center border rounded-lg w-full h-32 sm:h-40 md:h-48 px-2 sm:px-5 mx-auto relative">
-              <CloudUpload className="w-12 h-12 text-gray-500 justify-items-center" />
-              <span className="text-gray-500 text-base text-center">
-                Drag and Drop here
-                <div className="flex flex-col items-center">
-                  <p className="text-gray-500 text-base text-center mb-2">or</p>
-                  <Button
-                    type="button"
-                    className="bg-[#6F4E37] h-10 px-4 text-white hover:bg-[#A67B5B] ml-1"
-                    onClick={() =>
-                      document.getElementById("fileInput")?.click()
-                    }
-                  >
-                    Browse files
-                  </Button>
+            <div
+              className="flex flex-row items-center justify-center border rounded-lg w-full h-250 max-h-30 sm:h-40 md:h-48 px-2 sm:px-5 mx-auto relative"
+              {...getRootProps()}
+            >
+              <input {...getInputProps()} />
+              {!dataURL ? (
+                <div className="h-20 max-h-40 flex flex-col items-center justify-center w-full min-h-25 sm:h-40 md:h-48 px-2 sm:px-5 mx-auto relative">
+                  <CloudUpload className="w-8 h-8 text-gray-500 justify-items-center" />
+                  <span className="text-gray-500 text-sm text-center">
+                    Drag & Drop your image
+                  </span>
+                  <div className="flex flex-col items-center">
+                    <p className="text-gray-500 text-sm text-center mb-2">or</p>
+                    <span className="underline text-xs text-[#6F4E37]">
+                      Browse files
+                    </span>
+                  </div>
                 </div>
-              </span>
-              <input
-                id="fileInput"
-                type="file"
-                accept="image/*"
-                className="hidden"
-                onChange={(e) => {
-                  if (e.target.files && e.target.files[0]) {
-                    console.log("Selected file:", e.target.files[0]);
-                  }
-                }}
-              />
+              ) : (
+                <div className="flex flex-col items-center mt-2 w-full relative">
+                  <X
+                    className="absolute top-1 right-1 bg-opacity-80 rounded-full p-1 shadow hover:bg-red-500 hover:text-white transition-colors z-10"
+                    color="white"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setDataURL(null);
+                      setAcceptedFiles([]);
+                    }}
+                    aria-label="Remove image"
+                  />
+                  <Image
+                    src={dataURL || ""}
+                    alt="Preview"
+                    width={400}
+                    height={160}
+                    className="w-full h-full object-contain max-h-20 sm:max-w-xs"
+                  />
+                  <span className="text-xs text-gray-500 mt-1 break-all text-center w-full">
+                    {selectedFile?.name || "No file selected"}
+                  </span>
+                </div>
+              )}
             </div>
           </div>
 

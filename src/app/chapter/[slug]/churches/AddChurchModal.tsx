@@ -7,8 +7,9 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Plus, CloudUpload, X } from "lucide-react";
 import Image from "next/image";
+import { useDropzone } from "react-dropzone";
 
-export default function AddChurchButton() {
+export default function AddChurchModal() {
   const [isOpen, setIsOpen] = useState(false);
   const [description, setDescription] = useState("");
   const characterLimit = 500;
@@ -29,7 +30,7 @@ export default function AddChurchButton() {
     });
   }, []);
 
-  // const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
   const selectedFile = acceptedFiles[0];
 
   const handleDescriptionChange = (
@@ -134,18 +135,15 @@ export default function AddChurchButton() {
                         <div className=" h-20 max-h-40 flex flex-col items-center justify-center w-full min-h-25 sm:h-40 md:h-48 px-2 sm:px-5 mx-auto relative">
                           <CloudUpload className="w-8 h-8 text-gray-500 justify-items-center" />
                           <span className="text-gray-500 text-sm text-center">
-                            Drag and Drop here
+                            Drag & Drop your image
                           </span>
                           <div className="flex flex-col items-center">
                             <p className="text-gray-500 text-sm text-center mb-2">
                               or
                             </p>
-                            <Button
-                              variant="outline"
-                              className="h-8 px-4 text-gray-500 hover:bg-gray-100"
-                            >
-                              Browse Files
-                            </Button>
+                            <span className="underline text-xs text-[#6F4E37]">
+                              Browse files
+                            </span>
                           </div>
                         </div>
                       ) : (
@@ -175,7 +173,7 @@ export default function AddChurchButton() {
                     </div>
                   </div>
                 </div>
-                {/* Cancel & Delete Buttons */}
+
                 <div className="md:col-span-2 flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4">
                   <Button
                     type="button"

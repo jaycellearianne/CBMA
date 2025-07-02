@@ -14,15 +14,13 @@ import {
 } from "@/components/ui/drawer";
 import {
   Dialog,
-//   DialogClose,
   DialogContent,
-//   DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import AddCircuitForm from "./AddCircuitForm"
 
-import AddPastorForm from "./AddPastorForm";
 
 export default function AddPastorModal() {
   const [open, setOpen] = useState(false);
@@ -47,10 +45,10 @@ export default function AddPastorModal() {
             <DrawerContent className="w-full max-w-none px-4">
               <DrawerHeader>
                 <DrawerTitle className="text-2xl font-bold text-[#6F4E37]">
-                  Add Pastor
+                  Add Circuit
                 </DrawerTitle>
               </DrawerHeader>
-              <AddPastorForm onSuccess={() => setOpen(false)} />
+              <AddCircuitForm onSuccess={() => setOpen(false)} />
               <DrawerFooter className="p-0 mt-0 py-2">
                 <DrawerClose asChild>
                   <Button
@@ -68,16 +66,16 @@ export default function AddPastorModal() {
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
               <Button className="bg-[#6F4E37] h-10 px-4 text-white hover:bg-[#A67B5B] flex flex-row items-center">
-                <Plus size={24} color="white" /> Add Pastor
+                <Plus size={24} color="white" /> Add Circuit
               </Button>
             </DialogTrigger>
             <DialogContent>
               <DialogHeader className="items-center">
                 <DialogTitle className="text-2xl items-center justify-center font-bold text-[#6F4E37]">
-                  Add Pastor
+                  Add Circuit
                 </DialogTitle>
               </DialogHeader>
-              <AddPastorForm onSuccess={() => setOpen(false)} />
+              <AddCircuitForm onSuccess={() => setOpen(false)} />
             </DialogContent>
           </Dialog>
         )}
