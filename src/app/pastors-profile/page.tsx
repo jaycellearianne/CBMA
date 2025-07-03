@@ -4,6 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
+import Tabs from "./tabs";
 
 export default function PastorProfile() {
   const router = useRouter();
@@ -61,6 +62,11 @@ export default function PastorProfile() {
                 {pastorChurch ? pastorChurch : "No church name provided"}
               </span>
             </div>
+          </div>
+        </div>
+        <div className="w-full flex mt-25 ">
+          <div className="w-full">
+            <Tabs />
           </div>
         </div>
       </div>
