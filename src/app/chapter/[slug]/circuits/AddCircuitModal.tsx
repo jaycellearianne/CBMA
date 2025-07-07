@@ -39,7 +39,7 @@ export default function AddPastorModal() {
           <Drawer open={open} onOpenChange={setOpen}>
             <DrawerTrigger asChild>
               <Button className="bg-[#6F4E37] h-10 px-4 text-white hover:bg-[#A67B5B] flex flex-row items-center">
-                <Plus size={24} color="white" /> Add Pastor
+                <Plus size={24} color="white" /> Add Circuit
               </Button>
             </DrawerTrigger>
             <DrawerContent className="w-full max-w-none px-4">

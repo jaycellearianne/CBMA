@@ -32,9 +32,9 @@ export default function ChurchProfile() {
     },
     "2": {
       description:
-        "A church dedicated to serving the people of Maalubo, Badiangan with faith and compassion.",
-      currentPastor: "Carlos P. Romulo Sr.",
-      yearEstablished: "2000",
+        "A church dedicated to serving the people with faith and compassion.",
+      currentPastor: "Jireh John Francia",
+      yearEstablished: "1995",
     },
   };
   const handleBack = () => router.back();
@@ -159,6 +159,7 @@ export default function ChurchProfile() {
         <div className="block md:hidden h-[20px]" />
         <div>
           <p className="text-[#6F4E37] font-semibold text-lg">Pastors:</p>
+          {/* put the pastor names here that are associated with this church */}
         </div>
       </div>
     </div>
