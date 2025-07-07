@@ -223,18 +223,18 @@ export default function AddChapterButton({
           {/* Footer Buttons */}
           <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4 mb-auto bottom-0 left-0 right-0 px-4 py-4">
             <Button
-              variant="outline"
-              onClick={onCancelAction}
-              className="flex-1 w-full h-10 px-4 text-black mr-2"
-            >
-              Cancel
-            </Button>
-            <Button
               type="button"
               onClick={handleSubmit}
               className="flex-1 w-full bg-[#6F4E37] h-10 px-4 text-white hover:bg-[#A67B5B]"
             >
               Create Chapter
+            </Button>
+            <Button
+              variant="outline"
+              onClick={onCancelAction}
+              className="flex-1 w-full h-10 px-4 text-black mr-2"
+            >
+              Cancel
             </Button>
           </div>
         </div>

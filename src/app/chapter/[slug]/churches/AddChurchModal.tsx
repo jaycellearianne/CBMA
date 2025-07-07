@@ -175,15 +175,15 @@ export default function AddChurchModal() {
                 </div>
 
                 <div className="md:col-span-2 flex flex-col sm:flex-row gap-2 sm:gap-4 mt-4">
+                  <Button className="flex-1 w-full bg-[#6F4E37] h-10 px-4 text-white hover:bg-[#A67B5B]">
+                    Add Church
+                  </Button>{" "}
                   <Button
                     type="button"
                     onClick={() => setIsOpen(false)}
                     className=" flex-1 w-full bg-[#A67B5B40] h-10 px-4 text-black hover:bg-[#A67B5B] mr-2"
                   >
                     Cancel
-                  </Button>{" "}
-                  <Button className="flex-1 w-full bg-[#6F4E37] h-10 px-4 text-white hover:bg-[#A67B5B]">
-                    Add Church
                   </Button>{" "}
                 </div>
               </form>
