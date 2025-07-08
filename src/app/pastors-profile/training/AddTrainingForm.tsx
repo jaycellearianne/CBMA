@@ -95,11 +95,11 @@ export default function AddTrainingForm({
         </div>
 
         <div>
-          <Label htmlFor="agency" className="text-[#6f4e37] mb-2">
+          <Label htmlFor="sponsoringAgency" className="text-[#6f4e37] mb-2">
             Sponsoring Agency
           </Label>
           <Input
-            id="agency"
+            id="sponsoringAgency"
             value={formData.sponsoringAgency}
             placeholder="Enter sponsoring agency"
             className="bg-[#F7F4F0]"
