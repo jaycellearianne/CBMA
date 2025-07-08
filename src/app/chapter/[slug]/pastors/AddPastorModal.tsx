@@ -26,9 +26,9 @@ import AddPastorForm from "./AddPastorForm";
 
 export default function AddPastorModal() {
   const [open, setOpen] = useState(false);
-
   const isMobile = useMediaQuery({ query: "(max-width: 640px)" });
   const [mounted, setMounted] = useState(false);
+  
   useEffect(() => {
     setMounted(true);
   }, []);
