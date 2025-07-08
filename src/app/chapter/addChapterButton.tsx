@@ -104,6 +104,7 @@ export default function AddChapterButton({
               placeholder="Enter Chapter Name"
               value={chapterName}
               onChange={(e) => setChapterName(e.target.value)}
+              className="bg-[#F7F4F0]"
             />
             {errors.chapterName && (
               <p className="text-red-500 text-xs mt-1">
@@ -119,7 +120,7 @@ export default function AddChapterButton({
             </label>
             <Textarea
               placeholder="Enter Description"
-              className="h-28 pr-10"
+              className="h-28 pr-10 bg-[#F7F4F0]"
               maxLength={characterLimit}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -140,7 +141,7 @@ export default function AddChapterButton({
             <div className="flex gap-2 items-center">
               <select
                 id="pastor"
-                className="w-full border border-gray-300 rounded px-2 py-1 text-sm text-gray-500"
+                className="w-full border border-gray-300 rounded px-2 py-1 text-sm text-gray-500 bg-[#F7F4F0]"
               >
                 <option>Select pastor</option>
                 {pastors.map((pastor) => (
@@ -157,23 +158,21 @@ export default function AddChapterButton({
             <div className="flex gap-2 items-center">
               <select
                 id="church"
-                className="w-full border border-gray-300 rounded px-2 py-1 text-sm text-gray-500"
+                className="w-full border border-gray-300 rounded px-2 py-1 text-sm text-gray-500 bg-[#F7F4F0]"
               >
                 <option>Select church</option>
                 {churches.map((church) => (
                   <option key={church.id}>{church.name}</option>
                 ))}
               </select>
-              <div>
-                <AddChurchModal />
-              </div>
+              <AddChurchModal />
             </div>
           </div>
 
           {/* Image Upload */}
           <div className="flex flex-col w-full">
             <label className="text-sm font-medium text-gray-700">
-              Attach Image
+              Upload Image
             </label>
             <div
               className="flex flex-row items-center justify-center border rounded-lg w-full h-250 max-h-30 sm:h-40 md:h-48 px-2 sm:px-5 mx-auto relative"
@@ -182,12 +181,12 @@ export default function AddChapterButton({
               <input {...getInputProps()} />
               {!dataURL ? (
                 <div className="h-20 max-h-40 flex flex-col items-center justify-center w-full min-h-25 sm:h-40 md:h-48 px-2 sm:px-5 mx-auto relative">
-                  <CloudUpload className="w-8 h-8 text-gray-500 justify-items-center" />
-                  <span className="text-gray-500 text-sm text-center">
+                  <CloudUpload size={32} className="mb-1 text-[#6F4E37]" />
+                  <span className="font-medium text-sm text-[#6F4E37]">
                     Drag & Drop your image
                   </span>
                   <div className="flex flex-col items-center">
-                    <p className="text-gray-500 text-sm text-center mb-2">or</p>
+                    <p className="text-xs text-gray-500">or</p>
                     <span className="underline text-xs text-[#6F4E37]">
                       Browse files
                     </span>

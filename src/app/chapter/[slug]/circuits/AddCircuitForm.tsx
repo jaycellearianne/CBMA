@@ -25,12 +25,14 @@ import Dropzone from "react-dropzone";
 import { useState } from "react";
 import Image from "next/image";
 import { Textarea } from "@/components/ui/textarea";
+import AddChurchModal from "../churches/AddChurchModal";
+import AddPastorModal from "../pastors/AddPastorModal";
 
-interface AddPastorModalProps {
+interface AddCircuitModalProps {
   onSuccess?: () => void;
 }
 
-export default function AddPastorModal({ onSuccess }: AddPastorModalProps) {
+export default function AddCircuitModal({ onSuccess }: AddCircuitModalProps) {
   const churchData = [
     {
       id: 1,
@@ -165,12 +167,11 @@ export default function AddPastorModal({ onSuccess }: AddPastorModalProps) {
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
-                    
                     <FormControl>
                       <SelectTrigger
                         id="circuit-pastor"
                         name="pastor"
-                        className="w-full"
+                        className="w-full bg-[#F7F4F0]"
                       >
                         <SelectValue
                           className="bg-[#F7F4F0]"
@@ -187,6 +188,7 @@ export default function AddPastorModal({ onSuccess }: AddPastorModalProps) {
                     </SelectContent>
                   </Select>
                   <FormMessage />
+                  <AddPastorModal />
                 </FormItem>
               )}
             />
@@ -210,7 +212,7 @@ export default function AddPastorModal({ onSuccess }: AddPastorModalProps) {
                       <SelectTrigger
                         id="circuit-church"
                         name="church"
-                        className="w-full"
+                        className="w-full bg-[#F7F4F0]"
                       >
                         <SelectValue
                           className="bg-[#F7F4F0]"
@@ -227,6 +229,7 @@ export default function AddPastorModal({ onSuccess }: AddPastorModalProps) {
                     </SelectContent>
                   </Select>
                   <FormMessage />
+                  <AddChurchModal />
                 </FormItem>
               )}
             />

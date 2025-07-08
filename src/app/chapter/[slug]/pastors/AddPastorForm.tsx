@@ -116,6 +116,27 @@ export default function AddPastorModal({ onSuccess }: AddPastorModalProps) {
             />
             <FormField
               control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="address" className="text-[#6f4e37]">
+                    Address
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      id="address"
+                      autoComplete="address"
+                      placeholder="Enter address"
+                      className="bg-[#F7F4F0]"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
               name="church"
               render={({ field }) => (
                 <>
@@ -134,7 +155,7 @@ export default function AddPastorModal({ onSuccess }: AddPastorModalProps) {
                         <SelectTrigger
                           id="pastor-church"
                           name="church"
-                          className="w-full"
+                          className="w-full bg-[#F7F4F0]"
                         >
                           <SelectValue
                             className="bg-[#F7F4F0]"
@@ -151,7 +172,7 @@ export default function AddPastorModal({ onSuccess }: AddPastorModalProps) {
                       </SelectContent>
                     </Select>
                     <FormMessage />
-                  <AddChurchModal />
+                    <AddChurchModal />
                   </FormItem>
                 </>
               )}
