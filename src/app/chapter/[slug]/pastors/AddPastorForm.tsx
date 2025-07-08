@@ -24,6 +24,7 @@ import { Input } from "@/components/ui/input";
 import Dropzone from "react-dropzone";
 import { useState } from "react";
 import Image from "next/image";
+import AddChurchModal from "../churches/AddChurchModal";
 
 interface AddPastorModalProps {
   onSuccess?: () => void;
@@ -95,12 +96,19 @@ export default function AddPastorModal({ onSuccess }: AddPastorModalProps) {
             <FormField
               control={form.control}
               name="name"
-              
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor="pastor-name" className="text-[#6f4e37]">Full Name</FormLabel>
+                  <FormLabel htmlFor="pastor-name" className="text-[#6f4e37]">
+                    Full Name
+                  </FormLabel>
                   <FormControl>
-                    <Input id="pastor-name" autoComplete="name" placeholder="Enter name" className="bg-[#F7F4F0]" {...field} />
+                    <Input
+                      id="pastor-name"
+                      autoComplete="name"
+                      placeholder="Enter name"
+                      className="bg-[#F7F4F0]"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -110,29 +118,42 @@ export default function AddPastorModal({ onSuccess }: AddPastorModalProps) {
               control={form.control}
               name="church"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor="pastor-church" className="text-[#6f4e37]">
-                    Select Church
-                  </FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger id="pastor-church" name="church" className="w-full">
-                        <SelectValue className="bg-[#F7F4F0]" placeholder="Select church"></SelectValue>
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {churchData.map((church) => (
-                        <SelectItem key={church.id} value={church.church}>
-                          {church.church}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
+                <>
+                  <FormItem>
+                    <FormLabel
+                      htmlFor="pastor-church"
+                      className="text-[#6f4e37]"
+                    >
+                      Select Church
+                    </FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger
+                          id="pastor-church"
+                          name="church"
+                          className="w-full"
+                        >
+                          <SelectValue
+                            className="bg-[#F7F4F0]"
+                            placeholder="Select church"
+                          ></SelectValue>
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {churchData.map((church) => (
+                          <SelectItem key={church.id} value={church.church}>
+                            {church.church}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  <AddChurchModal />
+                  </FormItem>
+                </>
               )}
             />
             <FormField
@@ -140,7 +161,9 @@ export default function AddPastorModal({ onSuccess }: AddPastorModalProps) {
               name="image"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor="pastor-image" className="text-[#6f4e37]">Upload Image</FormLabel>
+                  <FormLabel htmlFor="pastor-image" className="text-[#6f4e37]">
+                    Upload Image
+                  </FormLabel>
                   <Dropzone
                     accept={{ "image/*": [".jpg", "jpeg", ".png"] }}
                     onDrop={(acceptedFiles) => {
@@ -156,7 +179,11 @@ export default function AddPastorModal({ onSuccess }: AddPastorModalProps) {
                         {...getRootProps()}
                         className="h-32 md:h-40 flex flex-col items-center justify-center w-full border-2 border-dashed border-gray-300 rounded cursor-pointer"
                       >
-                        <input id="pastor-image" name="image" {...getInputProps()} />
+                        <input
+                          id="pastor-image"
+                          name="image"
+                          {...getInputProps()}
+                        />
                         {previews.length > 0 ? (
                           <div className="flex">
                             {previews.map((src, idx) => (

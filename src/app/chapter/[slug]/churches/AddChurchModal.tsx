@@ -93,13 +93,11 @@ export default function AddChurchModal() {
                 </div>
                 <div className="flex flex-col">
                   <label className="text-sm font-medium text-gray-700">
-                    Service Time
+                  Service Time
                   </label>
                   <Input
-                    type="text"
-                    placeholder="Enter service time"
-                    maxLength={50}
-                    className="h-10 px-4 border rounded-lg text-base placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  type="time"
+                  className="h-10 px-4 border rounded-lg text-base placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-amber-500"
                   />
                 </div>
 
