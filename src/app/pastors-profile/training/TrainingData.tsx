@@ -1,7 +1,6 @@
 "use client";
-
 import { Button } from "@/components/ui/button";
-import { Edit, Plus } from "lucide-react";
+import { Edit, Plus, Trash2 } from "lucide-react";
 
 export interface Training {
   id: number;
@@ -12,17 +11,17 @@ export interface Training {
   endDate: string; // ISO date string
 }
 
-interface TrainingsDataProps {
+interface TrainingDataProps {
   trainings: Training[];
   onAddTrainingAction: () => void;
   onEditTrainingAction: (training: Training) => void;
 }
 
-export function TrainingsData({
+export default function TrainingData({
   trainings,
   onAddTrainingAction,
   onEditTrainingAction,
-}: TrainingsDataProps) {
+}: TrainingDataProps) {
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US", {
@@ -31,6 +30,21 @@ export function TrainingsData({
       year: "numeric",
     });
   };
+
+  function openEditForm(training: Training): void {
+    onEditTrainingAction(training);
+  }
+
+  function openDeleteForm(training: Training): void {
+    if (
+      window.confirm(
+        `Are you sure you want to delete the training "${training.title}"?`
+      )
+    ) {
+      console.log(`Training with ID ${training.id} has been deleted.`);
+      // Here you would typically call a function to update the state or make an API call to delete the training
+    }
+  }
 
   return (
     <div className="p-6 space-y-6">
@@ -73,14 +87,24 @@ export function TrainingsData({
                     </span>
                   </div>
                 </div>
-                <Button
-                  onClick={() => onEditTrainingAction(training)}
-                  variant="ghost"
-                  size="sm"
-                  className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-200"
-                >
-                  <Edit className="w-4 h-4" />
-                </Button>
+                <div className="flex gap-2 ml-4">
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => openEditForm(training)}
+                    className="h-8 w-8 p-0 hover:bg-gray-200"
+                  >
+                    <Edit className="w-3 h-3" />
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => openDeleteForm(training)}
+                    className="h-8 w-8 p-0 hover:bg-red-100 hover:text-red-600"
+                  >
+                    <Trash2 className="w-3 h-3" />
+                  </Button>
+                </div>
               </div>
             </div>
           ))

@@ -1,49 +1,42 @@
 "use client";
-
+import type React from "react";
 import { useState, useEffect } from "react";
-import { useMediaQuery } from "react-responsive";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
 import {
   Drawer,
-  DrawerClose,
   DrawerContent,
+  DrawerDescription,
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
-  DrawerTrigger,
+  DrawerClose,
 } from "@/components/ui/drawer";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import AddTrainingForm from "./AddTrainingForm";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { useMediaQuery } from "react-responsive";
+import AddFamilyForm from "./AddFamilyForm";
+import { FamilyMember } from "./FamilyData";
 
-type Training = {
-  id: number;
-  title: string;
-  sponsoringAgency: string;
-  venue: string;
-  startDate: string;
-  endDate: string;
-};
-
-interface AddTrainingModalProps {
+interface AddFamilyModalProps {
   open: boolean;
-  onSaveAction: (training: Omit<Training, "id">) => void;
+  onSaveAction: (member: FamilyMember) => void;
   onCancelAction: () => void;
 }
 
-export default function AddTrainingModal({
+export default function AddFamilyModal({
   open,
   onSaveAction,
   onCancelAction,
-}: AddTrainingModalProps) {
+}: AddFamilyModalProps) {
   const isMobile = useMediaQuery({ query: "(max-width: 640px)" });
   const [mounted, setMounted] = useState(false);
+  const [formData, setFormData] = useState<FamilyMember>({
+    id: 0, // Default id value
+    name: "",
+    relationship: "",
+    education: "",
+    occupation: "",
+    birthDate: "",
+  });
 
   useEffect(() => {
     setMounted(true);
@@ -51,20 +44,43 @@ export default function AddTrainingModal({
 
   if (!mounted) return null;
 
-  const handleSuccess = (data: Omit<Training, "id">) => {
-    onSaveAction(data);
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (
+      formData.name &&
+      formData.relationship &&
+      formData.education &&
+      formData.occupation &&
+      formData.birthDate
+    ) {
+      onSaveAction(formData);
+      setFormData({
+        id: 0, // Reset id to default value
+        name: "",
+        relationship: "",
+        education: "",
+        occupation: "",
+        birthDate: "",
+      });
+    }
   };
 
+  function handleSuccess(family: FamilyMember): void {
+    console.log("Family successfully added:", family);
+    onCancelAction();
+  }
+
   return isMobile ? (
-    <Drawer open={open} onOpenChange={(val) => !val && onCancelAction()}>
+    <Drawer open={open} onOpenChange={onCancelAction}>
       <DrawerContent className="w-full max-w-none px-4">
         <DrawerHeader>
-          <DrawerTitle className="text-2xl font-bold text-[#6F4E37]">
-            Add Training
+          <DrawerTitle className="text-xl font-semibold text-gray-900">
+            Add Family Member
           </DrawerTitle>
         </DrawerHeader>
-        <AddTrainingForm
-          onSaveAction={handleSuccess}
+        <AddFamilyForm
+          open={open}
+          onSaveAction={onSaveAction}
           onCancelAction={onCancelAction}
         />
         <DrawerFooter className="p-0 mt-0 py-2">
@@ -85,10 +101,11 @@ export default function AddTrainingModal({
       <DialogContent>
         <DialogHeader className="items-center">
           <DialogTitle className="text-2xl items-center justify-center font-bold text-[#6F4E37]">
-            Add Training
+            Add Family Member
           </DialogTitle>
         </DialogHeader>
-        <AddTrainingForm
+        <AddFamilyForm
+          open={open}
           onSaveAction={handleSuccess}
           onCancelAction={onCancelAction}
         />
