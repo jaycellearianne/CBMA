@@ -6,6 +6,7 @@ import PersonalData from "./personal/PersonalData";
 import { TrainingsData } from "./trainings/TrainingsData";
 import AddTrainingModal from "./trainings/AddTrainingModal";
 import EditTrainingModal from "./trainings/EditTrainingModal";
+import EducationData from "./education/EducationData";
 
 interface Training {
   id: number;
@@ -102,7 +103,7 @@ export default function PastorsProfileTabs() {
         </TabsContent>
 
         <TabsContent value="Education" className="w-full">
-          {/* Education Content */}
+          <EducationData />
         </TabsContent>
 
         <TabsContent value="Trainings" className="w-full">
