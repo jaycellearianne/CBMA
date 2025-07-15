@@ -11,6 +11,8 @@ import { FamilyMember } from "./family/FamilyData";
 import AddFamilyModal from "./family/AddFamilyModal";
 import EditFamilyModal from "./family/EditFamilyModal";
 import DeleteFamilyModal from "./family/DeleteFamilyModal";
+import EducationData from "./education/EducationData";
+
 
 export default function PastorsProfileTabs() {
   const [isMobile, setIsMobile] = useState(false);
@@ -173,7 +175,7 @@ export default function PastorsProfileTabs() {
         </TabsContent>
 
         <TabsContent value="Education" className="w-full">
-          {/* Education Content */}
+          <EducationData />
         </TabsContent>
 
         <TabsContent value="Trainings" className="w-full">
