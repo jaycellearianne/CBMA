@@ -4,17 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-type Training = {
-  id: number;
-  title: string;
-  sponsoringAgency: string;
-  venue: string;
-  startDate: string;
-  endDate: string;
-};
-
 interface AddTrainingFormProps {
-  onSaveAction: (training: Omit<Training, "id">) => void;
+  onSaveAction: (training: Omit<TrainingFormData, "id">) => void;
   onCancelAction: () => void;
 }
 
@@ -28,7 +19,6 @@ interface TrainingFormData {
 
 export default function AddTrainingForm({
   onSaveAction,
-  onCancelAction,
 }: AddTrainingFormProps) {
   const [formData, setFormData] = useState<TrainingFormData>({
     title: "",

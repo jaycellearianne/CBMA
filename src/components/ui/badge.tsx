@@ -26,7 +26,7 @@ const badgeVariants = cva(
   }
 )
 
-function Badge({
+export default function Badge({
   className,
   variant,
   asChild = false,

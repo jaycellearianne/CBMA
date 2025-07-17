@@ -6,6 +6,7 @@ import TrainingData from "./training/TrainingData";
 import { Training } from "./training/TrainingData";
 import AddTrainingModal from "./training/AddTrainingModal";
 import EditTrainingModal from "./training/EditTrainingModal";
+import { DeleteTrainingModal } from "./training/DeleteTrainingModal";
 import FamilyData from "./family/FamilyData";
 import { FamilyMember } from "./family/FamilyData";
 import AddFamilyModal from "./family/AddFamilyModal";
@@ -13,12 +14,12 @@ import EditFamilyModal from "./family/EditFamilyModal";
 import DeleteFamilyModal from "./family/DeleteFamilyModal";
 import EducationData from "./education/EducationData";
 
-
 export default function PastorsProfileTabs() {
   const [isMobile, setIsMobile] = useState(false);
   const [trainings, setTrainings] = useState<Training[]>([]);
   const [showAddTraining, setShowAddTraining] = useState(false);
   const [editingTraining, setEditingTraining] = useState<Training | null>(null);
+  const [deletingTraining, setDeletingTraining] = useState<Training | null>(null);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -26,9 +27,7 @@ export default function PastorsProfileTabs() {
   const [showEditForm, setShowEditForm] = useState(false);
   const [showDeleteForm, setShowDeleteForm] = useState(false);
   const [editingMember, setEditingMember] = useState<FamilyMember | null>(null);
-  const [deletingMember, setDeletingMember] = useState<FamilyMember | null>(
-    null
-  );
+  const [deletingMember, setDeletingMember] = useState<FamilyMember | null>(null);
 
   const closeAddForms = () => {
     setShowAddModal(false);
@@ -63,7 +62,7 @@ export default function PastorsProfileTabs() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Sample data (replace with API call or real data)
+  // TRAINING
   useEffect(() => {
     setTrainings([
       {
@@ -95,43 +94,33 @@ export default function PastorsProfileTabs() {
 
   const handleDeleteTraining = (id: number) => {
     setTrainings((prev) => prev.filter((t) => t.id !== id));
-    setEditingTraining(null);
+    setDeletingTraining(null);
   };
 
   const openEditTraining = (training: Training) => {
     setEditingTraining(training);
   };
 
+  const openDeleteTraining = (training: Training) => {
+    setDeletingTraining(training);
+  };
+
   const closeAddTraining = () => setShowAddTraining(false);
   const closeEditTraining = () => setEditingTraining(null);
+  const closeDeleteTraining = () => setDeletingTraining(null);
 
   // FAMILY
   const [familyMembers, setFamilyMembers] = useState<FamilyMember[]>([
     {
       id: 1,
-      name: "Mary Jean P. Arroz",
+      name: "Mary Ann P. Arroz",
       relationship: "Spouse",
       education: "Master of Science in Civil Engineering",
       occupation: "Civil Engineer",
       birthDate: "March 15, 1995",
     },
-    {
-      id: 2,
-      name: "Diadem Grace P. Arroz",
-      relationship: "Daughter",
-      education: "Bachelor of Science in Software Engineering",
-      occupation: "Business Owner",
-      birthDate: "September 23, 2002",
-    },
-        {
-      id: 3,
-      name: "Zairene Faith P. Arroz",
-      relationship: "Daughter",
-      education: "Senior High School",
-      occupation: "Student",
-      birthDate: "September 1, 2009",
-    },
   ]);
+
   const handleAddMember = (member: Omit<FamilyMember, "id">) => {
     const newMember = {
       ...member,
@@ -183,6 +172,7 @@ export default function PastorsProfileTabs() {
             trainings={trainings}
             onAddTrainingAction={() => setShowAddTraining(true)}
             onEditTrainingAction={openEditTraining}
+            onDeleteTrainingAction={openDeleteTraining}
           />
         </TabsContent>
 
@@ -231,6 +221,15 @@ export default function PastorsProfileTabs() {
         />
       )}
 
+      {deletingTraining && (
+        <DeleteTrainingModal
+          open={true}
+          training={deletingTraining}
+          onDeleteAction={() => handleDeleteTraining(deletingTraining.id)}
+          onCancelAction={closeDeleteTraining}
+        />
+      )}
+
       {/* FAMILY */}
       <AddFamilyModal
         open={showAddModal}
@@ -239,21 +238,21 @@ export default function PastorsProfileTabs() {
       />
 
       {editingMember && (
-          <EditFamilyModal
-            open={showEditModal}
-            member={editingMember}
-            onSaveAction={handleEditMember}
-            onCancelAction={closeEditForms}
-          />
+        <EditFamilyModal
+          open={showEditModal}
+          member={editingMember}
+          onSaveAction={handleEditMember}
+          onCancelAction={closeEditForms}
+        />
       )}
 
       {deletingMember && (
-          <DeleteFamilyModal
-            open={showDeleteModal}
-            member={deletingMember}
-            onDeleteAction={() => handleDeleteMember(deletingMember.id)}
-            onCancelAction={closeDeleteForms}
-          />
+        <DeleteFamilyModal
+          open={showDeleteModal}
+          member={deletingMember}
+          onDeleteAction={() => handleDeleteMember(deletingMember.id)}
+          onCancelAction={closeDeleteForms}
+        />
       )}
     </div>
   );

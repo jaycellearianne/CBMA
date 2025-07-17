@@ -79,14 +79,18 @@ export default function EditFamilyForm({
               <SelectValue placeholder="Select relationship" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="Spouse">Spouse</SelectItem>
-              <SelectItem value="Son">Son</SelectItem>
-              <SelectItem value="Daughter">Daughter</SelectItem>
               <SelectItem value="Father">Father</SelectItem>
               <SelectItem value="Mother">Mother</SelectItem>
               <SelectItem value="Brother">Brother</SelectItem>
               <SelectItem value="Sister">Sister</SelectItem>
-              <SelectItem value="Other">Other</SelectItem>
+              <SelectItem value="Spouse">Spouse</SelectItem>
+              <SelectItem value="Daughter">Daughter</SelectItem>
+              <SelectItem value="Son">Son</SelectItem>
+              <SelectItem value="Grandfather">Grandfather</SelectItem>
+              <SelectItem value="Grandmother">Grandmother</SelectItem>
+              <SelectItem value="Uncle">Uncle</SelectItem>
+              <SelectItem value="Aunt">Aunt</SelectItem>
+              <SelectItem value="Cousin">Cousin</SelectItem>
             </SelectContent>
           </Select>
         </div>

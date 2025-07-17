@@ -1,8 +1,4 @@
 "use client";
-
-// This is a modified @/app/auth/forgot-password/page.tsx for password recovery
-// Search "TODO: Implement password reset logic" to find where you need to implement the actual password reset logic
-
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";

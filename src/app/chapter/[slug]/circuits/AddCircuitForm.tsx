@@ -316,7 +316,7 @@ export default function AddCircuitModal({ onSuccess }: AddCircuitModalProps) {
               className="bg-[#6F4E37] w-full hover:bg-[#432F21]"
               type="submit"
             >
-              Add Circuit
+              Add New Circuit
             </Button>
           </form>
         </Form>

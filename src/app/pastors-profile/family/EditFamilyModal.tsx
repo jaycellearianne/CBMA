@@ -58,7 +58,7 @@ export default function EditFamilyModal({
         <DrawerFooter className="p-0 mt-0 py-2">
           <DrawerClose asChild>
             <Button
-              className="bg-[#A67B5B]/25 w-full max-w-none text-black hover:bg-red-500 p-0"
+              className="border-1 border-[#A67B5B]/25 bg-[#A67B5B]/10 w-full max-w-none text-black hover:bg-red-50"
               variant="default"
               type="button"
             >

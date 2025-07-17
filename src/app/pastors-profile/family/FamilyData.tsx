@@ -1,7 +1,7 @@
 "use client";
-
 import { Button } from "@/components/ui/button";
 import { Plus, Edit, Trash2 } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 export interface FamilyMember {
   id: number;
@@ -26,6 +26,24 @@ export default function FamilyData({
   onEditMemberAction,
   onDeleteMemberAction,
 }: FamilyDataProps) {
+  const getRelationshipColor = (relationship: string) => {
+    const colors: { [key: string]: string } = {
+      Father: "bg-blue-100 text-blue-800",
+      Mother: "bg-pink-100 text-pink-800",
+      Brother: "bg-green-100 text-green-800",
+      Sister: "bg-purple-100 text-purple-800",
+      Son: "bg-orange-100 text-orange-800",
+      Daughter: "bg-red-100 text-red-800",
+      Spouse: "bg-yellow-100 text-yellow-800",
+      Grandfather: "bg-indigo-100 text-indigo-800",
+      Grandmother: "bg-rose-100 text-rose-800",
+      Uncle: "bg-teal-100 text-teal-800",
+      Aunt: "bg-cyan-100 text-cyan-800",
+      Cousin: "bg-lime-100 text-lime-800",
+    };
+    return colors[relationship] || "bg-gray-100 text-gray-800";
+  };
+
   return (
     <div className="p-6 space-y-4">
       <div className="flex justify-between items-center">
@@ -36,7 +54,7 @@ export default function FamilyData({
           className="bg-[#6F4E37] hover:bg-[#5D3E2A] text-white text-xs px-3 py-2 h-8 rounded-md"
         >
           <Plus className="w-3 h-3 mr-1" />
-          Add member
+          Add a family member
         </Button>
       </div>
 
@@ -49,43 +67,61 @@ export default function FamilyData({
             >
               <div className="flex justify-between items-start">
                 <div className="space-y-2 flex-1">
-                  <h4 className="font-medium text-gray-900">{member.name}</h4>
-                  <p
-                    className="text-xs bg-amber-50 px-2 py-1 rounded inline-block border"
-                    style={{ borderColor: "#6F4E37" }}
-                  >
-                    {member.relationship}
-                  </p>
-                  <p className="text-sm text-gray-600">
-                    <span className="font-medium">Education:</span>{" "}
-                    {member.education}
-                  </p>
-                  <p className="text-sm text-gray-600">
-                    <span className="font-medium">Occupation:</span>{" "}
-                    {member.occupation}
-                  </p>
-                  <p className="text-sm text-gray-600">
-                    <span className="font-medium">Birth Date:</span>{" "}
-                    {member.birthDate}
-                  </p>
+                  {/* NAME */}
+                  <div>
+                    <h4 className="font-medium text-gray-900">{member.name}</h4>
+                    <Badge
+                      className={`${getRelationshipColor(
+                        member.relationship
+                      )} text-xs font-medium px-2 py-1`}
+                    >
+                      {member.relationship}
+                    </Badge>
+                  </div>
+
+                  {/* DETAILS */}
+                  <div className="space-y-2 text-sm text-gray-600">
+                    <div>
+                      <span className="font-medium text-gray-700">
+                        Education:
+                      </span>{" "}
+                      {member.education}
+                    </div>
+
+                    <div>
+                      <span className="font-medium text-gray-700">
+                        Occupation:
+                      </span>{" "}
+                      {member.occupation}
+                    </div>
+
+                    <div>
+                      <span className="font-medium text-gray-700">
+                        Birth Date:
+                      </span>{" "}
+                      {member.birthDate}
+                    </div>
+                  </div>
                 </div>
 
-                <div className="flex gap-2 ml-4">
+                {/* BUTTONS */}
+                <div className="flex items-center gap-2 ml-4">
                   <Button
                     size="sm"
                     variant="ghost"
                     onClick={() => onEditMemberAction(member)}
                     className="h-8 w-8 p-0 hover:bg-gray-200"
                   >
-                    <Edit className="w-3 h-3" />
+                    <Edit className="w-4 h-4" />
                   </Button>
+
                   <Button
                     size="sm"
                     variant="ghost"
                     onClick={() => onDeleteMemberAction(member)}
                     className="h-8 w-8 p-0 hover:bg-red-100 hover:text-red-600"
                   >
-                    <Trash2 className="w-3 h-3" />
+                    <Trash2 className="w-4 h-4" />
                   </Button>
                 </div>
               </div>
@@ -94,13 +130,13 @@ export default function FamilyData({
         ) : (
           <div className="text-center py-8 text-gray-500">
             <p>No family members recorded yet.</p>
-            <Button
+            {/* <Button
               onClick={onAddMemberAction}
               className="mt-4 bg-[#6F4E37] hover:bg-[#5D3E2A] text-white"
             >
               <Plus className="w-4 h-4 mr-2" />
               Add your first family member
-            </Button>
+            </Button> */}
           </div>
         )}
       </div>

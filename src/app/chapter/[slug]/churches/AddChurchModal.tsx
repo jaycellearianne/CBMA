@@ -51,7 +51,7 @@ export default function AddChurchModal() {
             <DrawerFooter className="p-0 mt-0 py-2">
               <DrawerClose asChild>
                 <Button
-                  className="bg-[#A67B5B]/25 w-full max-w-none text-black hover:bg-red-500 p-0"
+                  className="border-1 border-[#A67B5B]/25 bg-[#A67B5B]/10 w-full max-w-none text-black hover:bg-red-50"
                   variant="default"
                   type="button"
                 >
@@ -71,7 +71,7 @@ export default function AddChurchModal() {
           <DialogContent>
             <DialogHeader className="items-center">
               <DialogTitle className="text-2xl items-center justify-center font-bold text-[#6F4E37]">
-                Add Church
+                Add New Church
               </DialogTitle>
             </DialogHeader>
             <AddChurchForm onSuccess={() => setOpen(false)} />
