@@ -14,9 +14,7 @@ import {
 } from "@/components/ui/drawer";
 import {
   Dialog,
-//   DialogClose,
   DialogContent,
-//   DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -28,7 +26,7 @@ export default function AddPastorModal() {
   const [open, setOpen] = useState(false);
   const isMobile = useMediaQuery({ query: "(max-width: 640px)" });
   const [mounted, setMounted] = useState(false);
-  
+
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -54,7 +52,7 @@ export default function AddPastorModal() {
               <DrawerFooter className="p-0 mt-0 py-2">
                 <DrawerClose asChild>
                   <Button
-                    className="bg-[#A67B5B]/25 w-full max-w-none text-black hover:bg-red-500 p-0"
+                    className="border-1 border-[#A67B5B]/25 bg-[#A67B5B]/10 w-full max-w-none text-black hover:bg-red-50"
                     variant="default"
                     type="button"
                   >
@@ -74,7 +72,7 @@ export default function AddPastorModal() {
             <DialogContent>
               <DialogHeader className="items-center">
                 <DialogTitle className="text-2xl items-center justify-center font-bold text-[#6F4E37]">
-                  Add Pastor
+                  Add New Pastor
                 </DialogTitle>
               </DialogHeader>
               <AddPastorForm onSuccess={() => setOpen(false)} />

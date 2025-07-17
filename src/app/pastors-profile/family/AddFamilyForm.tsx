@@ -34,15 +34,23 @@ export default function AddFamilyForm({
     otherRelationship: "",
   });
 
+  const [errors, setErrors] = useState<Partial<FamilyMember>>({});
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (
-      formData.name &&
-      formData.relationship &&
-      formData.education &&
-      formData.occupation &&
-      formData.birthDate
-    ) {
+
+    const newErrors: Partial<FamilyMember> = {};
+
+    if (!formData.name) newErrors.name = "Name is required.";
+    if (!formData.relationship)
+      newErrors.relationship = "Relationship is required.";
+    if (!formData.education) newErrors.education = "Education is required.";
+    if (!formData.occupation) newErrors.occupation = "Occupation is required.";
+    if (!formData.birthDate) newErrors.birthDate = "Birth date is required.";
+
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length === 0) {
       onSaveAction(formData);
       setFormData({
         id: 0, // Reset id value
@@ -56,10 +64,9 @@ export default function AddFamilyForm({
     }
   };
 
-  const [errors, setErrors] = useState<Partial<FamilyMember>>({});
-
   const handleChange = (field: keyof FamilyMember, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+    setErrors((prev) => ({ ...prev, [field]: undefined })); // Clear error for the field
   };
 
   return (
@@ -99,38 +106,23 @@ export default function AddFamilyForm({
               <SelectValue placeholder="Select relationship" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="Spouse">Spouse</SelectItem>
-              <SelectItem value="Son">Son</SelectItem>
-              <SelectItem value="Daughter">Daughter</SelectItem>
               <SelectItem value="Father">Father</SelectItem>
               <SelectItem value="Mother">Mother</SelectItem>
               <SelectItem value="Brother">Brother</SelectItem>
               <SelectItem value="Sister">Sister</SelectItem>
-              <SelectItem value="Other">Other</SelectItem>
+              <SelectItem value="Spouse">Spouse</SelectItem>
+              <SelectItem value="Daughter">Daughter</SelectItem>
+              <SelectItem value="Son">Son</SelectItem>
+              <SelectItem value="Grandfather">Grandfather</SelectItem>
+              <SelectItem value="Grandmother">Grandmother</SelectItem>
+              <SelectItem value="Uncle">Uncle</SelectItem>
+              <SelectItem value="Aunt">Aunt</SelectItem>
+              <SelectItem value="Cousin">Cousin</SelectItem>
             </SelectContent>
           </Select>
-
-          {/* NEED TO FIX */}
-
-          {/* {formData.relationship === "Other" && (
-    <div className="mt-4">
-      <Label htmlFor="otherRelationship" className="text-[#6f4e37] mb-2">
-        Specify Relationship
-      </Label>
-      <Input
-        id="otherRelationship"
-        value={formData.otherRelationship}
-        placeholder="Enter relationship"
-        className="bg-[#F7F4F0]"
-        onChange={(e) =>
-          setFormData((prev) => ({
-            ...prev,
-            otherRelationship: e.target.value,
-          }))
-        }
-      />
-    </div>
-  )} */}
+          {errors.relationship && (
+            <p className="text-red-500 text-xs mt-1">{errors.relationship}</p>
+          )}
         </div>
 
         <div>

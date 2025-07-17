@@ -231,7 +231,7 @@ export default function AddChapterButton({
             <Button
               variant="outline"
               onClick={onCancelAction}
-              className="flex-1 w-full h-10 px-4 text-black mr-2"
+              className="border-1 border-[#A67B5B]/25 bg-[#A67B5B]/10 w-full max-w-none text-black hover:bg-red-50"
             >
               Cancel
             </Button>

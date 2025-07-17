@@ -8,16 +8,12 @@ import SettingIcon from "../../components/icons/SettingIcon";
 import CircleHelpIcon from "../../components/icons/CircleHelpIcon";
 import LogoutIcon from "../../components/icons/LogoutIcon";
 
-// TODO: Change the Image SRC to the actual profile image
-// TODO: Change the Name to the actual name of the user
-// TODO: Attach the links (href)
-
 type SidebarProps = {
   isOpen: boolean;
-  setIsOpen: (open: boolean) => void;
+  setIsOpenAction: (open: boolean) => void;
 };
 
-export default function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
+export default function Sidebar({ isOpen, setIsOpenAction }: SidebarProps) {
   return (
     <aside
       className={`px-8 py-12 fixed top-0 left-0 h-full w-64 rounded-tr-xl rounded-br-xl bg-white text-black transform ${
@@ -25,7 +21,7 @@ export default function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
       } transition-transform duration-300 z-20`}
     >
       <button
-        onClick={() => setIsOpen(false)}
+        onClick={() => setIsOpenAction(false)}
         className="right-0 top-0 absolute m-4 "
       >
         ✕

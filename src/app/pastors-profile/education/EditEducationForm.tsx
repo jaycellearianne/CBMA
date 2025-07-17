@@ -242,7 +242,7 @@ export default function EditEducationForm({
             <Button
               variant="ghost"
               onClick={() => setConfirmDeleteOpen(false)}
-              className="text-[#333333] text-lg font-semibold bg-[#A67B5B]/12 hover:bg-[#A67B5B]/25"
+              className="border-1 border-[#A67B5B]/25 bg-[#A67B5B]/10 w-full max-w-none text-black hover:bg-red-50"
             >
               Cancel
             </Button>

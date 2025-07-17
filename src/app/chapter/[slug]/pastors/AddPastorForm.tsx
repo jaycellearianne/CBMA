@@ -259,7 +259,7 @@ export default function AddPastorModal({ onSuccess }: AddPastorModalProps) {
               className="bg-[#6F4E37] w-full hover:bg-[#432F21]"
               type="submit"
             >
-              Add Pastor
+              Add New Pastor
             </Button>
           </form>
         </Form>

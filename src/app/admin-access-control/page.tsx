@@ -1,18 +1,6 @@
 "use client";
-
 import { Button } from "@/components/ui/button";
-import {
-  ArrowLeft,
-  Search,
-  UserCog,
-  UserPen,
-  Eye,
-  Ellipsis,
-  SquarePen,
-  Trash2,
-  ChevronDown,
-  TriangleAlert,
-} from "lucide-react";
+import { ArrowLeft, Search, UserCog, UserPen, Eye, Ellipsis, ChevronDown, TriangleAlert } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -244,7 +232,6 @@ export default function AdminAccessControl() {
                             handleEdit(admin.id);
                           }}
                         >
-                          <SquarePen size={16} color="#6F4E37" />
                           Edit
                         </button>
                         <button
@@ -255,11 +242,6 @@ export default function AdminAccessControl() {
                             setOptionOverlay(null);
                           }}
                         >
-                          <Trash2
-                            color="red"
-                            size={18}
-                            className="min-w-[18px] min-h-[18px]"
-                          />
                           Delete
                         </button>
                       </div>
@@ -302,7 +284,7 @@ export default function AdminAccessControl() {
                             </button>
                             <button
                               type="button"
-                              className="inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs ring-1 ring-gray-300 ring-inset hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                              className="border-1 border-[#A67B5B]/25 bg-[#A67B5B]/10 w-full max-w-none text-black hover:bg-red-50"
                               onClick={() => setDeleteModalOpen(false)}
                             >
                               Cancel

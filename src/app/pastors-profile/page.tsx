@@ -1,15 +1,13 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
-import { useSearchParams } from "next/navigation";
 import Tabs from "./tabs";
 
 export default function PastorProfile() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const pastorId = searchParams.get("id");
   const pastorName = searchParams.get("name");
   const pastorImage = searchParams.get("image");
   const pastorChurch = searchParams.get("church");
@@ -33,7 +31,7 @@ export default function PastorProfile() {
       <div className="w-full bg-white rounded-2xl mt-5 min-h-[calc(100vh-56px)] z-10">
         <div className="relative z-10 w-full flex flex-col items-center rounded p-6 mx-auto mt-16">
           <div className="absolute top-0 left-0 w-full flex flex-col items-center z-10 gap-4">
-            {pastorId && pastorImage ? (
+            {pastorImage ? (
               <div className="flex justify-center w-full mt-4 ">
                 <div className="relative w-28 h-28 mt-[-70] border-4 items-center justify-center border-[#6F4E37] rounded-full overflow-hidden mx-auto sm:mx-0">
                   <Image

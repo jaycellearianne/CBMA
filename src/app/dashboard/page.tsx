@@ -21,12 +21,6 @@ export default function DashboardPage() {
       image: "/images/chapter/ilochapter.webp",
       slug: "iloilo-chapter",
     },
-    // {
-    //   id: 2,
-    //   name: "Negros Chapter",
-    //   image: "/images/chapter/ilochapter.webp",
-    //   slug: "negros-chapter",
-    // },
   ];
 
   const churches = [

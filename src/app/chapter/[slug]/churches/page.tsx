@@ -19,10 +19,7 @@ export default function ChurchesPage() {
   const [activeFilterCategory, setActiveFilterCategory] = useState<
     FilterCategory | undefined
   >(undefined);
-  const [value, setValue] = useState<string | null>(null);
   const [selectedCircuit, setSelectedCircuit] = useState<string | null>(null);
-
-  // const [isOpen, setIsOpen] = useState(false);
 
   const combobox = useCombobox({
     onDropdownClose: () => combobox.resetSelectedOption(),
@@ -109,11 +106,6 @@ export default function ChurchesPage() {
 
   const handleBack = () => router.back();
 
-  // const filteredChurches = churches.filter((church) =>
-  //   `${church.name} ${church.location}`
-  //     .toLowerCase()
-  //     .includes(searchQuery.toLowerCase())
-  // );
   type FilterCategory = "name" | "location" | "serviceTime";
 
   const filterOptions = () => {
@@ -210,9 +202,6 @@ export default function ChurchesPage() {
         >
           <ArrowLeft className="w-5 h-5" />
         </Button>
-        {/* <h1 className="text-lg font-semibold text-black">
-          {chapterName} Churches
-        </h1> */}
       </div>
 
       {/* Search */}
@@ -335,7 +324,6 @@ export default function ChurchesPage() {
             <Combobox
               store={combobox}
               onOptionSubmit={(value) => {
-                setValue(value);
                 setSelectedCircuit(value);
                 combobox.closeDropdown();
               }}
@@ -347,7 +335,6 @@ export default function ChurchesPage() {
                   onClick={() => {
                     if (selectedCircuit) {
                       setSelectedCircuit(null);
-                      setValue(null);
                     } else {
                       combobox.openDropdown();
                     }

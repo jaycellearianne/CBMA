@@ -1,7 +1,4 @@
 "use client";
-
-// Search "TODO: Implement Add User logic" to find where you need to implement the actual Add User logic
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -30,11 +27,11 @@ export default function AddUserButton() {
   const [selectedRole, setSelectedRole] = useState(roles[0]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [formData, setFormData] = useState({ name: "", email: "" });
-  const [errors, setErrors] = useState({ name: "", email: "" }); // New state for validation errors
+  const [errors, setErrors] = useState({ name: "", email: "" });
 
   const handleChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
-    setErrors((prev) => ({ ...prev, [field]: "" })); // Clear error when typing
+    setErrors((prev) => ({ ...prev, [field]: "" }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -43,13 +40,11 @@ export default function AddUserButton() {
     let newErrors = { name: "", email: "" };
     let isValid = true;
 
-    // Validate Full Name
     if (formData.name.trim() === "") {
       newErrors.name = "Full Name is required.";
       isValid = false;
     }
 
-    // Validate Email Address
     if (formData.email.trim() === "") {
       newErrors.email = "Email Address is required.";
       isValid = false;
@@ -61,40 +56,18 @@ export default function AddUserButton() {
     setErrors(newErrors);
 
     if (!isValid) {
-      return; // Stop submission if there are errors
+      return;
     }
 
-    // TODO: Implement Add User logic here (Also trim the full name pls :)
-    const trimmedName = formData.name.trim(); // Trim the full name
+    const trimmedName = formData.name.trim();
     console.log({
       name: trimmedName,
       email: formData.email,
       role: selectedRole.value,
     });
 
-    // Actual Add User logic would go here, e.g., API call
-    // try {
-    //   const response = await fetch('/api/users', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify({ name: trimmedName, email: formData.email, role: selectedRole.value }),
-    //   });
-    //   if (!response.ok) {
-    //     throw new Error('Failed to add user');
-    //   }
-    //   // Handle success (e.g., refresh user list, show success message)
-    //   console.log('User added successfully!');
-    //   setIsOpen(false);
-    //   setFormData({ name: "", email: "" }); // Clear form
-    // } catch (error) {
-    //   console.error('Error adding user:', error);
-    //   // Handle error (e.g., show error message to user)
-    // }
-
     setIsOpen(false);
-    setFormData({ name: "", email: "" }); // Clear form after successful submission
+    setFormData({ name: "", email: "" });
   };
 
   return (
@@ -103,8 +76,8 @@ export default function AddUserButton() {
         className="bg-[#6F4E37] h-10 px-4 text-white hover:bg-[#A67B5B] flex items-center gap-2"
         onClick={() => {
           setIsOpen(true);
-          setErrors({ name: "", email: "" }); // Clear errors when opening modal
-          setFormData({ name: "", email: "" }); // Clear form data when opening modal
+          setErrors({ name: "", email: "" });
+          setFormData({ name: "", email: "" });
         }}
       >
         <Plus className="w-4 h-4" />
@@ -161,7 +134,6 @@ export default function AddUserButton() {
                 )}
               </div>
 
-              {/* Role Dropdown */}
               <div>
                 <label className="text-sm font-medium text-gray-700 mb-1 block">
                   Select Role
@@ -204,6 +176,7 @@ export default function AddUserButton() {
                   type="button"
                   variant="secondary"
                   onClick={() => setIsOpen(false)}
+                  className="border-1 border-[#A67B5B]/25 bg-[#A67B5B]/10 w-full max-w-none text-black hover:bg-red-50"
                 >
                   Cancel
                 </Button>

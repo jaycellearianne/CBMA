@@ -222,7 +222,7 @@ export default function AddChurchModal({ onSuccess }: AddChurchModalProps) {
             className="bg-[#6F4E37] w-full hover:bg-[#432F21]"
             type="submit"
           >
-            Add Church
+            Add New Church
           </Button>
         </form>
       </Form>
