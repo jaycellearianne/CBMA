@@ -23,6 +23,13 @@ import {
 import AddPastorForm from "./AddPastorForm";
 
 export default function AddPastorModal() {
+  // MOCK DATA
+  const mockChurches = [
+    { id: 101, name: "Grace Community Church", location: "Downtown" },
+    { id: 102, name: "Faith Baptist Church", location: "Uptown" },
+    { id: 103, name: "Hope Revival Church", location: "Suburbs" },
+  ];
+
   const [open, setOpen] = useState(false);
   const isMobile = useMediaQuery({ query: "(max-width: 640px)" });
   const [mounted, setMounted] = useState(false);
@@ -42,24 +49,17 @@ export default function AddPastorModal() {
                 <Plus size={24} color="white" /> Add Pastor
               </Button>
             </DrawerTrigger>
-            <DrawerContent className="w-full max-w-none px-4">
+            <DrawerContent className="w-full max-w-none px-4 h-full flex flex-col">
               <DrawerHeader>
                 <DrawerTitle className="text-2xl font-bold text-[#6F4E37]">
                   Add Pastor
                 </DrawerTitle>
               </DrawerHeader>
-              <AddPastorForm onSuccess={() => setOpen(false)} />
-              <DrawerFooter className="p-0 mt-0 py-2">
-                <DrawerClose asChild>
-                  <Button
-                    className="border-1 border-[#A67B5B]/25 bg-[#A67B5B]/10 w-full max-w-none text-black hover:bg-red-50"
-                    variant="default"
-                    type="button"
-                  >
-                    Cancel
-                  </Button>
-                </DrawerClose>
-              </DrawerFooter>
+              <AddPastorForm
+                churches={mockChurches}
+                onSuccess={() => setOpen(false)}
+                onCancel={() => setOpen(false)}
+              />
             </DrawerContent>
           </Drawer>
         ) : (
@@ -75,7 +75,11 @@ export default function AddPastorModal() {
                   Add New Pastor
                 </DialogTitle>
               </DialogHeader>
-              <AddPastorForm onSuccess={() => setOpen(false)} />
+              <AddPastorForm
+                churches={mockChurches}
+                onSuccess={() => setOpen(false)}
+                onCancel={() => setOpen(false)}
+              />
             </DialogContent>
           </Dialog>
         )}

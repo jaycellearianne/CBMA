@@ -28,42 +28,47 @@ import { Textarea } from "@/components/ui/textarea";
 import AddChurchModal from "../churches/AddChurchModal";
 import AddPastorModal from "../pastors/AddPastorModal";
 
-interface AddCircuitModalProps {
+type AddCircuitModalProps = {
+  pastors: { id: number; name: string }[];
+  churches: { id: number; name: string; location: string }[];
   onSuccess?: () => void;
-}
+  onCancel?: () => void;
+};
 
-export default function AddCircuitModal({ onSuccess }: AddCircuitModalProps) {
-  const churchData = [
-    {
-      id: 1,
-      pastor: "Arroz, Generoso Jr. C.",
-      church: "Malublub Baptist Church",
-    },
-    { id: 2, pastor: "Francia, Jireh John", church: "Baptist Center Church" },
-    {
-      id: 3,
-      pastor: "Mije, Rosendo",
-      church: "Good Hope Baptist Church",
-    },
-    {
-      id: 4,
-      pastor: "Sian, Cris Amorsolo",
-      church: "CPU University Church",
-    },
+export default function AddCircuitModal({
+  pastors,
+  churches,
+  onSuccess,
+  onCancel,
+}: AddCircuitModalProps) {
+  // MOCK DATA
+  const mockPastors = [
+    { id: 1, name: "Pastor John Doe" },
+    { id: 2, name: "Pastor Jane Smith" },
+    { id: 3, name: "Pastor Luke Sky" },
   ];
+
+  const mockChurches = [
+    { id: 101, name: "Grace Community Church", location: "Downtown" },
+    { id: 102, name: "Faith Baptist Church", location: "Uptown" },
+    { id: 103, name: "Hope Revival Church", location: "Suburbs" },
+  ];
+
   const [previews, setPreviews] = useState<string[]>([]);
+  const [selectedPastors, setSelectedPastors] = useState<number[]>([]);
+  const [selectedChurches, setSelectedChurches] = useState<number[]>([]);
 
   const formSchema = z.object({
-    name: z.string().min(2, { message: "Name is required" }).max(50),
+    circuitName: z.string().min(2, { message: "Name is required" }).max(50),
     description: z
       .string()
       .max(150, { message: "Description must be at most 150 characters" }),
-    pastor: z
-      .string({ required_error: "Please select a church" })
-      .min(1, { message: "Please select a pastor" }),
-    church: z
-      .string({ required_error: "Please select a church" })
-      .min(1, { message: "Please select a church" }),
+    pastors: z
+      .array(z.number())
+      .min(1, { message: "At least one pastor must be selected" }),
+    churches: z
+      .array(z.number())
+      .min(1, { message: "At least one church must be selected" }),
     image: z
       .array(
         z.object({
@@ -83,10 +88,25 @@ export default function AddCircuitModal({ onSuccess }: AddCircuitModalProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
+      circuitName: "",
+      description: "",
+      pastors: [],
+      churches: [],
       image: [],
     },
   });
+
+  const togglePastor = (id: number) => {
+    setSelectedPastors((prev) =>
+      prev.includes(id) ? prev.filter((pid) => pid !== id) : [...prev, id]
+    );
+  };
+
+  const toggleChurch = (id: number) => {
+    setSelectedChurches((prev) =>
+      prev.includes(id) ? prev.filter((cid) => cid !== id) : [...prev, id]
+    );
+  };
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     toast(" New pastor has been added successfully.", {
@@ -98,16 +118,15 @@ export default function AddCircuitModal({ onSuccess }: AddCircuitModalProps) {
 
   return (
     <>
-      <div className="bg-white ">
+      <div className="bg-white w-full h-full overflow-y-auto px-1 pb-4">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
             className="space-y-4 w-full"
           >
-            {/* Name */}
             <FormField
               control={form.control}
-              name="name"
+              name="circuitName"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel htmlFor="circuit-name" className="text-[#6f4e37]">
@@ -142,8 +161,8 @@ export default function AddCircuitModal({ onSuccess }: AddCircuitModalProps) {
                     <Textarea
                       id="circuit-description"
                       placeholder="Enter description"
-                      className="bg-[#F7F4F0] rounded-lg resize-none h-auto max-h-[250px] md:max-h-[300px] lg:max-h-[350px]"
-                      maxLength={150}
+                      className="bg-[#F7F4F0] rounded-lg resize-none h-auto max-h-[250px]"
+                      maxLength={500}
                       {...field}
                     />
                   </FormControl>
@@ -152,87 +171,52 @@ export default function AddCircuitModal({ onSuccess }: AddCircuitModalProps) {
               )}
             />
             {/* Pastor */}
-            <FormField
-              control={form.control}
-              name="pastor"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel
-                    htmlFor="circuit-pastor"
-                    className="text-[#6f4e37]"
-                  >
-                    Select Pastor
-                  </FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger
-                        id="circuit-pastor"
-                        name="pastor"
-                        className="w-full bg-[#F7F4F0]"
-                      >
-                        <SelectValue
-                          className="bg-[#F7F4F0]"
-                          placeholder="Select pastor"
-                        ></SelectValue>
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {churchData.map((pastor) => (
-                        <SelectItem key={pastor.id} value={pastor.pastor}>
-                          {pastor.pastor}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                  <AddPastorModal />
-                </FormItem>
-              )}
-            />
+            <div>
+              <label className="block text-sm font-medium text-[#6f4e37] mb-1">
+                Select Pastors
+              </label>
+              <div className="border rounded-lg p-4 max-h-40 overflow-y-auto bg-[#F7F4F0]">
+                {pastors.map((p) => (
+                  <label key={p.id} className="flex items-center mb-4">
+                    <input
+                      type="checkbox"
+                      checked={selectedPastors.includes(p.id)}
+                      onChange={() => togglePastor(p.id)}
+                      className="mr-2"
+                    />
+                    <div className="text-sm font-medium text-gray-800">
+                      {p.name}
+                    </div>
+                  </label>
+                ))}
+              </div>
+            </div>
+
             {/* Church */}
-            <FormField
-              control={form.control}
-              name="church"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel
-                    htmlFor="circuit-church"
-                    className="text-[#6f4e37]"
-                  >
-                    Select Church
-                  </FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger
-                        id="circuit-church"
-                        name="church"
-                        className="w-full bg-[#F7F4F0]"
-                      >
-                        <SelectValue
-                          className="bg-[#F7F4F0]"
-                          placeholder="Select church"
-                        ></SelectValue>
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {churchData.map((church) => (
-                        <SelectItem key={church.id} value={church.church}>
-                          {church.church}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                  <AddChurchModal />
-                </FormItem>
-              )}
-            />
+            <div>
+              <label className="block text-sm font-medium text-[#6f4e37] mb-1">
+                Select Churches
+              </label>
+              <div className="border rounded-lg p-4 max-h-40 overflow-y-auto bg-[#F7F4F0]">
+                {churches.map((c) => (
+                  <label key={c.id} className="flex items-center mb-2">
+                    <input
+                      type="checkbox"
+                      checked={selectedChurches.includes(c.id)}
+                      onChange={() => toggleChurch(c.id)}
+                      className="mr-2"
+                    />
+                    <div>
+                      <div className="text-sm font-medium text-gray-800">
+                        {c.name}
+                      </div>
+                      <div className="text-xs text-gray-500">{c.location}</div>
+                    </div>
+                  </label>
+                ))}
+              </div>
+            </div>
+
             {/* Upload Image */}
             <FormField
               control={form.control}
@@ -312,12 +296,25 @@ export default function AddCircuitModal({ onSuccess }: AddCircuitModalProps) {
                 </FormItem>
               )}
             />
-            <Button
-              className="bg-[#6F4E37] w-full hover:bg-[#432F21]"
-              type="submit"
-            >
-              Add New Circuit
-            </Button>
+
+            <div className="flex flex-col gap-2">
+              <Button
+                className="bg-[#6F4E37] w-full hover:bg-[#432F21]"
+                type="submit"
+              >
+                Add New Circuit
+              </Button>
+
+              {onCancel && (
+                <Button
+                  type="button"
+                  onClick={onCancel}
+                  className="border border-[#A67B5B]/25 bg-[#A67B5B]/10 w-full text-black hover:bg-red-50"
+                >
+                  Cancel
+                </Button>
+              )}
+            </div>
           </form>
         </Form>
       </div>

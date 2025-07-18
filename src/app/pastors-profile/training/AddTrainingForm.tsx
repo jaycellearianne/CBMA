@@ -154,7 +154,7 @@ export default function AddTrainingForm({
           type="submit"
           className="bg-[#6F4E37] w-full hover:bg-[#432F21]"
         >
-          Add Training
+          Add New Training
         </Button>
       </form>
     </div>

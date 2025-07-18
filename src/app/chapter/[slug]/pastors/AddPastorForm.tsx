@@ -27,29 +27,22 @@ import Image from "next/image";
 import AddChurchModal from "../churches/AddChurchModal";
 
 interface AddPastorModalProps {
+  churches: { id: number; name: string; location: string }[];
   onSuccess?: () => void;
+  onCancel?: () => void;
 }
 
-export default function AddPastorModal({ onSuccess }: AddPastorModalProps) {
-  const churchData = [
-    {
-      id: 1,
-      church: "Malublub Baptist Church",
-    },
-    { id: 2, church: "Baptist Center Church" },
-    {
-      id: 3,
-      church: "Good Hope Baptist Church",
-    },
-    {
-      id: 4,
-      church: "CPU University Church",
-    },
-  ];
+export default function AddPastorModal({
+  churches,
+  onSuccess,
+  onCancel,
+}: AddPastorModalProps) {
   const [previews, setPreviews] = useState<string[]>([]);
+  const [selectedChurches, setSelectedChurches] = useState<number[]>([]);
 
   const formSchema = z.object({
     name: z.string().min(2, { message: "Name is required" }).max(50),
+    address: z.string().min(5, { message: "Address is required" }).max(100),
     church: z
       .string({ required_error: "Please select a church" })
       .min(1, { message: "Please select a church" }),
@@ -73,9 +66,17 @@ export default function AddPastorModal({ onSuccess }: AddPastorModalProps) {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
+      address: "",
+      church: "",
       image: [],
     },
   });
+
+  const toggleChurch = (id: number) => {
+    setSelectedChurches((prev) =>
+      prev.includes(id) ? prev.filter((cid) => cid !== id) : [...prev, id]
+    );
+  };
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     toast(" New pastor has been added successfully.", {
@@ -87,7 +88,7 @@ export default function AddPastorModal({ onSuccess }: AddPastorModalProps) {
 
   return (
     <>
-      <div className="bg-white ">
+      <div className="bg-white w-full h-full overflow-y-auto px-1 pb-4">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -116,7 +117,7 @@ export default function AddPastorModal({ onSuccess }: AddPastorModalProps) {
             />
             <FormField
               control={form.control}
-              name="name"
+              name="address"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel htmlFor="address" className="text-[#6f4e37]">
@@ -135,48 +136,32 @@ export default function AddPastorModal({ onSuccess }: AddPastorModalProps) {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="church"
-              render={({ field }) => (
-                <>
-                  <FormItem>
-                    <FormLabel
-                      htmlFor="pastor-church"
-                      className="text-[#6f4e37]"
-                    >
-                      Select Church
-                    </FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger
-                          id="pastor-church"
-                          name="church"
-                          className="w-full bg-[#F7F4F0]"
-                        >
-                          <SelectValue
-                            className="bg-[#F7F4F0]"
-                            placeholder="Select church"
-                          ></SelectValue>
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {churchData.map((church) => (
-                          <SelectItem key={church.id} value={church.church}>
-                            {church.church}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                    <AddChurchModal />
-                  </FormItem>
-                </>
-              )}
-            />
+
+            {/* Church */}
+            <div>
+              <label className="block text-sm font-medium text-[#6f4e37] mb-1">
+                Select Churches
+              </label>
+              <div className="border rounded-lg p-4 max-h-40 overflow-y-auto bg-[#F7F4F0]">
+                {churches.map((c) => (
+                  <label key={c.id} className="flex items-center mb-2">
+                    <input
+                      type="checkbox"
+                      checked={selectedChurches.includes(c.id)}
+                      onChange={() => toggleChurch(c.id)}
+                      className="mr-2"
+                    />
+                    <div>
+                      <div className="text-sm font-medium text-gray-800">
+                        {c.name}
+                      </div>
+                      <div className="text-xs text-gray-500">{c.location}</div>
+                    </div>
+                  </label>
+                ))}
+              </div>
+            </div>
+
             <FormField
               control={form.control}
               name="image"
@@ -255,12 +240,24 @@ export default function AddPastorModal({ onSuccess }: AddPastorModalProps) {
                 </FormItem>
               )}
             />
-            <Button
-              className="bg-[#6F4E37] w-full hover:bg-[#432F21]"
-              type="submit"
-            >
-              Add New Pastor
-            </Button>
+            <div className="flex flex-col gap-2">
+              <Button
+                className="bg-[#6F4E37] w-full hover:bg-[#432F21]"
+                type="submit"
+              >
+                Add New Circuit
+              </Button>
+
+              {onCancel && (
+                <Button
+                  type="button"
+                  onClick={onCancel}
+                  className="border border-[#A67B5B]/25 bg-[#A67B5B]/10 w-full text-black hover:bg-red-50"
+                >
+                  Cancel
+                </Button>
+              )}
+            </div>
           </form>
         </Form>
       </div>

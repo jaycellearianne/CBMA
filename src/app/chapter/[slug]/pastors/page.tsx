@@ -8,6 +8,11 @@ import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import AddPastorModal from "./AddPastorModal";
 
+export interface Pastor {
+  id: number;
+  name: string;
+}
+
 export default function PastorsPage() {
   const router = useRouter();
   const params = useParams();

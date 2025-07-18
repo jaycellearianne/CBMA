@@ -1,13 +1,12 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Bell, Menu, Plus } from "lucide-react";
 import NavBar from "../navigation/NavBar";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import AddChapterButton from "../chapter/addChapterButton";
+import AddChapterModal from "../chapter/addChapterModal";
 
 export default function DashboardPage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -43,9 +42,6 @@ export default function DashboardPage() {
     { id: 2, name: "Mije, Rosendo", chapter: "iloilo-chapter" },
   ];
 
-  {
-    /* Mock data */
-  }
   const circuits = [
     {
       id: 1,
@@ -84,8 +80,6 @@ export default function DashboardPage() {
     })),
   ];
 
-  const [isAddChapterOpen, setIsAddChapterOpen] = useState(false);
-
   const filteredResults = searchQuery
     ? searchableItems.filter((item) =>
         item.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -95,38 +89,35 @@ export default function DashboardPage() {
   const handleResultClick = (slug: string) => {
     router.push(`/chapter/${slug}`);
   };
-
-  const handleChapterClick = (chapterSlug: string) => {
-    router.push(`/chapter/${chapterSlug}`);
+  const handleChapterClick = (slug: string) => {
+    router.push(`/chapter/${slug}`);
   };
 
   return (
     <div>
       <NavBar />
       <div className="min-h-screen bg-white">
-        <div className="px-4 py-4 space-y-6">
+        <div className="px-4 py-4 space-y-6 relative">
           {/* Search Bar */}
-          <div>
-            <Input
-              type="text"
-              placeholder="Search chapter, church, pastor, circuit..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full h-10 px-4 bg-gray-100 border-0 rounded-md text-sm placeholder:text-gray-500 focus:ring-black-200 focus:bg-white"
-            />
-          </div>
+          <Input
+            type="text"
+            placeholder="Search chapter, church, pastor, circuit..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full h-10 px-4 bg-gray-100 border-0 rounded-md text-sm placeholder:text-gray-500 focus:ring-black-200 focus:bg-white"
+          />
 
           {/* Search Results */}
           {searchQuery && (
-            <div className="bg-gray-50 border rounded-lg p-4 space-y-2 absolute z-1">
+            <div className="absolute top-14 left-4 right-4 bg-gray-50 border rounded-lg p-4 space-y-2 z-10">
               {filteredResults.length === 0 ? (
                 <p className="text-gray-500 text-sm">No results found.</p>
               ) : (
-                filteredResults.map((item, index) => (
+                filteredResults.map((item, idx) => (
                   <div
-                    key={index}
+                    key={idx}
                     onClick={() => handleResultClick(item.slug)}
-                    className="cursor-pointer px-2 py-1 hover:bg-[#A67B5B] rounded-md"
+                    className="cursor-pointer px-2 py-1 hover:bg-[#A67B5B]/20 rounded-md"
                   >
                     <p className="text-sm font-medium text-black">
                       {item.name}
@@ -145,36 +136,20 @@ export default function DashboardPage() {
           </div>
 
           {/* Notes */}
-          <div>
-            <Textarea
-              placeholder="Enter your notes here..."
-              value={noteText}
-              onChange={(e) => setNoteText(e.target.value)}
-              className="w-full h-20 px-4 py-3 border border-gray-300 rounded-md text-sm resize-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
-            />
-          </div>
+          <Textarea
+            placeholder="Enter your notes here..."
+            value={noteText}
+            onChange={(e) => setNoteText(e.target.value)}
+            className="w-full h-20 px-4 py-3 border border-gray-300 rounded-md text-sm resize-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+          />
 
-          {/* Chapters */}
+          {/* Chapters Section */}
           <div className="space-y-5">
             <div className="flex items-center justify-between">
               <h2 className="text-2xl font-medium text-black">CHAPTERS</h2>
-              <Button
-                size="sm"
-                className="bg-[#6F4E37] hover:bg-[#A67B5B] text-white text-xs px-3 py-1 h-10 rounded-lg"
-                onClick={() => setIsAddChapterOpen(true)}
-              >
-                <Plus className="w-3 h-3 mr-1" />
-                Add Chapter
-              </Button>
+              {/* Responsive AddChapterModal */}
+              <AddChapterModal pastors={pastors} churches={churches} />
             </div>
-
-            {isAddChapterOpen && (
-              <AddChapterButton
-                pastors={pastors}
-                churches={churches}
-                onCancelAction={() => setIsAddChapterOpen(false)}
-              />
-            )}
 
             <div className="grid grid-cols-2 gap-7.5">
               {chapters.map((chapter) => (

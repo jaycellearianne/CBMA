@@ -8,6 +8,12 @@ import { useState, useEffect } from "react";
 import AddChurchModal from "./AddChurchModal";
 import { Combobox, useCombobox } from "@mantine/core";
 
+export interface Church {
+  id: number;
+  name: string;
+  location: string;
+}
+
 export default function ChurchesPage() {
   const router = useRouter();
   const params = useParams();
@@ -202,6 +208,9 @@ export default function ChurchesPage() {
         >
           <ArrowLeft className="w-5 h-5" />
         </Button>
+        <h1 className="text-lg font-semibold text-black">
+          {chapterName} Churches
+        </h1>
       </div>
 
       {/* Search */}
@@ -316,9 +325,6 @@ export default function ChurchesPage() {
 
       {/* Add Button */}
       <div className="flex flex-row px-4 pb-4 items-center justify-between">
-        <h1 className="text-lg font-semibold text-black">
-          {chapterName} Churches
-        </h1>
         <div className="flex flex-row items-center gap-2">
           <div>
             <Combobox

@@ -19,18 +19,30 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import AddCircuitForm from "./AddCircuitForm"
-
+import AddCircuitForm from "./AddCircuitForm";
 
 export default function AddPastorModal() {
   const [open, setOpen] = useState(false);
-
   const isMobile = useMediaQuery({ query: "(max-width: 640px)" });
   const [mounted, setMounted] = useState(false);
+
   useEffect(() => {
     setMounted(true);
   }, []);
   if (!mounted) return null;
+
+  // MOCK DATA
+  const mockPastors = [
+    { id: 1, name: "Pastor John Doe" },
+    { id: 2, name: "Pastor Jane Smith" },
+    { id: 3, name: "Pastor Luke Sky" },
+  ];
+
+  const mockChurches = [
+    { id: 101, name: "Grace Community Church", location: "Downtown" },
+    { id: 102, name: "Faith Baptist Church", location: "Uptown" },
+    { id: 103, name: "Hope Revival Church", location: "Suburbs" },
+  ];
 
   return (
     <>
@@ -42,24 +54,21 @@ export default function AddPastorModal() {
                 <Plus size={24} color="white" /> Add Circuit
               </Button>
             </DrawerTrigger>
-            <DrawerContent className="w-full max-w-none px-4">
+            <DrawerContent className="w-full max-w-none px-4 h-full flex flex-col">
               <DrawerHeader>
                 <DrawerTitle className="text-2xl font-bold text-[#6F4E37]">
                   Add Circuit
                 </DrawerTitle>
               </DrawerHeader>
-              <AddCircuitForm onSuccess={() => setOpen(false)} />
-              <DrawerFooter className="p-0 mt-0 py-2">
-                <DrawerClose asChild>
-                  <Button
-                    className="border-1 border-[#A67B5B]/25 bg-[#A67B5B]/10 w-full max-w-none text-black hover:bg-red-50"
-                    variant="default"
-                    type="button"
-                  >
-                    Cancel
-                  </Button>
-                </DrawerClose>
-              </DrawerFooter>
+
+              <div className="flex-1 overflow-y-auto px-2">
+                <AddCircuitForm
+                  pastors={mockPastors}
+                  churches={mockChurches}
+                  onSuccess={() => setOpen(false)}
+                  onCancel={() => setOpen(false)}
+                />
+              </div>
             </DrawerContent>
           </Drawer>
         ) : (
@@ -72,10 +81,15 @@ export default function AddPastorModal() {
             <DialogContent>
               <DialogHeader className="items-center">
                 <DialogTitle className="text-2xl items-center justify-center font-bold text-[#6F4E37]">
-                  Add New Circuit
+                  Add Circuit
                 </DialogTitle>
               </DialogHeader>
-              <AddCircuitForm onSuccess={() => setOpen(false)} />
+              <AddCircuitForm
+                pastors={mockPastors}
+                churches={mockChurches}
+                onSuccess={() => setOpen(false)}
+                onCancel={() => setOpen(false)}
+              />
             </DialogContent>
           </Dialog>
         )}
