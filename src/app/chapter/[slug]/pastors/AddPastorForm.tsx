@@ -4,14 +4,18 @@ import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
 import { toast } from "sonner";
-import { CheckCircle, CloudUpload, X } from "lucide-react";
+import { CheckCircle, CloudUpload, PlusIcon, X } from "lucide-react";
 import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-} from "@/components/ui/select";
+  Tags,
+  TagsContent,
+  TagsEmpty,
+  TagsGroup,
+  TagsInput,
+  TagsItem,
+  TagsList,
+  TagsTrigger,
+  TagsValue,
+} from "@/components/ui/shadcn-io/tags";
 import {
   Form,
   FormControl,
@@ -26,17 +30,17 @@ import { useState } from "react";
 import Image from "next/image";
 import AddChurchModal from "../churches/AddChurchModal";
 
-interface AddPastorModalProps {
+interface AddPastorFormProps {
   churches: { id: number; name: string; location: string }[];
   onSuccess?: () => void;
   onCancel?: () => void;
 }
 
-export default function AddPastorModal({
+export default function AddPastorForm({
   churches,
   onSuccess,
   onCancel,
-}: AddPastorModalProps) {
+}: AddPastorFormProps) {
   const [previews, setPreviews] = useState<string[]>([]);
   const [selectedChurches, setSelectedChurches] = useState<number[]>([]);
 
@@ -44,8 +48,10 @@ export default function AddPastorModal({
     name: z.string().min(2, { message: "Name is required" }).max(50),
     address: z.string().min(5, { message: "Address is required" }).max(100),
     church: z
-      .string({ required_error: "Please select a church" })
-      .min(1, { message: "Please select a church" }),
+      .array(z.number(), {
+        required_error: "Please select at least one church",
+      })
+      .min(1, { message: "Please select at least one church" }),
     image: z
       .array(
         z.object({
@@ -67,7 +73,7 @@ export default function AddPastorModal({
     defaultValues: {
       name: "",
       address: "",
-      church: "",
+      church: [],
       image: [],
     },
   });
@@ -138,29 +144,90 @@ export default function AddPastorModal({
             />
 
             {/* Church */}
-            <div>
-              <label className="block text-sm font-medium text-[#6f4e37] mb-1">
-                Select Churches
-              </label>
-              <div className="border rounded-lg p-4 max-h-40 overflow-y-auto bg-[#F7F4F0]">
-                {churches.map((c) => (
-                  <label key={c.id} className="flex items-center mb-2">
-                    <input
-                      type="checkbox"
-                      checked={selectedChurches.includes(c.id)}
-                      onChange={() => toggleChurch(c.id)}
-                      className="mr-2"
-                    />
-                    <div>
-                      <div className="text-sm font-medium text-gray-800">
-                        {c.name}
-                      </div>
-                      <div className="text-xs text-gray-500">{c.location}</div>
-                    </div>
-                  </label>
-                ))}
-              </div>
-            </div>
+            <FormField
+              control={form.control}
+              name="church"
+              render={({ field }) => {
+                const selected = field.value;
+                const handleRemove = (id: number) => {
+                  field.onChange(selected.filter((val: number) => val !== id));
+                };
+                const handleSelect = (id: number) => {
+                  if (selected.includes(id)) {
+                    handleRemove(id);
+                  } else {
+                    field.onChange([...selected, id]);
+                  }
+                };
+
+                return (
+                  <FormItem>
+                    <FormLabel className="text-[#6f4e37]">
+                      Select Churches
+                    </FormLabel>
+                    <Tags className="bg-[#F7F4F0]">
+                      <TagsTrigger>
+                        {selected.map((id) => {
+                          const church = churches.find((c) => c.id === id);
+                          return (
+                            <TagsValue
+                              key={id}
+                              onRemove={() => handleRemove(id)}
+                            >
+                              {church?.name}
+                            </TagsValue>
+                          );
+                        })}
+                      </TagsTrigger>
+                      <TagsContent>
+                        <TagsInput placeholder="Search church..." />
+                        <TagsList>
+                          <TagsEmpty>
+                            <div className="w-full text-center">
+                              <button
+                                type="button"
+                                className="mx-auto flex cursor-pointer items-center gap-2 text-sm text-muted-foreground hover:underline"
+                                onClick={() => {
+                                  // Add logic to open AddChurchModal
+                                }}
+                              >
+                                <PlusIcon
+                                  className="text-muted-foreground"
+                                  size={14}
+                                />
+                                Create new church
+                              </button>
+                            </div>
+                          </TagsEmpty>
+                          <TagsGroup>
+                            {churches
+                              .filter((c) => !selected.includes(c.id))
+                              .map((c) => (
+                                <TagsItem
+                                  key={c.id}
+                                  value={String(c.id)}
+                                  onSelect={() => handleSelect(c.id)}
+                                >
+                                  <div>
+                                    <div>{c.name}</div>
+                                    <div className="text-xs text-muted-foreground">
+                                      {c.location}
+                                    </div>
+                                  </div>
+                                </TagsItem>
+                              ))}
+                          </TagsGroup>
+                        </TagsList>
+                      </TagsContent>
+                    </Tags>
+                    {/* <div className="mt-2 flex justify-end">
+                    <AddChurchModal />
+                  </div> */}
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
+            />
 
             <FormField
               control={form.control}
@@ -242,21 +309,19 @@ export default function AddPastorModal({
             />
             <div className="flex flex-col gap-2">
               <Button
-                className="bg-[#6F4E37] w-full hover:bg-[#432F21]"
                 type="submit"
+                className="bg-[#6F4E37] w-full hover:bg-[#432F21]"
               >
-                Add New Circuit
+                Add New Chapter
               </Button>
 
-              {onCancel && (
-                <Button
-                  type="button"
-                  onClick={onCancel}
-                  className="border border-[#A67B5B]/25 bg-[#A67B5B]/10 w-full text-black hover:bg-red-50"
-                >
-                  Cancel
-                </Button>
-              )}
+              <Button
+                type="button"
+                onClick={onCancel}
+                className="border border-[#A67B5B]/25 bg-[#A67B5B]/10 w-full text-black hover:bg-red-50"
+              >
+                Cancel
+              </Button>
             </div>
           </form>
         </Form>

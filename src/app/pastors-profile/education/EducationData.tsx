@@ -1,12 +1,11 @@
 "use client";
-
 import { useState } from "react";
 import AddEducationModal from "./AddEducationModal";
 import { Button } from "@/components/ui/button";
 import { CirclePlus, GraduationCap } from "lucide-react";
 import EditEducationModal from "./EditEducationModal";
 
-interface Education {
+export interface Education {
   id: string;
   school: string;
   year: string;

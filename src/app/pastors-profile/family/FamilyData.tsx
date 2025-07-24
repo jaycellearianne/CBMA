@@ -41,7 +41,7 @@ export default function FamilyData({
       Aunt: "bg-cyan-100 text-cyan-800",
       Cousin: "bg-lime-100 text-lime-800",
     };
-    return colors[relationship] || "bg-gray-100 text-gray-800";
+    return colors[relationship] || "bg-gray-200 text-gray-800";
   };
 
   return (
@@ -66,18 +66,22 @@ export default function FamilyData({
               className="bg-gray-50 rounded-lg p-4 border border-gray-200"
             >
               <div className="flex justify-between items-start">
-                <div className="space-y-2 flex-1">
+                <div className="space-y-1 flex-1">
                   {/* NAME */}
-                  <div>
-                    <h4 className="font-medium text-gray-900">{member.name}</h4>
-                    <Badge
-                      className={`${getRelationshipColor(
+                    <div>
+                    <h4 className="font-bold text-black">
+                      {member.name}
+                      <span className="ml-2">
+                      <Badge
+                        className={`${getRelationshipColor(
                         member.relationship
-                      )} text-xs font-medium px-2 py-1`}
-                    >
-                      {member.relationship}
-                    </Badge>
-                  </div>
+                        )} text-xs font-medium px-2 py-1`}
+                      >
+                        {member.relationship}
+                      </Badge>
+                      </span>
+                    </h4>
+                    </div>
 
                   {/* DETAILS */}
                   <div className="space-y-2 text-sm text-gray-600">
@@ -99,7 +103,16 @@ export default function FamilyData({
                       <span className="font-medium text-gray-700">
                         Birth Date:
                       </span>{" "}
-                      {member.birthDate}
+                      {member.birthDate
+                        ? new Date(member.birthDate).toLocaleDateString(
+                            "en-US",
+                            {
+                              year: "numeric",
+                              month: "long",
+                              day: "numeric",
+                            }
+                          )
+                        : "N/A"}
                     </div>
                   </div>
                 </div>
@@ -119,7 +132,7 @@ export default function FamilyData({
                     size="sm"
                     variant="ghost"
                     onClick={() => onDeleteMemberAction(member)}
-                    className="h-8 w-8 p-0 hover:bg-red-100 hover:text-red-600"
+                    className="h-8 w-8 p-0 text-destructive hover:bg-red-100 hover:text-red-600"
                   >
                     <Trash2 className="w-4 h-4" />
                   </Button>

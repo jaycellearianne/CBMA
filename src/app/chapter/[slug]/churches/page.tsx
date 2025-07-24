@@ -49,7 +49,7 @@ export default function ChurchesPage() {
           location: "La Paz, Iloilo City",
           serviceTime: "Sunday 10:30 AM",
           image: "/images/church/church_mock.webp",
-          circuit: "Iloilo City Circuit",
+          circuit: "City Wide Circuit",
         },
         {
           id: 3,
@@ -57,7 +57,7 @@ export default function ChurchesPage() {
           location: "Jaro, Iloilo City",
           serviceTime: "Sunday 8:00 AM",
           image: "/images/church/church_mock.webp",
-          circuit: "Iloilo City Circuit",
+          circuit: "City Wide Circuit",
         },
         {
           id: 4,

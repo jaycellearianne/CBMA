@@ -81,8 +81,8 @@ export default function PastorsPage() {
     }
     return pastors.filter(
       (pastor) =>
-        pastor.name.toLowerCase().startsWith(searchQuery.toLowerCase()) ||
-        pastor.email.toLowerCase().startsWith(searchQuery.toLowerCase())
+      pastor.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      pastor.church.toLowerCase().includes(searchQuery.toLowerCase())
     );
   };
 

@@ -58,7 +58,7 @@ export default function TrainingData({
                 <div className="flex-1 space-y-2">
                   {/* TITLE */}
                   <div>
-                    <h4 className="font-medium text-gray-900 leading-tight">
+                    <h4 className="font-bold text-black leading-tight">
                       {training.title}
                     </h4>
                   </div>
@@ -107,7 +107,7 @@ export default function TrainingData({
                     size="sm"
                     variant="ghost"
                     onClick={() => onDeleteTrainingAction(training)}
-                    className="h-8 w-8 p-0 hover:bg-red-100 hover:text-red-600"
+                    className="h-8 w-8 p-0 text-destructive hover:bg-red-100 hover:text-red-600"
                   >
                     <Trash2 className="w-4 h-4" />
                   </Button>

@@ -5,12 +5,11 @@ import { Plus } from "lucide-react";
 import { useState, useEffect } from "react";
 import {
   Drawer,
-  DrawerClose,
   DrawerContent,
   DrawerHeader,
   DrawerTitle,
-  DrawerFooter,
   DrawerTrigger,
+  DrawerDescription,
 } from "@/components/ui/drawer";
 import {
   Dialog,
@@ -18,6 +17,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import AddChapterForm from "./addChapterForm";
 
@@ -39,57 +39,63 @@ export default function AddChapterModal({
   }, []);
   if (!mounted) return null;
 
-  return (
-    <div className="bg-white">
-      {isMobile ? (
-        <Drawer open={open} onOpenChange={setOpen}>
-          <DrawerTrigger asChild>
-            <Button className="bg-[#6F4E37] h-10 px-4 text-white hover:bg-[#A67B5B] flex flex-row items-center">
-              <Plus size={24} color="white" /> Add Chapter
-            </Button>
-          </DrawerTrigger>
-          <DrawerContent className="w-full max-w-none h-[90vh] flex flex-col px-4">
-            <DrawerHeader>
-              <DrawerTitle className="text-2xl font-bold text-[#6F4E37]">
-                Add Chapter
-              </DrawerTitle>
-            </DrawerHeader>
+  const Separator = () => (
+    <div className="border-t border-gray-200 my-4 w-full" />
+  );
 
-            <div className="flex-1 overflow-y-auto">
-              <AddChapterForm
-                pastors={pastors}
-                churches={churches}
-                onSuccess={() => setOpen(false)}
-                onCancel={() => setOpen(false)}
-              />
-            </div>
-          </DrawerContent>
-        </Drawer>
-      ) : (
-        <Dialog open={open} onOpenChange={setOpen}>
-          <DialogTrigger asChild>
-            <Button className="bg-[#6F4E37] h-10 px-4 text-white hover:bg-[#A67B5B] flex flex-row items-center">
-              <Plus size={24} color="white" /> Add Chapter
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="max-h-[90vh] flex flex-col">
-            <DialogHeader className="items-center">
-              <DialogTitle className="text-2xl font-bold text-[#6F4E37]">
-                Add Chapter
-              </DialogTitle>
-            </DialogHeader>
-
-            <div className="flex-1 overflow-y-auto px-1">
-              <AddChapterForm
-                pastors={pastors}
-                churches={churches}
-                onSuccess={() => setOpen(false)}
-                onCancel={() => setOpen(false)}
-              />
-            </div>
-          </DialogContent>
-        </Dialog>
-      )}
-    </div>
+  return isMobile ? (
+    <Drawer open={open} onOpenChange={setOpen}>
+      <DrawerTrigger asChild>
+        <Button className="bg-[#6F4E37] h-10 px-4 text-white hover:bg-[#A67B5B] flex flex-row items-center">
+          <Plus size={24} color="white" /> Add Chapter
+        </Button>
+      </DrawerTrigger>
+      <DrawerContent className="w-full max-w-none px-4 h-auto flex flex-col">
+        <DrawerHeader>
+          <DrawerTitle className="text-2xl font-bold text-center text-[#6F4E37]">
+            Add New Chapter
+          </DrawerTitle>
+          <DrawerDescription className="text-sm text-center text-gray-500">
+            Please fill out the form to create a new chapter.
+          </DrawerDescription>
+          <Separator />
+        </DrawerHeader>
+        <div className="flex-1 overflow-y-auto">
+          <AddChapterForm
+            pastors={pastors}
+            churches={churches}
+            onSuccess={() => setOpen(false)}
+            onCancel={() => setOpen(false)}
+          />
+        </div>
+      </DrawerContent>
+    </Drawer>
+  ) : (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button className="bg-[#6F4E37] h-10 px-4 text-white hover:bg-[#A67B5B] flex flex-row items-center">
+          <Plus size={24} color="white" /> Add Chapter
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px] max-h-[750px] flex flex-col">
+        <DialogHeader>
+          <DialogTitle className="text-2xl font-bold text-center text-[#6F4E37]">
+            Add New Chapter
+          </DialogTitle>
+          <DialogDescription className="text-sm text-center text-gray-500">
+            Please fill out the form to create a new chapter.
+          </DialogDescription>
+        </DialogHeader>
+        <Separator />
+        <div className="flex-1 overflow-y-auto">
+          <AddChapterForm
+            pastors={pastors}
+            churches={churches}
+            onSuccess={() => setOpen(false)}
+            onCancel={() => setOpen(false)}
+          />
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 }

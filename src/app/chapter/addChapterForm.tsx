@@ -1,10 +1,10 @@
 "use client";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { X, CloudUpload } from "lucide-react";
+import { X, CloudUpload, PlusIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -18,6 +18,19 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import {
+  Tags,
+  TagsContent,
+  TagsEmpty,
+  TagsGroup,
+  TagsInput,
+  TagsItem,
+  TagsList,
+  TagsTrigger,
+  TagsValue,
+} from "@/components/ui/shadcn-io/tags";
+import AddPastorModal from "./[slug]/pastors/AddPastorModal";
+import AddChurchModal from "./[slug]/churches/AddChurchModal";
 
 interface AddChapterFormProps {
   pastors: { id: number; name: string }[];
@@ -35,8 +48,6 @@ export default function AddChapterForm({
   const router = useRouter();
   const [chapterName, setChapterName] = useState("");
   const [description, setDescription] = useState("");
-  const [selectedPastors, setSelectedPastors] = useState<number[]>([]);
-  const [selectedChurches, setSelectedChurches] = useState<number[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
 
   const formSchema = z.object({
@@ -76,18 +87,6 @@ export default function AddChapterForm({
       image: [],
     },
   });
-
-  const togglePastor = (id: number) => {
-    setSelectedPastors((prev) =>
-      prev.includes(id) ? prev.filter((pid) => pid !== id) : [...prev, id]
-    );
-  };
-
-  const toggleChurch = (id: number) => {
-    setSelectedChurches((prev) =>
-      prev.includes(id) ? prev.filter((cid) => cid !== id) : [...prev, id]
-    );
-  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -165,50 +164,164 @@ export default function AddChapterForm({
             )}
           />
 
-          <div>
-            <label className="block text-sm font-medium text-[#6f4e37] mb-1">
-              Select Pastors
-            </label>
-            <div className="border rounded-lg p-4 max-h-40 overflow-y-auto bg-[#F7F4F0]">
-              {pastors.map((p) => (
-                <label key={p.id} className="flex items-center mb-2">
-                  <input
-                    type="checkbox"
-                    checked={selectedPastors.includes(p.id)}
-                    onChange={() => togglePastor(p.id)}
-                    className="mr-2"
-                  />
-                  <div className="text-sm font-medium text-gray-800">
-                    {p.name}
-                  </div>
-                </label>
-              ))}
-            </div>
-          </div>
+          <FormField
+            control={form.control}
+            name="pastors"
+            render={({ field }) => {
+              const selected = field.value;
+              const handleRemove = (id: number) => {
+                field.onChange(selected.filter((val) => val !== id));
+              };
+              const handleSelect = (id: number) => {
+                if (selected.includes(id)) {
+                  handleRemove(id);
+                } else {
+                  field.onChange([...selected, id]);
+                }
+              };
 
-          <div>
-            <label className="block text-sm font-medium text-[#6f4e37] mb-1">
-              Select Churches
-            </label>
-            <div className="border rounded-lg p-4 max-h-40 overflow-y-auto bg-[#F7F4F0]">
-              {churches.map((c) => (
-                <label key={c.id} className="flex items-center mb-2">
-                  <input
-                    type="checkbox"
-                    checked={selectedChurches.includes(c.id)}
-                    onChange={() => toggleChurch(c.id)}
-                    className="mr-2"
-                  />
-                  <div>
-                    <div className="text-sm font-medium text-gray-800">
-                      {c.name}
-                    </div>
-                    <div className="text-xs text-gray-500">{c.location}</div>
-                  </div>
-                </label>
-              ))}
-            </div>
-          </div>
+              return (
+                <FormItem>
+                  <FormLabel className="text-[#6f4e37]">
+                    Select Pastors
+                  </FormLabel>
+                  <Tags className="bg-[#F7F4F0]">
+                    <TagsTrigger>
+                      {selected.map((id) => {
+                        const pastor = pastors.find((p) => p.id === id);
+                        return (
+                          <TagsValue key={id} onRemove={() => handleRemove(id)}>
+                            {pastor?.name}
+                          </TagsValue>
+                        );
+                      })}
+                    </TagsTrigger>
+                    <TagsContent>
+                      <TagsInput placeholder="Search pastor..." />
+                      <TagsList>
+                        <TagsEmpty>
+                          <div className="w-full text-center">
+                            <button
+                              type="button"
+                              className="mx-auto flex cursor-pointer items-center gap-2 text-sm text-muted-foreground hover:underline"
+                              onClick={() => {
+                                // Add logic to open AddPastorModal
+                              }}
+                            >
+                              <PlusIcon
+                                className="text-muted-foreground"
+                                size={14}
+                              />
+                              Create new pastor
+                            </button>
+                          </div>
+                        </TagsEmpty>
+                        <TagsGroup>
+                          {pastors
+                            .filter((p) => !selected.includes(p.id))
+                            .map((p) => (
+                              <TagsItem
+                                key={p.id}
+                                value={String(p.id)}
+                                onSelect={() => handleSelect(p.id)}
+                                >
+                                {p.name}
+                              </TagsItem>
+                            ))}
+                        </TagsGroup>
+                      </TagsList>
+                    </TagsContent>
+                  </Tags>
+                  {/* <div className="mt-2 flex justify-end">
+                    <AddPastorModal />
+                  </div> */}
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
+          />
+
+          <FormField
+            control={form.control}
+            name="churches"
+            render={({ field }) => {
+              const selected = field.value;
+              const handleRemove = (id: number) => {
+                field.onChange(selected.filter((val) => val !== id));
+              };
+              const handleSelect = (id: number) => {
+                if (selected.includes(id)) {
+                  handleRemove(id);
+                } else {
+                  field.onChange([...selected, id]);
+                }
+              };
+
+              return (
+                <FormItem>
+                  <FormLabel className="text-[#6f4e37]">
+                    Select Churches
+                  </FormLabel>
+                  <Tags className="bg-[#F7F4F0]">
+                    <TagsTrigger>
+                      {selected.map((id) => {
+                        const church = churches.find((c) => c.id === id);
+                        return (
+                          <TagsValue key={id} onRemove={() => handleRemove(id)}>
+                            {church?.name}
+                          </TagsValue>
+                        );
+                      })}
+                    </TagsTrigger>
+                    <TagsContent>
+                      <TagsInput placeholder="Search church..." />
+                      <TagsList>
+                        <TagsEmpty>
+                          <div className="w-full text-center">
+                            <button
+                              type="button"
+                              className="mx-auto flex cursor-pointer items-center gap-2 text-sm text-muted-foreground hover:underline"
+                              onClick={() => {
+                                // Add logic to open AddChurchModal
+                              }}
+                            >
+                              <PlusIcon
+                                className="text-muted-foreground"
+                                size={14}
+                              />
+                              Create new church
+                            </button>
+                          </div>
+                        </TagsEmpty>
+                        <TagsGroup>
+                          {churches
+                            .filter((c) => !selected.includes(c.id))
+                            .map((c) => (
+                              <TagsItem
+                                key={c.id}
+                                value={String(c.id)}
+                                onSelect={() => handleSelect(c.id)}
+                              >
+                                <div>
+                                  <div>{c.name}</div>
+                                  <div className="text-xs text-muted-foreground">
+                                    {c.location}
+                                  </div>
+                                </div>
+                              </TagsItem>
+                            ))}
+                        </TagsGroup>
+                      </TagsList>
+                    </TagsContent>
+                  </Tags>
+                  {/* <div className="mt-2 flex justify-end">
+                    <AddChurchModal />
+                  </div> */}
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
+          />
 
           <FormField
             control={form.control}
@@ -286,21 +399,19 @@ export default function AddChapterForm({
 
           <div className="flex flex-col gap-2">
             <Button
-              className="bg-[#6F4E37] w-full hover:bg-[#432F21]"
               type="submit"
+              className="bg-[#6F4E37] w-full hover:bg-[#432F21]"
             >
               Add New Chapter
             </Button>
 
-            {onCancel && (
-              <Button
-                type="button"
-                onClick={onCancel}
-                className="border border-[#A67B5B]/25 bg-[#A67B5B]/10 w-full text-black hover:bg-red-50"
-              >
-                Cancel
-              </Button>
-            )}
+            <Button
+              type="button"
+              onClick={onCancel}
+              className="border border-[#A67B5B]/25 bg-[#A67B5B]/10 w-full text-black hover:bg-red-50"
+            >
+              Cancel
+            </Button>
           </div>
         </form>
       </Form>

@@ -1,9 +1,11 @@
 "use client";
 import type React from "react";
 import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -11,6 +13,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { FamilyMember } from "./FamilyData";
 
 interface AddFamilyFormProps {
@@ -19,19 +29,34 @@ interface AddFamilyFormProps {
   onCancelAction: () => void;
 }
 
+const formSchema = z.object({
+  id: z.number().optional(), // Add id property
+  name: z.string().min(1, { message: "Full Name is required." }),
+  relationship: z.string().min(1, { message: "Relationship is required." }),
+  education: z.string().min(1, { message: "Education is required." }),
+  occupation: z.string().min(1, { message: "Occupation is required." }),
+  birthDate: z.string().min(1, { message: "Birth date is required." }),
+  otherRelationship: z
+    .string()
+    .min(1, { message: "Other relationship is required." }),
+});
+
 export default function AddFamilyForm({
   open,
   onSaveAction,
   onCancelAction,
 }: AddFamilyFormProps) {
-  const [formData, setFormData] = useState<FamilyMember>({
-    id: 0, // Default id value
-    name: "",
-    relationship: "",
-    education: "",
-    occupation: "",
-    birthDate: "",
-    otherRelationship: "",
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      id: 0, // Default id value
+      name: "",
+      relationship: "",
+      education: "",
+      occupation: "",
+      birthDate: "",
+      otherRelationship: "",
+    },
   });
 
   const [errors, setErrors] = useState<Partial<FamilyMember>>({});
@@ -41,145 +66,190 @@ export default function AddFamilyForm({
 
     const newErrors: Partial<FamilyMember> = {};
 
-    if (!formData.name) newErrors.name = "Name is required.";
-    if (!formData.relationship)
-      newErrors.relationship = "Relationship is required.";
-    if (!formData.education) newErrors.education = "Education is required.";
-    if (!formData.occupation) newErrors.occupation = "Occupation is required.";
-    if (!formData.birthDate) newErrors.birthDate = "Birth date is required.";
-
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
-      onSaveAction(formData);
-      setFormData({
-        id: 0, // Reset id value
-        name: "",
-        relationship: "",
-        education: "",
-        occupation: "",
-        birthDate: "",
-        otherRelationship: "",
-      });
+      const values = form.getValues();
+      onSaveAction({ ...values, id: Date.now() }); // Add unique id
+      form.reset(); // Reset form values
     }
   };
 
-  const handleChange = (field: keyof FamilyMember, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-    setErrors((prev) => ({ ...prev, [field]: undefined })); // Clear error for the field
-  };
-
   return (
-    <div className="bg-white">
-      <form onSubmit={handleSubmit} className="space-y-8 w-full">
-        <div>
-          <Label htmlFor="name" className="text-[#6f4e37] mb-2">
-            Name
-          </Label>
-          <Input
-            id="name"
-            value={formData.name}
-            placeholder="Enter full name"
-            className="bg-[#F7F4F0]"
-            onChange={(e) => handleChange("name", e.target.value)}
-          />
-          {errors.name && (
-            <p className="text-red-500 text-xs mt-1">{errors.name}</p>
+    <Form {...form}>
+      <form onSubmit={handleSubmit} className="space-y-4 px-1 mb-4">
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel htmlFor="name" className="text-[#6f4e37]">
+                Full Name
+              </FormLabel>
+              <FormControl>
+                <Input
+                  id="name"
+                  placeholder="Enter full name"
+                  className="bg-[#F7F4F0]"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
           )}
-        </div>
+        />
 
-        <div>
-          <Label htmlFor="relationship" className="text-[#6f4e37] mb-2">
-            Relationship
-          </Label>
-          <Select
-            value={formData.relationship}
-            onValueChange={(value) =>
-              setFormData((prev) => ({
-                ...prev,
-                relationship: value,
-                otherRelationship: "", // reset when changing
-              }))
-            }
+        <FormField
+          control={form.control}
+          name="relationship"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-[#6f4e37]">Relationship</FormLabel>
+              <Select
+                onValueChange={(value) => {
+                  field.onChange(value);
+                  form.setValue("otherRelationship", ""); // reset otherRelationship
+                }}
+                value={field.value}
+              >
+                <FormControl>
+                  <SelectTrigger className="h-10 bg-[#F7F4F0]">
+                    <SelectValue placeholder="Select relationship" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {[
+                    "Father",
+                    "Mother",
+                    "Brother",
+                    "Sister",
+                    "Spouse",
+                    "Daughter",
+                    "Son",
+                    "Grandfather",
+                    "Grandmother",
+                    "Uncle",
+                    "Aunt",
+                    "Cousin",
+                    "Other", // 👈 Add "Other" option
+                  ].map((rel) => (
+                    <SelectItem key={rel} value={rel}>
+                      {rel}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {form.watch("relationship") === "Other" && (
+          <FormField
+            control={form.control}
+            name="otherRelationship"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel
+                  htmlFor="otherRelationship"
+                  className="text-[#6f4e37]"
+                >
+                  Specify Relationship
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    id="otherRelationship"
+                    placeholder="Enter other relationship"
+                    className="bg-[#F7F4F0]"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
+
+        <FormField
+          control={form.control}
+          name="education"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel htmlFor="education" className="text-[#6f4e37]">
+                Education
+              </FormLabel>
+              <FormControl>
+                <Input
+                  id="education"
+                  placeholder="Enter education"
+                  className="bg-[#F7F4F0]"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="occupation"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel htmlFor="occupation" className="text-[#6f4e37]">
+                Occupation
+              </FormLabel>
+              <FormControl>
+                <Input
+                  id="occupation"
+                  placeholder="Enter occupation"
+                  className="bg-[#F7F4F0]"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="birthDate"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel htmlFor="birthDate" className="text-[#6f4e37]">
+                Birth Date
+              </FormLabel>
+              <FormControl>
+                <Input
+                  id="birthDate"
+                  type="date"
+                  className="bg-[#F7F4F0]"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <div className="flex flex-col gap-2.5">
+          <Button
+            type="submit"
+            className="bg-[#6F4E37] w-full hover:bg-[#432F21]"
           >
-            <SelectTrigger className="h-10 bg-[#F7F4F0]">
-              <SelectValue placeholder="Select relationship" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="Father">Father</SelectItem>
-              <SelectItem value="Mother">Mother</SelectItem>
-              <SelectItem value="Brother">Brother</SelectItem>
-              <SelectItem value="Sister">Sister</SelectItem>
-              <SelectItem value="Spouse">Spouse</SelectItem>
-              <SelectItem value="Daughter">Daughter</SelectItem>
-              <SelectItem value="Son">Son</SelectItem>
-              <SelectItem value="Grandfather">Grandfather</SelectItem>
-              <SelectItem value="Grandmother">Grandmother</SelectItem>
-              <SelectItem value="Uncle">Uncle</SelectItem>
-              <SelectItem value="Aunt">Aunt</SelectItem>
-              <SelectItem value="Cousin">Cousin</SelectItem>
-            </SelectContent>
-          </Select>
-          {errors.relationship && (
-            <p className="text-red-500 text-xs mt-1">{errors.relationship}</p>
-          )}
-        </div>
+            Add Family Member
+          </Button>
 
-        <div>
-          <Label htmlFor="education" className="text-[#6f4e37] mb-2">
-            Education
-          </Label>
-          <Input
-            id="education"
-            value={formData.education}
-            placeholder="Enter education"
-            className="bg-[#F7F4F0]"
-            onChange={(e) => handleChange("education", e.target.value)}
-          />
-          {errors.education && (
-            <p className="text-red-500 text-xs mt-1">{errors.education}</p>
-          )}
+          <Button
+            type="button"
+            onClick={onCancelAction}
+            className="border border-[#A67B5B]/25 bg-[#A67B5B]/10 w-full text-black hover:bg-red-50"
+          >
+            Cancel
+          </Button>
         </div>
-
-        <div>
-          <Label htmlFor="occupation" className="text-[#6f4e37] mb-2">
-            Occupation
-          </Label>
-          <Input
-            id="occupation"
-            value={formData.occupation}
-            placeholder="Enter occupation"
-            className="bg-[#F7F4F0]"
-            onChange={(e) => handleChange("occupation", e.target.value)}
-          />
-          {errors.occupation && (
-            <p className="text-red-500 text-xs mt-1">{errors.occupation}</p>
-          )}
-        </div>
-
-        <div>
-          <Label htmlFor="birthDate" className="text-[#6f4e37] mb-2">
-            Birth Date
-          </Label>
-          <Input
-            id="birthDate"
-            type="date"
-            value={formData.birthDate}
-            placeholder="Enter birth date"
-            className="bg-[#F7F4F0]"
-            onChange={(e) => handleChange("birthDate", e.target.value)}
-          />
-          {errors.birthDate && (
-            <p className="text-red-500 text-xs mt-1">{errors.birthDate}</p>
-          )}
-        </div>
-        <Button
-          type="submit"
-          className="bg-[#6F4E37] w-full hover:bg-[#432F21]"
-        >
-          Add Family Member
-        </Button>
       </form>
-    </div>
+    </Form>
   );
 }

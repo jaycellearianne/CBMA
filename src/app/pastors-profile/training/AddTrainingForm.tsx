@@ -1,5 +1,16 @@
 "use client";
 import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -17,146 +28,169 @@ interface TrainingFormData {
   endDate: string;
 }
 
+const formSchema = z
+  .object({
+    title: z.string().nonempty("Title is required"),
+    sponsoringAgency: z.string().nonempty("Sponsoring agency is required"),
+    venue: z.string().nonempty("Venue is required"),
+    startDate: z.string().nonempty("Start date is required"),
+    endDate: z.string().nonempty("End date is required"),
+  })
+  .refine(
+    (data) => new Date(data.endDate) >= new Date(data.startDate),
+    {
+      message: "End date cannot be before start date",
+      path: ["endDate"],
+    }
+  );
+
 export default function AddTrainingForm({
   onSaveAction,
+  onCancelAction,
 }: AddTrainingFormProps) {
-  const [formData, setFormData] = useState<TrainingFormData>({
-    title: "",
-    sponsoringAgency: "",
-    venue: "",
-    startDate: "",
-    endDate: "",
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      title: "",
+      sponsoringAgency: "",
+      venue: "",
+      startDate: "",
+      endDate: "",
+    },
   });
 
-  const [errors, setErrors] = useState<Partial<TrainingFormData>>({});
+const onSubmit = (data: z.infer<typeof formSchema>) => {
+  onSaveAction(data); // data is guaranteed valid by zod
+};
 
-  const validateForm = () => {
-    const newErrors: Partial<TrainingFormData> = {};
-
-    if (!formData.title.trim()) newErrors.title = "Title is required";
-    if (!formData.sponsoringAgency.trim())
-      newErrors.sponsoringAgency = "Sponsoring agency is required";
-    if (!formData.venue.trim()) newErrors.venue = "Venue is required";
-    if (!formData.startDate) newErrors.startDate = "Start date is required";
-    if (!formData.endDate) newErrors.endDate = "End date is required";
-    if (
-      formData.startDate &&
-      formData.endDate &&
-      new Date(formData.startDate) > new Date(formData.endDate)
-    ) {
-      newErrors.endDate = "End date must be after start date";
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleChange = (field: keyof TrainingFormData, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-    if (errors[field]) {
-      setErrors((prev) => ({ ...prev, [field]: undefined }));
-    }
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (validateForm()) {
-      onSaveAction(formData);
-    }
-  };
 
   return (
-    <div className="bg-white">
-      <form onSubmit={handleSubmit} className="space-y-8 w-full">
-        <div>
-          <Label htmlFor="title" className="text-[#6f4e37] mb-2">
-            Title
-          </Label>
-          <Input
-            id="title"
-            value={formData.title}
-            placeholder="Enter training / seminar title"
-            className="bg-[#F7F4F0]"
-            onChange={(e) => handleChange("title", e.target.value)}
-          />
-          {errors.title && (
-            <p className="text-red-500 text-xs mt-1">{errors.title}</p>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 px-1 mb-4">
+        <FormField
+          control={form.control}
+          name="title"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel htmlFor="title" className="text-[#6f4e37]">
+                Title
+              </FormLabel>
+              <FormControl>
+                <Input
+                  id="title"
+                  placeholder="Enter training / seminar title"
+                  className="bg-[#F7F4F0]"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
           )}
-        </div>
+        />
 
-        <div>
-          <Label htmlFor="sponsoringAgency" className="text-[#6f4e37] mb-2">
-            Sponsoring Agency
-          </Label>
-          <Input
-            id="sponsoringAgency"
-            value={formData.sponsoringAgency}
-            placeholder="Enter sponsoring agency"
-            className="bg-[#F7F4F0]"
-            onChange={(e) => handleChange("sponsoringAgency", e.target.value)}
-          />
-          {errors.sponsoringAgency && (
-            <p className="text-red-500 text-xs mt-1">
-              {errors.sponsoringAgency}
-            </p>
+        <FormField
+          control={form.control}
+          name="sponsoringAgency"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel htmlFor="sponsoringAgency" className="text-[#6f4e37]">
+                Sponsoring Agency
+              </FormLabel>
+              <FormControl>
+                <Input
+                  id="sponsoringAgency"
+                  placeholder="Enter sponsoring agency"
+                  className="bg-[#F7F4F0]"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
           )}
-        </div>
+        />
 
-        <div>
-          <Label htmlFor="venue" className="text-[#6f4e37] mb-2">
-            Venue
-          </Label>
-          <Input
-            id="venue"
-            value={formData.venue}
-            placeholder="Enter venue"
-            className="bg-[#F7F4F0]"
-            onChange={(e) => handleChange("venue", e.target.value)}
-          />
-          {errors.venue && (
-            <p className="text-red-500 text-xs mt-1">{errors.venue}</p>
+        <FormField
+          control={form.control}
+          name="venue"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel htmlFor="venue" className="text-[#6f4e37]">
+                Venue
+              </FormLabel>
+              <FormControl>
+                <Input
+                  id="venue"
+                  placeholder="Enter venue"
+                  className="bg-[#F7F4F0]"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
           )}
-        </div>
+        />
 
         <div className="grid grid-cols-2 gap-4">
-          <div>
-            <Label htmlFor="start" className="text-[#6f4e37] mb-2">
-              Start Date
-            </Label>
-            <Input
-              id="start"
-              type="date"
-              value={formData.startDate}
-              className="bg-[#F7F4F0]"
-              onChange={(e) => handleChange("startDate", e.target.value)}
-            />
-            {errors.startDate && (
-              <p className="text-red-500 text-xs mt-1">{errors.startDate}</p>
+          <FormField
+            control={form.control}
+            name="startDate"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel htmlFor="start" className="text-[#6f4e37] mb-2">
+                  Start Date
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    id="start"
+                    type="date"
+                    className="bg-[#F7F4F0]"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
             )}
-          </div>
-          <div>
-            <Label htmlFor="end" className="text-[#6f4e37] mb-2">
-              End Date
-            </Label>
-            <Input
-              id="end"
-              type="date"
-              value={formData.endDate}
-              className="bg-[#F7F4F0]"
-              onChange={(e) => handleChange("endDate", e.target.value)}
-            />
-            {errors.endDate && (
-              <p className="text-red-500 text-xs mt-1">{errors.endDate}</p>
+          />
+
+          <FormField
+            control={form.control}
+            name="endDate"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel htmlFor="end" className="text-[#6f4e37] mb-2">
+                  End Date
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    id="end"
+                    type="date"
+                    className="bg-[#F7F4F0]"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
             )}
-          </div>
+          />
         </div>
-        <Button
-          type="submit"
-          className="bg-[#6F4E37] w-full hover:bg-[#432F21]"
-        >
-          Add New Training
-        </Button>
+
+        <div className="flex flex-col gap-2.5">
+          <Button
+            type="submit"
+            className="bg-[#6F4E37] w-full hover:bg-[#432F21]"
+          >
+            Add New Training
+          </Button>
+
+          <Button
+            type="button"
+            onClick={onCancelAction}
+            className="border border-[#A67B5B]/25 bg-[#A67B5B]/10 w-full text-black hover:bg-red-50"
+          >
+            Cancel
+          </Button>
+        </div>
       </form>
-    </div>
+    </Form>
   );
 }

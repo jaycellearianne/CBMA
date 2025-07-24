@@ -1,14 +1,10 @@
 "use client";
-import AddTrainingForm from "./AddTrainingForm";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
-import { Button } from "@/components/ui/button";
 import {
   Drawer,
-  DrawerClose,
   DrawerContent,
   DrawerDescription,
-  DrawerFooter,
   DrawerHeader,
   DrawerTitle,
 } from "@/components/ui/drawer";
@@ -19,70 +15,63 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import AddUserForm from "./AddUserForm";
 
-type Training = {
-  id: number;
-  title: string;
-  sponsoringAgency: string;
-  venue: string;
-  startDate: string;
-  endDate: string;
-};
-
-interface AddTrainingModalProps {
+interface AddUserModalProps {
   open: boolean;
-  onSaveAction: (training: Omit<Training, "id">) => void;
-  onCancelAction: () => void;
+  onOpenChangeAction: (open: boolean) => void;
+  onSubmitAction: (user: { name: string; email: string; role: string }) => void;
 }
 
-export default function AddTrainingModal({
+export default function AddUserModal({
   open,
-  onSaveAction,
-  onCancelAction,
-}: AddTrainingModalProps) {
+  onOpenChangeAction,
+  onSubmitAction,
+}: AddUserModalProps) {
   const isMobile = useMediaQuery({ query: "(max-width: 640px)" });
   const [mounted, setMounted] = useState(false);
+  const [openState, setOpen] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
-
   if (!mounted) return null;
-
-  const handleSuccess = (data: Omit<Training, "id">) => {
-    onSaveAction(data);
-  };
 
   const Separator = () => (
     <div className="border-t border-gray-200 my-4 w-full" />
   );
 
   return isMobile ? (
-    <Drawer open={open} onOpenChange={(val) => !val && onCancelAction()}>
+    <Drawer open={open} onOpenChange={onOpenChangeAction}>
       <DrawerContent className="w-full max-w-none px-4 h-auto flex flex-col">
         <DrawerHeader>
           <DrawerTitle className="text-2xl font-bold text-center text-[#6F4E37]">
-            Add Training
+            Add New User
           </DrawerTitle>
           <DrawerDescription className="text-sm text-center text-gray-500">
-            Please fill out the form to register a new training data.
+            Please fill out the form to register a new user.
           </DrawerDescription>
           <Separator />
         </DrawerHeader>
         <div className="flex-1 overflow-y-auto">
-          <AddTrainingForm
-            onSaveAction={handleSuccess}
-            onCancelAction={onCancelAction}
+          <AddUserForm
+            open={open}
+            onOpenChangeAction={onOpenChangeAction}
+            onSubmitAction={onSubmitAction}
+            onCancelAction={() => setOpen(false)}
           />
         </div>
       </DrawerContent>
     </Drawer>
   ) : (
-    <Dialog open={open} onOpenChange={(val) => !val && onCancelAction()}>
+    <Dialog
+      open={open}
+      onOpenChange={(val) => !val && onOpenChangeAction(false)}
+    >
       <DialogContent className="sm:max-w-[425px] max-h-[750px] flex flex-col">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-center text-[#6F4E37]">
-            Add Training
+            Add New User
           </DialogTitle>
           <DialogDescription className="text-sm text-center text-gray-500">
             Please fill out the form to register a new user.
@@ -90,9 +79,11 @@ export default function AddTrainingModal({
           <Separator />
         </DialogHeader>
         <div className="flex-1 overflow-y-auto">
-          <AddTrainingForm
-            onSaveAction={handleSuccess}
-            onCancelAction={onCancelAction}
+          <AddUserForm
+            open={open}
+            onOpenChangeAction={onOpenChangeAction}
+            onSubmitAction={onSubmitAction}
+            onCancelAction={() => setOpen(false)}
           />
         </div>
       </DialogContent>

@@ -2,17 +2,15 @@
 import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Bell, Menu, Plus } from "lucide-react";
-import NavBar from "../navigation/NavBar";
+import { Bell, BellIcon, Menu, Plus } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import AddChapterModal from "../chapter/addChapterModal";
+import MenuOverlay from "./MenuOverlay.";
+import Greetings from "./Greetings";
 
 export default function DashboardPage() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [noteText, setNoteText] = useState("");
-  const router = useRouter();
-
+  // MOCK DATA
   const chapters = [
     {
       id: 1,
@@ -57,6 +55,31 @@ export default function DashboardPage() {
     },
   ];
 
+  const [isOpen, setIsOpenAction] = useState<boolean>(false);
+  const [user, setUser] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Mock user data
+    const mockUser = "John Doe"; // Replace with dynamic user data if available
+    setUser(mockUser);
+  }, []);
+
+  const [searchQuery, setSearchQuery] = useState("");
+  const [noteText, setNoteText] = useState("");
+  const router = useRouter();
+  const [isMobile, setIsMobile] = useState(false);
+  const [showMenuOverlay, setShowMenuOverlay] = useState(false);
+
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkScreenSize();
+    window.addEventListener("resize", checkScreenSize);
+    return () => window.removeEventListener("resize", checkScreenSize);
+  }, []);
+
   const searchableItems = [
     ...chapters.map((item) => ({
       type: "Chapter",
@@ -95,9 +118,42 @@ export default function DashboardPage() {
 
   return (
     <div>
-      <NavBar />
+      {/* NAV BAR */}
+      <nav className="bg-white border-b border-gray-200 px-4 py-3">
+        <div className="flex items-center justify-between">
+          {/* Avatar Button */}
+          <button
+            onClick={() => setShowMenuOverlay(true)}
+            className="rounded-full border hover:opacity-80 transition overflow-hidden w-10 h-10"
+          >
+            <Image
+              src="/images/users/img.jpg"
+              alt="User Avatar"
+              width={36}
+              height={36}
+              className="rounded-full object-cover w-full h-full"
+            />
+          </button>
+
+          <h1 className="text-xl font-semibold text-gray-900">Dashboard</h1>
+
+          <button className="p-2 hover:bg-gray-100 rounded-md transition-colors">
+            <Bell className="w-6 h-6" />
+          </button>
+        </div>
+      </nav>
+
+      {/* Menu Overlay */}
+      <MenuOverlay
+        isOpen={showMenuOverlay}
+        onCloseAction={() => setShowMenuOverlay(false)}
+        userName={user}
+        userEmail="johndoe@example.com" // Replace with dynamic email if available
+      />
+
+      {/* MAIN CONTENT */}
       <div className="min-h-screen bg-white">
-        <div className="px-4 py-4 space-y-6 relative">
+        <div className="px-4 py-6 space-y-6 relative">
           {/* Search Bar */}
           <Input
             type="text"
@@ -128,52 +184,42 @@ export default function DashboardPage() {
               )}
             </div>
           )}
+        </div>
+        {/* Greeting */}
+        <div className="mb-6 px-4">
+          <Greetings user={user || ""} />
+        </div>
 
-          {/* Greeting */}
-          <div className="space-y-1">
-            <h2 className="text-xl font-medium text-black">Hello, User!</h2>
-            <p className="text-gray-600 text-sm">Good Morning</p>
+        {/* Chapters Section */}
+        <div className="space-y-8 px-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-3xl font-bold text-black">CHAPTERS</h2>
+            {/* Responsive AddChapterModal */}
+            <AddChapterModal pastors={pastors} churches={churches} />
           </div>
 
-          {/* Notes */}
-          <Textarea
-            placeholder="Enter your notes here..."
-            value={noteText}
-            onChange={(e) => setNoteText(e.target.value)}
-            className="w-full h-20 px-4 py-3 border border-gray-300 rounded-md text-sm resize-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
-          />
-
-          {/* Chapters Section */}
-          <div className="space-y-5">
-            <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-medium text-black">CHAPTERS</h2>
-              {/* Responsive AddChapterModal */}
-              <AddChapterModal pastors={pastors} churches={churches} />
-            </div>
-
-            <div className="grid grid-cols-2 gap-7.5">
-              {chapters.map((chapter) => (
-                <div
-                  key={chapter.id}
-                  onClick={() => handleChapterClick(chapter.slug)}
-                  className="rounded-2xl overflow-hidden shadow-xl border border-gray-300 cursor-pointer hover:shadow-md transition-shadow"
-                >
-                  <div className="w-full aspect-video relative">
-                    <Image
-                      src={chapter.image || "/placeholder.svg"}
-                      alt={`${chapter.name} thumbnail`}
-                      fill
-                      className="object-cover rounded-t-2xl"
-                    />
-                  </div>
-                  <div className="bg-white p-4">
-                    <span className="text-black text-md font-medium">
-                      {chapter.name}
-                    </span>
-                  </div>
+          <div className="grid grid-cols-2 gap-7.5">
+            {chapters.map((chapter) => (
+              <div
+                key={chapter.id}
+                onClick={() => handleChapterClick(chapter.slug)}
+                className="rounded-2xl overflow-hidden shadow-xl border border-gray-300 cursor-pointer hover:shadow-md transition-shadow"
+              >
+                <div className="w-full aspect-video relative">
+                  <Image
+                    src={chapter.image || "/placeholder.svg"}
+                    alt={`${chapter.name} thumbnail`}
+                    fill
+                    className="object-cover rounded-t-2xl"
+                  />
                 </div>
-              ))}
-            </div>
+                <div className="bg-white p-4">
+                  <span className="text-black text-md font-medium">
+                    {chapter.name}
+                  </span>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>

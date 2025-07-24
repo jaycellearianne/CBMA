@@ -11,7 +11,13 @@ import {
   DrawerTitle,
   DrawerClose,
 } from "@/components/ui/drawer";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { useMediaQuery } from "react-responsive";
 import AddFamilyForm from "./AddFamilyForm";
 import { FamilyMember } from "./FamilyData";
@@ -70,45 +76,50 @@ export default function AddFamilyModal({
     onCancelAction();
   }
 
+  const Separator = () => (
+    <div className="border-t border-gray-200 my-4 w-full" />
+  );
+
   return isMobile ? (
     <Drawer open={open} onOpenChange={onCancelAction}>
-      <DrawerContent className="w-full max-w-none px-4">
+      <DrawerContent className="w-full max-w-none px-4 h-auto flex flex-col">
         <DrawerHeader>
-          <DrawerTitle className="text-xl font-semibold text-gray-900">
+          <DrawerTitle className="text-2xl font-bold text-center text-[#6F4E37]">
             Add Family Member
           </DrawerTitle>
+          <DrawerDescription className="text-sm text-center text-gray-500">
+            Please fill out the form to register a new family member.
+          </DrawerDescription>
+          <Separator />
         </DrawerHeader>
-        <AddFamilyForm
-          open={open}
-          onSaveAction={onSaveAction}
-          onCancelAction={onCancelAction}
-        />
-        <DrawerFooter className="p-0 mt-0 py-2">
-          <DrawerClose asChild>
-            <Button
-              className="border-1 border-[#A67B5B]/25 bg-[#A67B5B]/10 w-full max-w-none text-black hover:bg-red-50"
-              variant="default"
-              type="button"
-            >
-              Cancel
-            </Button>
-          </DrawerClose>
-        </DrawerFooter>
+        <div className="flex-1 overflow-y-auto">
+          <AddFamilyForm
+            open={open}
+            onSaveAction={onSaveAction}
+            onCancelAction={onCancelAction}
+          />
+        </div>
       </DrawerContent>
     </Drawer>
   ) : (
     <Dialog open={open} onOpenChange={(val) => !val && onCancelAction()}>
-      <DialogContent>
-        <DialogHeader className="items-center">
-          <DialogTitle className="text-2xl items-center justify-center font-bold text-[#6F4E37]">
+      <DialogContent className="sm:max-w-[425px] max-h-[750px] flex flex-col">
+        <DialogHeader>
+          <DialogTitle className="text-2xl font-bold text-center text-[#6F4E37]">
             Add Family Member
           </DialogTitle>
+          <DialogDescription className="text-sm text-center text-gray-500">
+            Please fill out the form to register a new family member.
+          </DialogDescription>
+          <Separator />
         </DialogHeader>
-        <AddFamilyForm
-          open={open}
-          onSaveAction={handleSuccess}
-          onCancelAction={onCancelAction}
-        />
+        <div className="flex-1 overflow-y-auto">
+          <AddFamilyForm
+            open={open}
+            onSaveAction={onSaveAction}
+            onCancelAction={onCancelAction}
+          />
+        </div>
       </DialogContent>
     </Dialog>
   );
