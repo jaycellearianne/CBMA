@@ -1,5 +1,4 @@
 "use client";
-
 import { useMediaQuery } from "react-responsive";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
@@ -8,6 +7,7 @@ import {
   Drawer,
   DrawerClose,
   DrawerContent,
+  DrawerDescription,
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
@@ -16,6 +16,7 @@ import {
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -63,54 +64,55 @@ export default function EditEducationModal({
     </Button>
   );
 
-  return (
-    <div className="bg-white">
-      {isMobile ? (
-        <Drawer open={open} onOpenChange={setOpen}>
-          <DrawerTrigger asChild>
-            {triggerButton || defaultTrigger}
-          </DrawerTrigger>
-          <DrawerContent className="w-full max-w-none">
-            <DrawerHeader>
-              <DrawerTitle className="text-left text-2xl font-bold text-[#6F4E37]">
-                Edit {education.category}
-              </DrawerTitle>
-            </DrawerHeader>
-            <div className="px-4">
-              <EditEducationForm
-                education={education}
-                onSuccess={() => setOpen(false)}
-                onSubmitAction={onEditAction}
-                onDeleteAction={onDeleteAction}
-              />
-              <DrawerFooter className="p-0 mt-0 py-2">
-                <DrawerClose asChild></DrawerClose>
-              </DrawerFooter>
-            </div>
-          </DrawerContent>
-        </Drawer>
-      ) : (
-        <Dialog open={open} onOpenChange={setOpen}>
-          <DialogTrigger asChild>
-            {triggerButton || defaultTrigger}
-          </DialogTrigger>
-          <DialogContent className="p-6 max-h-[90vh] overflow-y-auto">
-            <DialogHeader className="text-left">
-              <DialogTitle className="text-2xl font-bold text-[#6F4E37] text-left">
-                Edit {education.category}
-              </DialogTitle>
-            </DialogHeader>
-            <EditEducationForm
-              education={education}
-              onSuccess={() => setOpen(false)}
-              onSubmitAction={onEditAction}
-              onDeleteAction={(id) => {
-                console.log("Delete:", id);
-              }}
-            />
-          </DialogContent>
-        </Dialog>
-      )}
-    </div>
+  const Separator = () => (
+    <div className="border-t border-gray-200 my-4 w-full" />
+  );
+
+  return isMobile ? (
+    <Drawer open={open} onOpenChange={setOpen}>
+      <DrawerTrigger asChild>{triggerButton || defaultTrigger}</DrawerTrigger>
+      <DrawerContent className="w-full max-w-none px-4 h-auto flex flex-col">
+        <DrawerHeader>
+          <DrawerTitle className="text-2xl font-bold text-[#6F4E37]">
+            Edit {education.category}
+          </DrawerTitle>
+          <DrawerDescription className="text-sm text-center text-gray-500">
+            Update the education details below.
+          </DrawerDescription>
+          <Separator />
+        </DrawerHeader>
+        <div className="flex-1 overflow-y-auto">
+          <EditEducationForm
+            education={education}
+            onSuccess={() => setOpen(false)}
+            onSubmitAction={onEditAction}
+            onCancelAction={() => setOpen(false)}
+          />
+        </div>
+      </DrawerContent>
+    </Drawer>
+  ) : (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>{triggerButton || defaultTrigger}</DialogTrigger>
+      <DialogContent className="sm:max-w-[425px] max-h-[750px] flex flex-col">
+        <DialogHeader>
+          <DialogTitle className="text-2xl font-bold text-center text-[#6F4E37]">
+            Edit {education.category}
+          </DialogTitle>
+          <DialogDescription className="text-sm text-center text-gray-500">
+            Update the education details below.
+          </DialogDescription>
+          <Separator />
+        </DialogHeader>
+        <div className="flex-1 overflow-y-auto">
+          <EditEducationForm
+            education={education}
+            onSuccess={() => setOpen(false)}
+            onSubmitAction={onEditAction}
+            onCancelAction={() => setOpen(false)}
+          />
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 }

@@ -1,7 +1,4 @@
 "use client";
-
-import type React from "react";
-
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -56,7 +53,6 @@ export default function SignUpPage() {
     return "";
   };
 
-  // Add this function after the validation functions and before handleBlur
   const isFormValid = () => {
     const fullNameError = validateFullName(fullName);
     const emailError = validateEmail(email);
@@ -105,7 +101,6 @@ export default function SignUpPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Validate all fields
     const fullNameError = validateFullName(fullName);
     const emailError = validateEmail(email);
     const passwordError = validatePassword(password);
@@ -127,7 +122,6 @@ export default function SignUpPage() {
       confirmPassword: true,
     });
 
-    // Only proceed if no errors
     if (
       !fullNameError &&
       !emailError &&
@@ -137,12 +131,8 @@ export default function SignUpPage() {
       setIsLoading(true);
 
       try {
-        // Simulate API call with a delay
         await new Promise((resolve) => setTimeout(resolve, 1500));
-
-        // TODO: Implement account creation logic
         window.location.href = "/dashboard";
-        console.log("Create account:", { fullName, email, password });
       } catch (error) {
         console.error("Account creation error:", error);
       } finally {
@@ -153,10 +143,7 @@ export default function SignUpPage() {
 
   return (
     <div className="min-h-screen bg-white">
-
-      {/* Main content */}
       <div className="px-4 py-6 max-w-sm mx-auto">
-        {/* Logo */}
         <div className="flex justify-center mb-6">
           <div className="w-50 h-50 relative">
             <Image
@@ -169,16 +156,13 @@ export default function SignUpPage() {
           </div>
         </div>
 
-        {/* Create Account heading */}
         <div className="text-center mb-6">
           <h1 className="text-3xl font-medium text-black mb-1">
             Create Account
           </h1>
         </div>
 
-        {/* Form - mobile optimized */}
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Full Name field */}
           <div>
             <label className="block text-md text-black mb-2 font-medium">
               Full Name
@@ -223,7 +207,6 @@ export default function SignUpPage() {
             )}
           </div>
 
-          {/* Email field */}
           <div>
             <label className="block text-md text-black mb-2 font-medium">
               Email
@@ -269,7 +252,6 @@ export default function SignUpPage() {
             )}
           </div>
 
-          {/* Password field */}
           <div>
             <label className="block text-md text-black mb-2 font-medium">
               Password
@@ -284,7 +266,6 @@ export default function SignUpPage() {
                   const passwordError = validatePassword(e.target.value);
                   setErrors((prev) => ({ ...prev, password: passwordError }));
                 }
-                // Also revalidate confirm password if it's been touched
                 if (touched.confirmPassword) {
                   const confirmPasswordError = validateConfirmPassword(
                     confirmPassword,
@@ -325,7 +306,6 @@ export default function SignUpPage() {
             )}
           </div>
 
-          {/* Confirm Password field */}
           <div>
             <label className="block text-md text-black mb-2 font-medium">
               Confirm Password
@@ -376,7 +356,6 @@ export default function SignUpPage() {
             )}
           </div>
 
-          {/* Create Account button - mobile optimized */}
           <div className="pt-2">
             <Button
               type="submit"
@@ -418,7 +397,6 @@ export default function SignUpPage() {
           </div>
         </form>
 
-        {/* Sign in link - mobile optimized touch target */}
         <div className="text-center mt-6">
           <p className="text-sm text-gray-600">
             Already have an account?{" "}

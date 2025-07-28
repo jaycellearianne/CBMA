@@ -8,6 +8,12 @@ import { useState, useEffect } from "react";
 import AddChurchModal from "./AddChurchModal";
 import { Combobox, useCombobox } from "@mantine/core";
 
+export interface Church {
+  id: number;
+  name: string;
+  location: string;
+}
+
 export default function ChurchesPage() {
   const router = useRouter();
   const params = useParams();
@@ -19,10 +25,7 @@ export default function ChurchesPage() {
   const [activeFilterCategory, setActiveFilterCategory] = useState<
     FilterCategory | undefined
   >(undefined);
-  const [value, setValue] = useState<string | null>(null);
   const [selectedCircuit, setSelectedCircuit] = useState<string | null>(null);
-
-  // const [isOpen, setIsOpen] = useState(false);
 
   const combobox = useCombobox({
     onDropdownClose: () => combobox.resetSelectedOption(),
@@ -46,7 +49,7 @@ export default function ChurchesPage() {
           location: "La Paz, Iloilo City",
           serviceTime: "Sunday 10:30 AM",
           image: "/images/church/church_mock.webp",
-          circuit: "Iloilo City Circuit",
+          circuit: "City Wide Circuit",
         },
         {
           id: 3,
@@ -54,7 +57,7 @@ export default function ChurchesPage() {
           location: "Jaro, Iloilo City",
           serviceTime: "Sunday 8:00 AM",
           image: "/images/church/church_mock.webp",
-          circuit: "Iloilo City Circuit",
+          circuit: "City Wide Circuit",
         },
         {
           id: 4,
@@ -109,11 +112,6 @@ export default function ChurchesPage() {
 
   const handleBack = () => router.back();
 
-  // const filteredChurches = churches.filter((church) =>
-  //   `${church.name} ${church.location}`
-  //     .toLowerCase()
-  //     .includes(searchQuery.toLowerCase())
-  // );
   type FilterCategory = "name" | "location" | "serviceTime";
 
   const filterOptions = () => {
@@ -210,9 +208,9 @@ export default function ChurchesPage() {
         >
           <ArrowLeft className="w-5 h-5" />
         </Button>
-        {/* <h1 className="text-lg font-semibold text-black">
+        <h1 className="text-lg font-semibold text-black">
           {chapterName} Churches
-        </h1> */}
+        </h1>
       </div>
 
       {/* Search */}
@@ -327,15 +325,11 @@ export default function ChurchesPage() {
 
       {/* Add Button */}
       <div className="flex flex-row px-4 pb-4 items-center justify-between">
-        <h1 className="text-lg font-semibold text-black">
-          {chapterName} Churches
-        </h1>
         <div className="flex flex-row items-center gap-2">
           <div>
             <Combobox
               store={combobox}
               onOptionSubmit={(value) => {
-                setValue(value);
                 setSelectedCircuit(value);
                 combobox.closeDropdown();
               }}
@@ -347,7 +341,6 @@ export default function ChurchesPage() {
                   onClick={() => {
                     if (selectedCircuit) {
                       setSelectedCircuit(null);
-                      setValue(null);
                     } else {
                       combobox.openDropdown();
                     }

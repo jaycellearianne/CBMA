@@ -2,51 +2,27 @@
 import { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import PersonalData from "./personal/PersonalData";
-import TrainingData from "./training/TrainingData";
-import { Training } from "./training/TrainingData";
+import EducationData from "./education/EducationData";
+import TrainingData, { Training } from "./training/TrainingData";
 import AddTrainingModal from "./training/AddTrainingModal";
 import EditTrainingModal from "./training/EditTrainingModal";
-import FamilyData from "./family/FamilyData";
-import { FamilyMember } from "./family/FamilyData";
+import DeleteTrainingModal from "./training/DeleteTrainingModal";
+import FamilyData, { FamilyMember } from "./family/FamilyData";
 import AddFamilyModal from "./family/AddFamilyModal";
 import EditFamilyModal from "./family/EditFamilyModal";
 import ExperienceData from "./experience/ExperienceData";
-// import DeleteFamilyModal from "./family/DeleteFamilyModal";
 import EducationData from "./education/EducationData";
+import DeleteFamilyModal from "./family/DeleteFamilyModal";
+import { Education } from "./education/EducationData";
+import AddEducationModal from "./education/AddEducationModal";
+import EditEducationModal from "./education/EditEducationModal";
+import DeleteEducationModal from "./education/DeleteEducationModal";
+import FeesData, { Fee } from "./fees/FeesData";
+import AddFeesModal from "./fees/AddFeesModal";
+import EditFeesModal from "./fees/EditFeesModal";
+import DeleteFeesModal from "./fees/DeleteFeesModal";
 
 export default function PastorsProfileTabs() {
-  const [isMobile, setIsMobile] = useState(false);
-  const [trainings, setTrainings] = useState<Training[]>([]);
-  const [showAddTraining, setShowAddTraining] = useState(false);
-  const [editingTraining, setEditingTraining] = useState<Training | null>(null);
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [showEditModal, setShowEditModal] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [showAddForm, setShowAddForm] = useState(false);
-  const [showEditForm, setShowEditForm] = useState(false);
-  const [showDeleteForm, setShowDeleteForm] = useState(false);
-  const [editingMember, setEditingMember] = useState<FamilyMember | null>(null);
-  const [deletingMember, setDeletingMember] = useState<FamilyMember | null>(
-    null
-  );
-
-  const closeAddForms = () => {
-    setShowAddModal(false);
-    setShowAddForm(false);
-  };
-
-  const closeEditForms = () => {
-    setShowEditModal(false);
-    setShowEditForm(false);
-    setEditingMember(null);
-  };
-
-  const closeDeleteForms = () => {
-    setShowDeleteModal(false);
-    setShowDeleteForm(false);
-    setDeletingMember(null);
-  };
-
   const tabs = [
     { name: "Personal", value: "Personal" },
     { name: "Education", value: "Education" },
@@ -56,6 +32,8 @@ export default function PastorsProfileTabs() {
     { name: "Fees", value: "Fees" },
   ];
 
+  const [isMobile, setIsMobile] = useState(false);
+
   useEffect(() => {
     setIsMobile(window.innerWidth < 768);
     const handleResize = () => setIsMobile(window.innerWidth < 768);
@@ -63,7 +41,50 @@ export default function PastorsProfileTabs() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Sample data (replace with API call or real data)
+  // EDUCATION STATES
+  const [educations, setEducations] = useState<Education[]>([]);
+  const [showAddEducation, setShowAddEducation] = useState(false);
+  const [editingEducation, setEditingEducation] = useState<Education | null>(
+    null
+  );
+  const [deletingEducation, setDeletingEducation] = useState<Education | null>(
+    null
+  );
+
+  // TRAINING STATES
+  const [trainings, setTrainings] = useState<Training[]>([]);
+  const [showAddTraining, setShowAddTraining] = useState(false);
+  const [editingTraining, setEditingTraining] = useState<Training | null>(null);
+  const [deletingTraining, setDeletingTraining] = useState<Training | null>(
+    null
+  );
+
+  // EXPERIENCE STATES
+
+  // FAMILY STATES
+  const [familyMembers, setFamilyMembers] = useState<FamilyMember[]>([]);
+  const [showAddFamily, setShowAddFamily] = useState(false);
+  const [showEditFamily, setShowEditFamily] = useState(false);
+  const [showDeleteFamily, setShowDeleteFamily] = useState(false);
+  const [editingMember, setEditingMember] = useState<FamilyMember | null>(null);
+  const [deletingMember, setDeletingMember] = useState<FamilyMember | null>(
+    null
+  );
+
+  // FEES STATES
+  const [fees, setFees] = useState<Fee[]>([]);
+  const [showAddFee, setShowAddFee] = useState(false);
+  const [editingFee, setEditingFee] = useState<Fee | null>(null);
+  const [deletingFee, setDeletingFee] = useState<Fee | null>(null);
+
+  // EDUCATION HANDLERS
+  const handleAddEducation = {};
+
+  const handleEditEducation = {};
+
+  const handleDeleteEducation = {};
+
+  // TRAINING MOCK
   useEffect(() => {
     setTrainings([
       {
@@ -77,80 +98,70 @@ export default function PastorsProfileTabs() {
     ]);
   }, []);
 
+  // TRAINING HANDLERS
   const handleAddTraining = (data: Omit<Training, "id">) => {
-    const newTraining: Training = {
-      ...data,
-      id: Date.now(),
-    };
-    setTrainings((prev) => [...prev, newTraining]);
+    setTrainings([...trainings, { ...data, id: Date.now() }]);
     setShowAddTraining(false);
   };
 
   const handleEditTraining = (updated: Training) => {
-    setTrainings((prev) =>
-      prev.map((t) => (t.id === updated.id ? updated : t))
-    );
+    setTrainings(trainings.map((t) => (t.id === updated.id ? updated : t)));
     setEditingTraining(null);
   };
 
   const handleDeleteTraining = (id: number) => {
-    setTrainings((prev) => prev.filter((t) => t.id !== id));
-    setEditingTraining(null);
+    setTrainings(trainings.filter((t) => t.id !== id));
+    setDeletingTraining(null);
   };
 
-  const openEditTraining = (training: Training) => {
-    setEditingTraining(training);
-  };
+  // EXPERIENCE HANDLERS
+  const handleAddExperience = {};
 
-  const closeAddTraining = () => setShowAddTraining(false);
-  const closeEditTraining = () => setEditingTraining(null);
+  const handleEditExperience = {};
 
-  // FAMILY
-  const [familyMembers, setFamilyMembers] = useState<FamilyMember[]>([
-    {
-      id: 1,
-      name: "Mary Jean P. Arroz",
-      relationship: "Spouse",
-      education: "Master of Science in Civil Engineering",
-      occupation: "Civil Engineer",
-      birthDate: "March 15, 1995",
-    },
-    {
-      id: 2,
-      name: "Diadem Grace P. Arroz",
-      relationship: "Daughter",
-      education: "Bachelor of Science in Software Engineering",
-      occupation: "Business Owner",
-      birthDate: "September 23, 2002",
-    },
-    {
-      id: 3,
-      name: "Zairene Faith P. Arroz",
-      relationship: "Daughter",
-      education: "Senior High School",
-      occupation: "Student",
-      birthDate: "September 1, 2009",
-    },
-  ]);
+
+  const handleDeleteExperience = {};
+
+  // FAMILY HANDLERS
   const handleAddMember = (member: Omit<FamilyMember, "id">) => {
-    const newMember = {
-      ...member,
-      id: Date.now(),
-    };
-    setFamilyMembers([...familyMembers, newMember]);
-    closeAddForms();
+    setFamilyMembers([...familyMembers, { ...member, id: Date.now() }]);
+    setShowAddFamily(false);
   };
 
   const handleEditMember = (member: FamilyMember) => {
     setFamilyMembers(
       familyMembers.map((m) => (m.id === member.id ? member : m))
     );
-    closeEditForms();
+    setShowEditFamily(false);
+    setEditingMember(null);
   };
 
   const handleDeleteMember = (id: number) => {
     setFamilyMembers(familyMembers.filter((m) => m.id !== id));
-    closeDeleteForms();
+    setShowDeleteFamily(false);
+    setDeletingMember(null);
+  };
+
+  // FEES HANDLERS
+  const handleAddFees = (fee: Omit<Fee, "id">) => {
+    setFees([...fees, { ...fee, id: Date.now() }]);
+    setShowAddFee(false);
+  };
+
+  const handleEditFees = (updated: Partial<Fee>) => {
+    if (!editingFee) return;
+    setFees(
+      fees.map((fee) =>
+        fee.id === editingFee.id ? { ...fee, ...updated } : fee
+      )
+    );
+    setEditingFee(null);
+  };
+
+  const handleDeleteFees = () => {
+    if (!deletingFee) return;
+    setFees(fees.filter((fee) => fee.id !== deletingFee.id));
+    setDeletingFee(null);
   };
 
   return (
@@ -170,19 +181,20 @@ export default function PastorsProfileTabs() {
           </TabsList>
         </div>
 
-        <TabsContent value="Personal" className="w-full">
+        <TabsContent value="Personal">
           <PersonalData />
         </TabsContent>
 
-        <TabsContent value="Education" className="w-full">
+        <TabsContent value="Education">
           <EducationData />
         </TabsContent>
 
-        <TabsContent value="Trainings" className="w-full">
+        <TabsContent value="Trainings">
           <TrainingData
             trainings={trainings}
             onAddTrainingAction={() => setShowAddTraining(true)}
-            onEditTrainingAction={openEditTraining}
+            onEditTrainingAction={(t) => setEditingTraining(t)}
+            onDeleteTrainingAction={(t) => setDeletingTraining(t)}
           />
         </TabsContent>
 
@@ -190,28 +202,28 @@ export default function PastorsProfileTabs() {
           <ExperienceData />
         </TabsContent>
 
-        <TabsContent value="Family" className="w-full">
+        <TabsContent value="Family">
           <FamilyData
             members={familyMembers}
-            onAddMemberAction={() => {
-              setShowAddModal(true);
-              setShowAddForm(true);
+            onAddMemberAction={() => setShowAddFamily(true)}
+            onEditMemberAction={(m) => {
+              setEditingMember(m);
+              setShowEditFamily(true);
             }}
-            onEditMemberAction={(member) => {
-              setEditingMember(member);
-              setShowEditModal(true);
-              setShowEditForm(true);
-            }}
-            onDeleteMemberAction={(member) => {
-              setDeletingMember(member);
-              setShowDeleteModal(true);
-              setShowDeleteForm(true);
+            onDeleteMemberAction={(m) => {
+              setDeletingMember(m);
+              setShowDeleteFamily(true);
             }}
           />
         </TabsContent>
 
-        <TabsContent value="Fees" className="w-full">
-          {/* Fees Content */}
+        <TabsContent value="Fees">
+          <FeesData
+            fees={fees}
+            onAddFeeAction={() => setShowAddFee(true)}
+            onEditFeeAction={(fee) => setEditingFee(fee)}
+            onDeleteFeeAction={(fee) => setDeletingFee(fee)}
+          />
         </TabsContent>
       </Tabs>
 
@@ -219,40 +231,70 @@ export default function PastorsProfileTabs() {
       <AddTrainingModal
         open={showAddTraining}
         onSaveAction={handleAddTraining}
-        onCancelAction={closeAddTraining}
+        onCancelAction={() => setShowAddTraining(false)}
       />
-
       {editingTraining && (
         <EditTrainingModal
           open={true}
           training={editingTraining}
           onSaveAction={handleEditTraining}
-          onCancelAction={closeEditTraining}
+          onCancelAction={() => setEditingTraining(null)}
+        />
+      )}
+      {deletingTraining && (
+        <DeleteTrainingModal
+          open={true}
+          training={deletingTraining}
+          onDeleteAction={() => handleDeleteTraining(deletingTraining.id)}
+          onCancelAction={() => setDeletingTraining(null)}
         />
       )}
 
       {/* FAMILY */}
       <AddFamilyModal
-        open={showAddModal}
-        onCancelAction={closeAddForms}
+        open={showAddFamily}
         onSaveAction={handleAddMember}
+        onCancelAction={() => setShowAddFamily(false)}
       />
-
       {editingMember && (
         <EditFamilyModal
-          open={showEditModal}
+
+          open={showEditFamily}
           member={editingMember}
           onSaveAction={handleEditMember}
-          onCancelAction={closeEditForms}
+          onCancelAction={() => setShowEditFamily(false)}
+        />
+      )}
+      {deletingMember && (
+        <DeleteFamilyModal
+
+          open={showDeleteFamily}
+          member={deletingMember}
+          onDeleteAction={() => handleDeleteMember(deletingMember.id)}
+          onCancelAction={() => setShowDeleteFamily(false)}
         />
       )}
 
-      {deletingMember && (
-        <DeleteFamilyModal
-          open={showDeleteModal}
-          member={deletingMember}
-          onDeleteAction={() => handleDeleteMember(deletingMember.id)}
-          onCancelAction={closeDeleteForms}
+      {/* FEES */}
+      <AddFeesModal
+        open={showAddFee}
+        onSaveAction={handleAddFees}
+        onCancelAction={() => setShowAddFee(false)}
+      />
+      {editingFee && (
+        <EditFeesModal
+          open={true}
+          fee={editingFee}
+          onSaveAction={handleEditFees}
+          onCancelAction={() => setEditingFee(null)}
+        />
+      )}
+      {deletingFee && (
+        <DeleteFeesModal
+          open={true}
+          fee={deletingFee}
+          onConfirmAction={handleDeleteFees}
+          onCancelAction={() => setDeletingFee(null)}
         />
       )}
     </div>

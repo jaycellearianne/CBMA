@@ -1,5 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Phone, Mail } from "lucide-react";
@@ -9,6 +7,11 @@ import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import AddPastorModal from "./AddPastorModal";
+
+export interface Pastor {
+  id: number;
+  name: string;
+}
 
 export default function PastorsPage() {
   const router = useRouter();
@@ -78,8 +81,8 @@ export default function PastorsPage() {
     }
     return pastors.filter(
       (pastor) =>
-        pastor.name.toLowerCase().startsWith(searchQuery.toLowerCase()) ||
-        pastor.email.toLowerCase().startsWith(searchQuery.toLowerCase())
+      pastor.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      pastor.church.toLowerCase().includes(searchQuery.toLowerCase())
     );
   };
 

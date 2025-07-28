@@ -4,14 +4,18 @@ import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
 import { toast } from "sonner";
-import { CheckCircle, CloudUpload, X } from "lucide-react";
+import { CheckCircle, CloudUpload, PlusIcon, X } from "lucide-react";
 import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-} from "@/components/ui/select";
+  Tags,
+  TagsContent,
+  TagsEmpty,
+  TagsGroup,
+  TagsInput,
+  TagsItem,
+  TagsList,
+  TagsTrigger,
+  TagsValue,
+} from "@/components/ui/shadcn-io/tags";
 import {
   Form,
   FormControl,
@@ -26,33 +30,28 @@ import { useState } from "react";
 import Image from "next/image";
 import AddChurchModal from "../churches/AddChurchModal";
 
-interface AddPastorModalProps {
+interface AddPastorFormProps {
+  churches: { id: number; name: string; location: string }[];
   onSuccess?: () => void;
+  onCancel?: () => void;
 }
 
-export default function AddPastorModal({ onSuccess }: AddPastorModalProps) {
-  const churchData = [
-    {
-      id: 1,
-      church: "Malublub Baptist Church",
-    },
-    { id: 2, church: "Baptist Center Church" },
-    {
-      id: 3,
-      church: "Good Hope Baptist Church",
-    },
-    {
-      id: 4,
-      church: "CPU University Church",
-    },
-  ];
+export default function AddPastorForm({
+  churches,
+  onSuccess,
+  onCancel,
+}: AddPastorFormProps) {
   const [previews, setPreviews] = useState<string[]>([]);
+  const [selectedChurches, setSelectedChurches] = useState<number[]>([]);
 
   const formSchema = z.object({
     name: z.string().min(2, { message: "Name is required" }).max(50),
+    address: z.string().min(5, { message: "Address is required" }).max(100),
     church: z
-      .string({ required_error: "Please select a church" })
-      .min(1, { message: "Please select a church" }),
+      .array(z.number(), {
+        required_error: "Please select at least one church",
+      })
+      .min(1, { message: "Please select at least one church" }),
     image: z
       .array(
         z.object({
@@ -73,9 +72,17 @@ export default function AddPastorModal({ onSuccess }: AddPastorModalProps) {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
+      address: "",
+      church: [],
       image: [],
     },
   });
+
+  const toggleChurch = (id: number) => {
+    setSelectedChurches((prev) =>
+      prev.includes(id) ? prev.filter((cid) => cid !== id) : [...prev, id]
+    );
+  };
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     toast(" New pastor has been added successfully.", {
@@ -87,7 +94,7 @@ export default function AddPastorModal({ onSuccess }: AddPastorModalProps) {
 
   return (
     <>
-      <div className="bg-white ">
+      <div className="bg-white w-full h-full overflow-y-auto px-1 pb-4">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -116,7 +123,7 @@ export default function AddPastorModal({ onSuccess }: AddPastorModalProps) {
             />
             <FormField
               control={form.control}
-              name="name"
+              name="address"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel htmlFor="address" className="text-[#6f4e37]">
@@ -135,48 +142,93 @@ export default function AddPastorModal({ onSuccess }: AddPastorModalProps) {
                 </FormItem>
               )}
             />
+
+            {/* Church */}
             <FormField
               control={form.control}
               name="church"
-              render={({ field }) => (
-                <>
+              render={({ field }) => {
+                const selected = field.value;
+                const handleRemove = (id: number) => {
+                  field.onChange(selected.filter((val: number) => val !== id));
+                };
+                const handleSelect = (id: number) => {
+                  if (selected.includes(id)) {
+                    handleRemove(id);
+                  } else {
+                    field.onChange([...selected, id]);
+                  }
+                };
+
+                return (
                   <FormItem>
-                    <FormLabel
-                      htmlFor="pastor-church"
-                      className="text-[#6f4e37]"
-                    >
-                      Select Church
+                    <FormLabel className="text-[#6f4e37]">
+                      Select Churches
                     </FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger
-                          id="pastor-church"
-                          name="church"
-                          className="w-full bg-[#F7F4F0]"
-                        >
-                          <SelectValue
-                            className="bg-[#F7F4F0]"
-                            placeholder="Select church"
-                          ></SelectValue>
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {churchData.map((church) => (
-                          <SelectItem key={church.id} value={church.church}>
-                            {church.church}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
+                    <Tags className="bg-[#F7F4F0]">
+                      <TagsTrigger>
+                        {selected.map((id) => {
+                          const church = churches.find((c) => c.id === id);
+                          return (
+                            <TagsValue
+                              key={id}
+                              onRemove={() => handleRemove(id)}
+                            >
+                              {church?.name}
+                            </TagsValue>
+                          );
+                        })}
+                      </TagsTrigger>
+                      <TagsContent>
+                        <TagsInput placeholder="Search church..." />
+                        <TagsList>
+                          <TagsEmpty>
+                            <div className="w-full text-center">
+                              <button
+                                type="button"
+                                className="mx-auto flex cursor-pointer items-center gap-2 text-sm text-muted-foreground hover:underline"
+                                onClick={() => {
+                                  // Add logic to open AddChurchModal
+                                }}
+                              >
+                                <PlusIcon
+                                  className="text-muted-foreground"
+                                  size={14}
+                                />
+                                Create new church
+                              </button>
+                            </div>
+                          </TagsEmpty>
+                          <TagsGroup>
+                            {churches
+                              .filter((c) => !selected.includes(c.id))
+                              .map((c) => (
+                                <TagsItem
+                                  key={c.id}
+                                  value={String(c.id)}
+                                  onSelect={() => handleSelect(c.id)}
+                                >
+                                  <div>
+                                    <div>{c.name}</div>
+                                    <div className="text-xs text-muted-foreground">
+                                      {c.location}
+                                    </div>
+                                  </div>
+                                </TagsItem>
+                              ))}
+                          </TagsGroup>
+                        </TagsList>
+                      </TagsContent>
+                    </Tags>
+                    {/* <div className="mt-2 flex justify-end">
                     <AddChurchModal />
+                  </div> */}
+                    <FormMessage />
                   </FormItem>
-                </>
-              )}
+                );
+              }}
             />
+
             <FormField
               control={form.control}
               name="image"
@@ -255,12 +307,22 @@ export default function AddPastorModal({ onSuccess }: AddPastorModalProps) {
                 </FormItem>
               )}
             />
-            <Button
-              className="bg-[#6F4E37] w-full hover:bg-[#432F21]"
-              type="submit"
-            >
-              Add Pastor
-            </Button>
+            <div className="flex flex-col gap-2">
+              <Button
+                type="submit"
+                className="bg-[#6F4E37] w-full hover:bg-[#432F21]"
+              >
+                Add New Chapter
+              </Button>
+
+              <Button
+                type="button"
+                onClick={onCancel}
+                className="border border-[#A67B5B]/25 bg-[#A67B5B]/10 w-full text-black hover:bg-red-50"
+              >
+                Cancel
+              </Button>
+            </div>
           </form>
         </Form>
       </div>

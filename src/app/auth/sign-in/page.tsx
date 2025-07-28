@@ -1,5 +1,4 @@
 "use client";
-import type React from "react";
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -18,10 +17,6 @@ export default function SignInPage() {
     password?: boolean;
   }>({});
   const [isLoading, setIsLoading] = useState(false);
-  const [signInStatus] = useState<{
-    success?: boolean;
-    message?: string;
-  } | null>(null);
   const [showPassword, setShowPassword] = useState(false);
 
   const validateEmail = (email: string) => {
@@ -58,24 +53,18 @@ export default function SignInPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Validate all fields
     const emailError = validateEmail(email);
     const passwordError = validatePassword(password);
 
     setErrors({ email: emailError, password: passwordError });
     setTouched({ email: true, password: true });
 
-    // Only proceed if no errors
     if (!emailError && !passwordError) {
       setIsLoading(true);
 
       try {
-        // Simulate API call with a delay
         await new Promise((resolve) => setTimeout(resolve, 1500));
-
-        // TODO: Implement authentication logic
         window.location.href = "/dashboard";
-        console.log("Sign in:", { email, password });
       } catch (error) {
         console.error("Sign in error:", error);
       } finally {
@@ -86,9 +75,7 @@ export default function SignInPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Main content */}
       <div className="px-4 py-6 max-w-sm mx-auto">
-        {/* Logo */}
         <div className="flex justify-center mb-6">
           <div className="w-50 h-50 relative">
             <Image
@@ -101,56 +88,12 @@ export default function SignInPage() {
           </div>
         </div>
 
-        {/* Sign In heading */}
         <div className="text-center mb-6">
           <h1 className="text-3xl font-medium text-black mb-1">Sign In</h1>
           <p className="text-gray-500 text-md">Access your account</p>
         </div>
 
-        {/* Status message */}
-        {signInStatus && (
-          <div
-            className={`mb-4 p-3 rounded-md text-sm ${
-              signInStatus.success
-                ? "bg-green-50 text-green-700 border border-green-200"
-                : "bg-red-50 text-red-700 border border-red-200"
-            }`}
-            role="alert"
-          >
-            <div className="flex items-center">
-              {signInStatus.success ? (
-                <svg
-                  className="w-4 h-4 mr-2"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              ) : (
-                <svg
-                  className="w-4 h-4 mr-2"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 001.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              )}
-              {signInStatus.message}
-            </div>
-          </div>
-        )}
-
-        {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Email field */}
           <div>
             <label className="block text-md text-black mb-2 font-medium">
               Email
@@ -196,7 +139,6 @@ export default function SignInPage() {
             )}
           </div>
 
-          {/* Password field */}
           <div>
             <div className="flex justify-between items-center mb-2">
               <label className="text-md text-black font-medium">Password</label>
@@ -261,7 +203,6 @@ export default function SignInPage() {
             )}
           </div>
 
-          {/* Sign In button */}
           <div className="pt-2">
             <Button
               type="submit"
@@ -303,7 +244,6 @@ export default function SignInPage() {
           </div>
         </form>
 
-        {/* Sign up link */}
         <div className="text-center mt-6">
           <p className="text-sm text-gray-600">
             Don't have an account?{" "}

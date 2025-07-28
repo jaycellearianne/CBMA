@@ -7,6 +7,7 @@ import {
   Drawer,
   DrawerClose,
   DrawerContent,
+  DrawerDescription,
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
@@ -14,6 +15,7 @@ import {
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -51,43 +53,48 @@ export default function AddTrainingModal({
     onSaveAction(data);
   };
 
+  const Separator = () => (
+    <div className="border-t border-gray-200 my-4 w-full" />
+  );
+
   return isMobile ? (
     <Drawer open={open} onOpenChange={(val) => !val && onCancelAction()}>
-      <DrawerContent className="w-full max-w-none px-4">
+      <DrawerContent className="w-full max-w-none px-4 h-auto flex flex-col">
         <DrawerHeader>
-          <DrawerTitle className="text-2xl font-bold text-[#6F4E37]">
+          <DrawerTitle className="text-2xl font-bold text-center text-[#6F4E37]">
             Add Training
           </DrawerTitle>
+          <DrawerDescription className="text-sm text-center text-gray-500">
+            Please fill out the form to register a new training data.
+          </DrawerDescription>
+          <Separator />
         </DrawerHeader>
-        <AddTrainingForm
-          onSaveAction={handleSuccess}
-          onCancelAction={onCancelAction}
-        />
-        <DrawerFooter className="p-0 mt-0 py-2">
-          <DrawerClose asChild>
-            <Button
-              className="bg-[#A67B5B]/25 w-full max-w-none text-black hover:bg-red-500 p-0"
-              variant="default"
-              type="button"
-            >
-              Cancel
-            </Button>
-          </DrawerClose>
-        </DrawerFooter>
+        <div className="flex-1 overflow-y-auto">
+          <AddTrainingForm
+            onSaveAction={handleSuccess}
+            onCancelAction={onCancelAction}
+          />
+        </div>
       </DrawerContent>
     </Drawer>
   ) : (
     <Dialog open={open} onOpenChange={(val) => !val && onCancelAction()}>
-      <DialogContent>
-        <DialogHeader className="items-center">
-          <DialogTitle className="text-2xl items-center justify-center font-bold text-[#6F4E37]">
+      <DialogContent className="sm:max-w-[425px] max-h-[750px] flex flex-col">
+        <DialogHeader>
+          <DialogTitle className="text-2xl font-bold text-center text-[#6F4E37]">
             Add Training
           </DialogTitle>
+          <DialogDescription className="text-sm text-center text-gray-500">
+            Please fill out the form to register a new user.
+          </DialogDescription>
+          <Separator />
         </DialogHeader>
-        <AddTrainingForm
-          onSaveAction={handleSuccess}
-          onCancelAction={onCancelAction}
-        />
+        <div className="flex-1 overflow-y-auto">
+          <AddTrainingForm
+            onSaveAction={handleSuccess}
+            onCancelAction={onCancelAction}
+          />
+        </div>
       </DialogContent>
     </Dialog>
   );

@@ -1,12 +1,11 @@
 "use client";
-
 import { useState } from "react";
 import AddEducationModal from "./AddEducationModal";
 import { Button } from "@/components/ui/button";
 import { CirclePlus, GraduationCap } from "lucide-react";
 import EditEducationModal from "./EditEducationModal";
 
-interface Education {
+export interface Education {
   id: string;
   school: string;
   year: string;
@@ -52,8 +51,10 @@ export default function EducationData() {
   };
 
   return (
-    <div className="space-y-4 mx-5">
-      <h1 className="text-2xl font-semibold text-[#6F4E37]">Education</h1>
+    <div className="p-6 space-y-4">
+      <div className="flex justify-between items-center">
+        <h1 className="text-2xl font-bold text-black">Education</h1>
+      </div>
       {/* Add Elementary  */}
       {!elementary && (
         <AddEducationModal

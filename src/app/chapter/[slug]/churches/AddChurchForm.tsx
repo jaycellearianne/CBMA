@@ -19,11 +19,15 @@ import { useState } from "react";
 import Image from "next/image";
 import { Textarea } from "@/components/ui/textarea";
 
-interface AddChurchModalProps {
-  onSuccess?: () => void;
+interface AddChurchFormProps {
+  onSuccessAction: () => void;
+  onCancelAction: () => void;
 }
 
-export default function AddChurchModal({ onSuccess }: AddChurchModalProps) {
+export default function AddChurchForm({
+  onSuccessAction,
+  onCancelAction,
+}: AddChurchFormProps) {
   const [previews, setPreviews] = useState<string[]>([]);
 
   const formSchema = z.object({
@@ -64,17 +68,24 @@ export default function AddChurchModal({ onSuccess }: AddChurchModalProps) {
     toast("New church has been added successfully.", {
       icon: <CheckCircle className="text-green-600" />,
     });
-    if (onSuccess) onSuccess();
+    if (onSuccessAction) onSuccessAction();
     console.log(values);
   };
 
+  const handleCancel = () => {
+    form.reset(); // clear form values
+    setPreviews([]); // clear image previews
+    if (onCancelAction) onCancelAction(); // optional modal close or other action
+  };
+
   return (
-    <div className="bg-white">
+    <div className="bg-white w-full h-full overflow-y-auto px-1 pb-4">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-4 w-full"
         >
+          {/* Name */}
           <FormField
             control={form.control}
             name="name"
@@ -93,6 +104,7 @@ export default function AddChurchModal({ onSuccess }: AddChurchModalProps) {
             )}
           />
 
+          {/* Location */}
           <FormField
             control={form.control}
             name="location"
@@ -111,6 +123,7 @@ export default function AddChurchModal({ onSuccess }: AddChurchModalProps) {
             )}
           />
 
+          {/* Service Time */}
           <FormField
             control={form.control}
             name="serviceTime"
@@ -125,6 +138,7 @@ export default function AddChurchModal({ onSuccess }: AddChurchModalProps) {
             )}
           />
 
+          {/* Description */}
           <FormField
             control={form.control}
             name="description"
@@ -135,7 +149,7 @@ export default function AddChurchModal({ onSuccess }: AddChurchModalProps) {
                   <Textarea
                     placeholder="Enter description"
                     className="bg-[#F7F4F0] rounded-lg resize-none h-auto max-h-[250px]"
-                    maxLength={150}
+                    maxLength={500}
                     {...field}
                   />
                 </FormControl>
@@ -144,6 +158,7 @@ export default function AddChurchModal({ onSuccess }: AddChurchModalProps) {
             )}
           />
 
+          {/* Image Upload */}
           <FormField
             control={form.control}
             name="image"
@@ -218,12 +233,23 @@ export default function AddChurchModal({ onSuccess }: AddChurchModalProps) {
             )}
           />
 
-          <Button
-            className="bg-[#6F4E37] w-full hover:bg-[#432F21]"
-            type="submit"
-          >
-            Add Church
-          </Button>
+          {/* Action Buttons */}
+          <div className="flex flex-col gap-2">
+            <Button
+              type="submit"
+              className="bg-[#6F4E37] w-full hover:bg-[#432F21]"
+            >
+              Add New Church
+            </Button>
+
+            <Button
+              type="button"
+              onClick={handleCancel}
+              className="border border-[#A67B5B]/25 bg-[#A67B5B]/10 w-full text-black hover:bg-red-50"
+            >
+              Cancel
+            </Button>
+          </div>
         </form>
       </Form>
     </div>
