@@ -10,9 +10,9 @@ import FamilyData from "./family/FamilyData";
 import { FamilyMember } from "./family/FamilyData";
 import AddFamilyModal from "./family/AddFamilyModal";
 import EditFamilyModal from "./family/EditFamilyModal";
-import DeleteFamilyModal from "./family/DeleteFamilyModal";
+import ExperienceData from "./experience/ExperienceData";
+// import DeleteFamilyModal from "./family/DeleteFamilyModal";
 import EducationData from "./education/EducationData";
-
 
 export default function PastorsProfileTabs() {
   const [isMobile, setIsMobile] = useState(false);
@@ -123,7 +123,7 @@ export default function PastorsProfileTabs() {
       occupation: "Business Owner",
       birthDate: "September 23, 2002",
     },
-        {
+    {
       id: 3,
       name: "Zairene Faith P. Arroz",
       relationship: "Daughter",
@@ -187,7 +187,7 @@ export default function PastorsProfileTabs() {
         </TabsContent>
 
         <TabsContent value="Experience" className="w-full">
-          {/* Experience Content */}
+          <ExperienceData />
         </TabsContent>
 
         <TabsContent value="Family" className="w-full">
@@ -239,21 +239,21 @@ export default function PastorsProfileTabs() {
       />
 
       {editingMember && (
-          <EditFamilyModal
-            open={showEditModal}
-            member={editingMember}
-            onSaveAction={handleEditMember}
-            onCancelAction={closeEditForms}
-          />
+        <EditFamilyModal
+          open={showEditModal}
+          member={editingMember}
+          onSaveAction={handleEditMember}
+          onCancelAction={closeEditForms}
+        />
       )}
 
       {deletingMember && (
-          <DeleteFamilyModal
-            open={showDeleteModal}
-            member={deletingMember}
-            onDeleteAction={() => handleDeleteMember(deletingMember.id)}
-            onCancelAction={closeDeleteForms}
-          />
+        <DeleteFamilyModal
+          open={showDeleteModal}
+          member={deletingMember}
+          onDeleteAction={() => handleDeleteMember(deletingMember.id)}
+          onCancelAction={closeDeleteForms}
+        />
       )}
     </div>
   );
