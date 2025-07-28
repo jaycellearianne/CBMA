@@ -1,6 +1,6 @@
 "use client";
-import type React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useMediaQuery } from "react-responsive";
 import {
   Drawer,
   DrawerContent,
@@ -15,58 +15,26 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useMediaQuery } from "react-responsive";
-import AddFamilyForm from "./AddFamilyForm";
-import { FamilyMember } from "./FamilyData";
+import AddFeesForm from "./AddFeesForm";
 
-interface AddFamilyModalProps {
+interface AddFeesModalProps {
   open: boolean;
-  onSaveAction: (member: FamilyMember) => void;
+  onSaveAction: (feeData: {
+    id: number;
+    feeTitle: string;
+    amount: string;
+    year: string;
+    status: string;
+  }) => void;
   onCancelAction: () => void;
 }
 
-export default function AddFamilyModal({
+export default function AddFeesModal({
   open,
   onSaveAction,
   onCancelAction,
-}: AddFamilyModalProps) {
+}: AddFeesModalProps) {
   const isMobile = useMediaQuery({ query: "(max-width: 640px)" });
-  const [mounted, setMounted] = useState(false);
-  const [formData, setFormData] = useState<FamilyMember>({
-    id: 0, // Default id value
-    name: "",
-    relationship: "",
-    education: "",
-    occupation: "",
-    birthDate: "",
-  });
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) return null;
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (
-      formData.name &&
-      formData.relationship &&
-      formData.education &&
-      formData.occupation &&
-      formData.birthDate
-    ) {
-      onSaveAction(formData);
-      setFormData({
-        id: 0, // Reset id to default value
-        name: "",
-        relationship: "",
-        education: "",
-        occupation: "",
-        birthDate: "",
-      });
-    }
-  };
 
   const Separator = () => (
     <div className="border-t border-gray-200 my-4 w-full" />
@@ -77,15 +45,15 @@ export default function AddFamilyModal({
       <DrawerContent className="w-full max-w-none px-4 h-auto flex flex-col">
         <DrawerHeader>
           <DrawerTitle className="text-2xl font-bold text-center text-[#6F4E37]">
-            Add Family Member
+            Add Fee Details
           </DrawerTitle>
           <DrawerDescription className="text-sm text-center text-gray-500">
-            Please fill out the form to register a new family member.
+            Please fill out the form to add a new fee.
           </DrawerDescription>
           <Separator />
         </DrawerHeader>
         <div className="flex-1 overflow-y-auto">
-          <AddFamilyForm
+          <AddFeesForm
             open={open}
             onSaveAction={onSaveAction}
             onCancelAction={onCancelAction}
@@ -98,15 +66,15 @@ export default function AddFamilyModal({
       <DialogContent className="sm:max-w-[425px] max-h-[750px] flex flex-col">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-center text-[#6F4E37]">
-            Add Family Member
+            Add Fee
           </DialogTitle>
           <DialogDescription className="text-sm text-center text-gray-500">
-            Please fill out the form to register a new family member.
+            Please fill out the form to add a new fee.
           </DialogDescription>
           <Separator />
         </DialogHeader>
         <div className="flex-1 overflow-y-auto">
-          <AddFamilyForm
+          <AddFeesForm
             open={open}
             onSaveAction={onSaveAction}
             onCancelAction={onCancelAction}

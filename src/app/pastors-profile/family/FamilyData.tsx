@@ -47,7 +47,7 @@ export default function FamilyData({
   return (
     <div className="p-6 space-y-4">
       <div className="flex justify-between items-center">
-        <h3 className="text-lg font-medium text-black">Family Background</h3>
+        <h3 className="text-2xl font-bold text-black">Family Background</h3>
         <Button
           size="sm"
           onClick={onAddMemberAction}
@@ -143,13 +143,6 @@ export default function FamilyData({
         ) : (
           <div className="text-center py-8 text-gray-500">
             <p>No family members recorded yet.</p>
-            {/* <Button
-              onClick={onAddMemberAction}
-              className="mt-4 bg-[#6F4E37] hover:bg-[#5D3E2A] text-white"
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              Add your first family member
-            </Button> */}
           </div>
         )}
       </div>

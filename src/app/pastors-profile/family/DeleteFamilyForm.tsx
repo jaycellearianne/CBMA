@@ -16,7 +16,6 @@ export default function DeleteFamilyForm({
 }: DeleteFamilyFormProps) {
   return (
     <div className="space-y-4 px-1 mb-4">
-      {/* DETAILS */}
       <div className="bg-red-50 rounded-lg p-4 border border-gray-200">
         <div className="space-y-2">
           <div className="flex items-center gap-2">

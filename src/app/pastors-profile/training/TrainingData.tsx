@@ -36,7 +36,7 @@ export default function TrainingData({
   return (
     <div className="p-6 space-y-6">
       <div className="flex justify-between items-center">
-        <h3 className="text-lg font-medium text-black">Trainings / Seminars</h3>
+        <h3 className="text-2xl font-bold text-black">Trainings / Seminars</h3>
         <Button
           onClick={onAddTrainingAction}
           size="sm"

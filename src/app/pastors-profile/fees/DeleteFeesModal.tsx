@@ -14,23 +14,24 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from "@/components/ui/drawer";
-import { AlertTriangle } from "lucide-react";
-import { FamilyMember } from "./FamilyData";
-import DeleteFamilyForm from "./DeleteFamilyForm";
+import { AlertTriangle, X } from "lucide-react";
+import { Fee } from "./FeesData";
+import DeleteFeesForm from "./DeleteFeesForm";
 
-interface DeleteFamilyModalProps {
+interface DeleteFeesModalProps {
   open: boolean;
-  member: FamilyMember;
-  onDeleteAction: () => void;
+  fee: Fee | null;
+  onConfirmAction: () => void;
   onCancelAction: () => void;
 }
 
-export default function DeleteFamilyModal({
+export default function DeleteFeesModal({
   open,
-  member,
-  onDeleteAction,
+  fee,
+  onConfirmAction,
   onCancelAction,
-}: DeleteFamilyModalProps) {
+}: DeleteFeesModalProps) {
+  if (!fee) return null;
   const isMobile = useMediaQuery({ query: "(max-width: 640px)" });
 
   const Separator = () => (
@@ -53,10 +54,10 @@ export default function DeleteFamilyModal({
           <Separator />
         </DrawerHeader>
         <div className="flex-1 overflow-y-auto">
-          <DeleteFamilyForm
+          <DeleteFeesForm
             open={open}
-            member={member}
-            onDeleteAction={onDeleteAction}
+            fee={fee}
+            onConfirmAction={onConfirmAction}
             onCancelAction={onCancelAction}
           />
         </div>
@@ -78,10 +79,10 @@ export default function DeleteFamilyModal({
           <Separator />
         </DialogHeader>
         <div className="flex-1 overflow-y-auto">
-          <DeleteFamilyForm
+          <DeleteFeesForm
             open={open}
-            member={member}
-            onDeleteAction={onDeleteAction}
+            fee={fee}
+            onConfirmAction={onConfirmAction}
             onCancelAction={onCancelAction}
           />
         </div>

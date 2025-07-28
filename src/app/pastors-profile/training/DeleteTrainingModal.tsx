@@ -51,9 +51,9 @@ export default function DeleteTrainingModal({
     <Drawer open={open} onOpenChange={(isOpen) => !isOpen && onCancelAction()}>
       <DrawerContent className="w-full max-w-none px-4 h-auto flex flex-col">
         <DrawerHeader>
-          <div className="flex-shrink-0 w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+            <div className="flex-shrink-0 w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto">
             <AlertTriangle className="w-7 h-7 text-red-600" />
-          </div>
+            </div>
           <DrawerTitle className="text-2xl font-bold text-center text-[#6F4E37]">
             Confirm Deletion
           </DrawerTitle>

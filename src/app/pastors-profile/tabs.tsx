@@ -15,6 +15,10 @@ import { Education } from "./education/EducationData";
 import AddEducationModal from "./education/AddEducationModal";
 import EditEducationModal from "./education/EditEducationModal";
 import DeleteEducationModal from "./education/DeleteEducationModal";
+import FeesData, { Fee } from "./fees/FeesData";
+import AddFeesModal from "./fees/AddFeesModal";
+import EditFeesModal from "./fees/EditFeesModal";
+import DeleteFeesModal from "./fees/DeleteFeesModal";
 
 export default function PastorsProfileTabs() {
   const tabs = [
@@ -66,6 +70,10 @@ export default function PastorsProfileTabs() {
   );
 
   // FEES STATES
+  const [fees, setFees] = useState<Fee[]>([]);
+  const [showAddFee, setShowAddFee] = useState(false);
+  const [editingFee, setEditingFee] = useState<Fee | null>(null);
+  const [deletingFee, setDeletingFee] = useState<Fee | null>(null);
 
   // EDUCATION HANDLERS
   const handleAddEducation = {};
@@ -132,11 +140,26 @@ export default function PastorsProfileTabs() {
   };
 
   // FEES HANDLERS
-  const handleAddFees = {};
+  const handleAddFees = (fee: Omit<Fee, "id">) => {
+    setFees([...fees, { ...fee, id: Date.now() }]);
+    setShowAddFee(false);
+  };
 
-  const handleEditFees = {};
+  const handleEditFees = (updated: Partial<Fee>) => {
+    if (!editingFee) return;
+    setFees(
+      fees.map((fee) =>
+        fee.id === editingFee.id ? { ...fee, ...updated } : fee
+      )
+    );
+    setEditingFee(null);
+  };
 
-  const handleDeleteFees = {};
+  const handleDeleteFees = () => {
+    if (!deletingFee) return;
+    setFees(fees.filter((fee) => fee.id !== deletingFee.id));
+    setDeletingFee(null);
+  };
 
   return (
     <div className="w-full overflow-x-auto">
@@ -189,7 +212,14 @@ export default function PastorsProfileTabs() {
           />
         </TabsContent>
 
-        <TabsContent value="Fees"></TabsContent>
+        <TabsContent value="Fees">
+          <FeesData
+            fees={fees}
+            onAddFeeAction={() => setShowAddFee(true)}
+            onEditFeeAction={(fee) => setEditingFee(fee)}
+            onDeleteFeeAction={(fee) => setDeletingFee(fee)}
+          />
+        </TabsContent>
       </Tabs>
 
       {/* TRAINING */}
@@ -235,6 +265,29 @@ export default function PastorsProfileTabs() {
           member={deletingMember}
           onDeleteAction={() => handleDeleteMember(deletingMember.id)}
           onCancelAction={() => setShowDeleteFamily(false)}
+        />
+      )}
+
+      {/* FEES */}
+      <AddFeesModal
+        open={showAddFee}
+        onSaveAction={handleAddFees}
+        onCancelAction={() => setShowAddFee(false)}
+      />
+      {editingFee && (
+        <EditFeesModal
+          open={true}
+          fee={editingFee}
+          onSaveAction={handleEditFees}
+          onCancelAction={() => setEditingFee(null)}
+        />
+      )}
+      {deletingFee && (
+        <DeleteFeesModal
+          open={true}
+          fee={deletingFee}
+          onConfirmAction={handleDeleteFees}
+          onCancelAction={() => setDeletingFee(null)}
         />
       )}
     </div>

@@ -304,7 +304,6 @@ export default function AccessControlPage() {
         user={selectedUser}
         onOpenChangeAction={(v) => toggleModal("edit", v)}
         onSaveAction={handleSaveEdit}
-        onRoleChangeAction={handleSaveRoleChange}
       />
       <DeactivateUserModal
         open={modals.deactivate}
