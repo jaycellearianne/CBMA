@@ -11,7 +11,6 @@ import FamilyData, { FamilyMember } from "./family/FamilyData";
 import AddFamilyModal from "./family/AddFamilyModal";
 import EditFamilyModal from "./family/EditFamilyModal";
 import ExperienceData from "./experience/ExperienceData";
-import EducationData from "./education/EducationData";
 import DeleteFamilyModal from "./family/DeleteFamilyModal";
 import { Education } from "./education/EducationData";
 import AddEducationModal from "./education/AddEducationModal";
