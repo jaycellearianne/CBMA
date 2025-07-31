@@ -1,7 +1,7 @@
 "use client";
 import WorkExperience from "./work-experience/WorkExperienceData";
 import MinistryExp from "./ministry-experience/MinistryExp";
-
+import TalentsSkillsInterests from "./talent-skills-interests/TalentsSkillsInterests";
 
 export default function ExperienceData() {
   return (
@@ -9,9 +9,10 @@ export default function ExperienceData() {
       <h1 className="text-2xl font-semibold text-[#6F4E37]">Education</h1>
 
       <WorkExperience />
-       <MinistryExp />
-       {/* <TalentsSkillsInterests />
-       <Insurance /> * */}
+      <MinistryExp />
+      <TalentsSkillsInterests />
+      {/* <Insurance /> * */}
     </div>
   );
 }
+``;
