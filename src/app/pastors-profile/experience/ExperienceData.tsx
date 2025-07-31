@@ -5,8 +5,8 @@ import TalentsSkillsInterests from "./talent-skills-interests/TalentsSkillsInter
 
 export default function ExperienceData() {
   return (
-    <div className="space-y-4 mx-5">
-      <h1 className="text-2xl font-semibold text-[#6F4E37]">Education</h1>
+    <div className="p-6 space-y-4">
+      <h3 className="text-2xl font-bold text-black">Work Experience</h3>
 
       <WorkExperience />
       <MinistryExp />

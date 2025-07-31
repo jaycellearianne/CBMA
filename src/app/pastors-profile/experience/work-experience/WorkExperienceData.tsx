@@ -150,8 +150,6 @@ export default function WorkExperienceData() {
 
   return (
     <div className="space-y-4 mx-5">
-      <h3 className="text-lg font-semibold text-[#2C1F16]">Work Experience</h3>
-
       {workExperienceData.length === 0 ? (
         <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center bg-gray-50">
           <Briefcase className="mx-auto h-12 w-12 text-gray-400 mb-4" />

@@ -19,9 +19,9 @@ export default function TalentsSkillsInterests() {
   return (
     <div className="space-y-4 mx-5 mb-5">
       <div className="flex items-center justify-between mb-2">
-        <h2 className="text-lg font-semibold text-[#2C1F16]">
+        <h3 className="text-2xl font-bold text-black">
           Talents, Skills & Interests
-        </h2>
+        </h3>
         {items.length > 0 && (
           <Button
             variant="ghost"

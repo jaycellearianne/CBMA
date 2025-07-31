@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -39,9 +38,9 @@ export default function MinistryExp() {
 
   const displayBoxStyle = `bg-gray-50 px-4 py-2 w-full rounded-lg text-sm border border-gray-200`;
   const editBoxStyle = `bg-white px-4 py-2 w-full rounded-lg text-sm border-2 border-[#4E342E]/50 focus-within:border-[#4E342E] transition-colors duration-200`;
-  const fieldStyle = `${isEditing ? editBoxStyle : displayBoxStyle} placeholder:text-gray-500 ${
-    isEditing ? "cursor-text" : "cursor-default"
-  }`;
+  const fieldStyle = `${
+    isEditing ? editBoxStyle : displayBoxStyle
+  } placeholder:text-gray-500 ${isEditing ? "cursor-text" : "cursor-default"}`;
 
   const renderViewValue = (value?: string | null) =>
     value && value.trim() !== "" ? (
@@ -54,7 +53,7 @@ export default function MinistryExp() {
     <div className="w-full max-w-screen mx-auto p-4 rounded-xl">
       {/* Header */}
       <div className="flex items-center justify-between pb-2 mb-4">
-        <h2 className="text-lg font-bold text-gray-800">Ministry Experience</h2>
+        <h3 className="text-2xl font-bold text-black">Ministry Experience</h3>
         {isEditing ? (
           <Button
             variant="ghost"
@@ -91,7 +90,9 @@ export default function MinistryExp() {
               className="mt-1 w-full border-none bg-transparent focus:ring-0"
             />
           ) : (
-            <div className="text-gray-800">{renderViewValue(formData.salary)}</div>
+            <div className="text-gray-800">
+              {renderViewValue(formData.salary)}
+            </div>
           )}
         </div>
 
@@ -105,9 +106,7 @@ export default function MinistryExp() {
               value={formData.yearStarted}
               onValueChange={(val) => handleChange("yearStarted", val)}
             >
-              <SelectTrigger
-                className="mt-1 w-full border-none bg-transparent pr-8"
-              >
+              <SelectTrigger className="mt-1 w-full border-none bg-transparent pr-8">
                 <SelectValue placeholder="Select year" />
               </SelectTrigger>
               <SelectContent>
@@ -122,7 +121,9 @@ export default function MinistryExp() {
               </SelectContent>
             </Select>
           ) : (
-            <div className="text-gray-800">{renderViewValue(formData.yearStarted)}</div>
+            <div className="text-gray-800">
+              {renderViewValue(formData.yearStarted)}
+            </div>
           )}
         </div>
 
@@ -140,7 +141,9 @@ export default function MinistryExp() {
               className="mt-1 w-full border-none bg-transparent focus:ring-0"
             />
           ) : (
-            <div className="text-gray-800">{renderViewValue(formData.yearsInMinistry)}</div>
+            <div className="text-gray-800">
+              {renderViewValue(formData.yearsInMinistry)}
+            </div>
           )}
         </div>
 
@@ -154,9 +157,7 @@ export default function MinistryExp() {
               value={formData.ordained}
               onValueChange={(val) => handleChange("ordained", val)}
             >
-              <SelectTrigger
-                className="mt-1 w-full border-none bg-transparent pr-8"
-              >
+              <SelectTrigger className="mt-1 w-full border-none bg-transparent pr-8">
                 <SelectValue placeholder="Select status" />
               </SelectTrigger>
               <SelectContent>
@@ -165,7 +166,9 @@ export default function MinistryExp() {
               </SelectContent>
             </Select>
           ) : (
-            <div className="text-gray-800">{renderViewValue(formData.ordained)}</div>
+            <div className="text-gray-800">
+              {renderViewValue(formData.ordained)}
+            </div>
           )}
         </div>
 
@@ -182,7 +185,7 @@ export default function MinistryExp() {
                   className={cn(
                     "mt-1 w-full justify-between text-sm font-normal text-gray-800 rounded-lg",
                     !ordinationDate && "text-muted-foreground",
-                    isEditing && "shadow-xs",
+                    isEditing && "shadow-xs"
                   )}
                 >
                   {ordinationDate
@@ -197,7 +200,8 @@ export default function MinistryExp() {
                   selected={ordinationDate}
                   onSelect={setOrdinationDate}
                   disabled={(date) =>
-                    date > new Date("2025-07-26") || date < new Date("1900-01-01")
+                    date > new Date("2025-07-26") ||
+                    date < new Date("1900-01-01")
                   }
                   captionLayout="dropdown"
                   className="rounded-md border shadow-sm"
@@ -231,7 +235,9 @@ export default function MinistryExp() {
               className="mt-1 w-full border-none bg-transparent focus:ring-0"
             />
           ) : (
-            <div className="text-gray-800">{renderViewValue(formData.recommendingChurch)}</div>
+            <div className="text-gray-800">
+              {renderViewValue(formData.recommendingChurch)}
+            </div>
           )}
         </div>
 
@@ -245,9 +251,7 @@ export default function MinistryExp() {
               value={formData.cbmaStatus}
               onValueChange={(val) => handleChange("cbmaStatus", val)}
             >
-              <SelectTrigger
-                className="mt-1 w-full border-none bg-transparent pr-8"
-              >
+              <SelectTrigger className="mt-1 w-full border-none bg-transparent pr-8">
                 <SelectValue placeholder="Select status" />
               </SelectTrigger>
               <SelectContent>
@@ -257,7 +261,9 @@ export default function MinistryExp() {
               </SelectContent>
             </Select>
           ) : (
-            <div className="text-gray-800">{renderViewValue(formData.cbmaStatus)}</div>
+            <div className="text-gray-800">
+              {renderViewValue(formData.cbmaStatus)}
+            </div>
           )}
         </div>
       </div>

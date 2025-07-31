@@ -17,11 +17,9 @@ export default function PersonalData() {
   };
 
   return (
-    <>
-      <div className="flex flex-row justify-between gap-2">
-        <h1 className="text-2xl px-4 font-semibold text-[#6F4E37]">
-          Personal Data
-        </h1>
+    <div className="p-6 space-y-4">
+      <div className="flex justify-between items-center">
+        <h3 className="text-2xl font-bold text-black">Personal Data</h3>
 
         <button
           type="button"
@@ -82,6 +80,6 @@ export default function PersonalData() {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
