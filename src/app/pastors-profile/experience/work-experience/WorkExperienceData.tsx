@@ -133,11 +133,11 @@ export default function WorkExperienceData() {
     setEditingItem(null);
   };
 
-//   const deleteWorkExperience = (id: string) => {
-//   setWorkExperienceData((prev) =>
-//     prev.filter((experience) => experience.id !== id)
-//   );
-// };
+  //   const deleteWorkExperience = (id: string) => {
+  //   setWorkExperienceData((prev) =>
+  //     prev.filter((experience) => experience.id !== id)
+  //   );
+  // };
 
   const formatDates = (dates: WorkExperience["inclusiveDates"]) => {
     const start = `${dates.start.month} ${dates.start.year}`;
@@ -149,14 +149,17 @@ export default function WorkExperienceData() {
   };
 
   return (
-    <div className="space-y-4 mx-5">
+    <div className="p-6 space-y-4">
       {workExperienceData.length === 0 ? (
         <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center bg-gray-50">
           <Briefcase className="mx-auto h-12 w-12 text-gray-400 mb-4" />
           <p className="text-gray-500 mb-4">No work experience added yet</p>
           <AddWorkExpModal
             triggerButton={
-              <Button className="text-[#6F4E37] font-medium border border-lg border-[#6F4E37] hover:bg-[#8B5A2B]" variant="ghost">
+              <Button
+                className="text-[#6F4E37] font-medium border border-lg border-[#6F4E37] hover:bg-[#8B5A2B]"
+                variant="ghost"
+              >
                 <CirclePlus className="mr-2" size={18} />
                 Add your first work experience
               </Button>
